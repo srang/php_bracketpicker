@@ -31,7 +31,7 @@ function getCommentsMap($db)
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-	<title>March Madness</title>
+        <title><?php echo $pageTitle; ?></title>
 	<meta name="robots" content="noarchive" />
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	<meta http-equiv="Content-Language" content="en-us" />
@@ -39,7 +39,7 @@ function getCommentsMap($db)
 	<meta http-equiv="expires" content="0">
 	<meta http-equiv="pragma" content="no-cache">
 	<style type="text/css" media="screen">@import "images/style.css";</style>
-	<link rel="shortcut icon" href="images/favicon.ico">
+        <link rel="shortcut icon" href="images/basketball_icon.png">
 	<script type="text/javascript" src="js/jquery-1.2.6.pack.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>
 	<script type="text/javascript" src="js/emailall.js"></script>
