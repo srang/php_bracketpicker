@@ -9,8 +9,8 @@ $query = "SELECT c.time, c.content, c.from, c.bracket, b.name, b.person  FROM `c
 $comments = mysql_query($query,$db);
 
 if($blog == NULL) {
-	echo "Please <a href=\"admin/install.htm\">configure the site <br />
-               AFTER setting up admin/database.php to point to your database.</a>\n";
+	echo "Please <a href=\"admin/install.htm\">configure</a> the site <br />
+               AFTER setting up admin/database.php to point to your database.\n";
 	exit();
 }
 ?>
