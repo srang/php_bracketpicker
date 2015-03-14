@@ -5,61 +5,61 @@ include("database.php");
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-	<title>March Madness Bracket Competition</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<meta http-equiv="Content-Language" content="en-us" />
-	<meta name="author" content="Matt Felser, Brian Battaglia, John Holder, Robert Jailall" />
-	<style type="text/css" media="all">@import "../images/style.css";</style>
+   <title>March Madness Bracket Competition</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+   <meta http-equiv="Content-Language" content="en-us" />
+   <meta name="author" content="Matt Felser, Brian Battaglia, John Holder, Robert Jailall" />
+   <style type="text/css" media="all">@import "../images/style.css";</style>
 </head>
 <body>
 <div class="content">
-	<div id="top">
-		<div class="rightlinks"><a href="http://sourceforge.net/projects/tourney"><span class="info"><?php echo $mmm_info ?> | <?php echo $mmm_vers ?></span></a></div>
-	</div>
-		<div id="header">
-			
-			<div class="info">
-				<h1>March Madness Bracket Competition</h1>
-				<h2>Site Administration</h2>
-			</div>
-		</div>
-	
-		<div id="subheader">
-			<div id="menu">
-			  	<ul>
-					<li><a href="../admin/">ADMIN AREA</a></li>
-     			</ul>
-			</div>
-		</div>
+   <div id="top">
+      <div class="rightlinks"><a href="http://sourceforge.net/projects/tourney"><span class="info"><?php echo $mmm_info ?> | <?php echo $mmm_vers ?></span></a></div>
+   </div>
+      <div id="header">
+         
+         <div class="info">
+            <h1>March Madness Bracket Competition</h1>
+            <h2>Site Administration</h2>
+         </div>
+      </div>
+   
+      <div id="subheader">
+         <div id="menu">
+              <ul>
+               <li><a href="../admin/">ADMIN AREA</a></li>
+              </ul>
+         </div>
+      </div>
 
-	<div id="main">
-		<div class="full">
-			<h2>Install Status</h2>
+   <div id="main">
+      <div class="full">
+         <h2>Install Status</h2>
 <?php
 
 function parse_mysql_dump($url,$db){
-	$file_content = file($url);
-	
-	$sql = "";
-	foreach($file_content as $sql_line)
-	{
-		if(trim($sql_line) != "" && strpos($sql_line, "--") === false && strpos($sql_line, "# ") === false)
-		{			
-			$sql .= $sql_line;
-			
-		}
-		
-		if( strpos(trim($sql_line),";") == true )
-		{
-			//// echo $sql."<br><br>";
-			
-			mysql_query($sql,$db) or die(mysql_error());
-			$sql ="";
-		}
-	}
+   $file_content = file($url);
+   
+   $sql = "";
+   foreach($file_content as $sql_line)
+   {
+      if(trim($sql_line) != "" && strpos($sql_line, "--") === false && strpos($sql_line, "# ") === false)
+      {         
+         $sql .= $sql_line;
+         
+      }
+      
+      if( strpos(trim($sql_line),";") == true )
+      {
+         //// echo $sql."<br><br>";
+         
+         mysql_query($sql,$db) or die(mysql_error());
+         $sql ="";
+      }
+   }
 }
 
 // Indentify version of mmm, then load the appropriate .sql files
@@ -67,32 +67,32 @@ function parse_mysql_dump($url,$db){
 
 $overwriteDb = false;
 if(isset($_POST['overwrite_db'])) {
-	$overwriteDb = true;
+   $overwriteDb = true;
 }
 
 if( !$overwriteDb )
-{	
-	if( mysql_num_rows( mysql_query("SHOW TABLES LIKE 'meta'")) > 0 )
-	{
-		$findDbVersQuery = "SHOW COLUMNS FROM `meta`  WHERE `field`='db_version'";
-		$version = mysql_query($findDbVersQuery,$db) or die(mysql_error()) ;
-		$version = mysql_fetch_array($db_version);
-		if(count($version) > 0 )
-		{
-			$findDbVersQuery = "SELECT `db_version` FROM `meta`";
-			$version = mysql_query($findDbVersQuery,$db) or die(mysql_error());
-			$version = mysql_fetch_array($version);
-			$db_version = $version['db_version'];
-		}
-		else
-		{
-			$db_version = $dbschema_vers;
-		}
-	}
-	else
-	{
-		$overwriteDb = true;
-	}
+{   
+   if( mysql_num_rows( mysql_query("SHOW TABLES LIKE 'meta'")) > 0 )
+   {
+      $findDbVersQuery = "SHOW COLUMNS FROM `meta`  WHERE `field`='db_version'";
+      $version = mysql_query($findDbVersQuery,$db) or die(mysql_error()) ;
+      $version = mysql_fetch_array($db_version);
+      if(count($version) > 0 )
+      {
+         $findDbVersQuery = "SELECT `db_version` FROM `meta`";
+         $version = mysql_query($findDbVersQuery,$db) or die(mysql_error());
+         $version = mysql_fetch_array($version);
+         $db_version = $version['db_version'];
+      }
+      else
+      {
+         $db_version = $dbschema_vers;
+      }
+   }
+   else
+   {
+      $overwriteDb = true;
+   }
 }
 
 $tablesExist = false;
@@ -105,119 +105,119 @@ $update1_5_2 = false;
 
 
 if( $db_version == NULL )
-{	
-	if( $overwriteDb )
-	{
-		echo "Overwrite any existing database set to TRUE ... installing fresh database for schema $dbschema_vers<br/><br/>";
-		$new1_5_2 = true;
-	}
-	else
-	{
-		echo "Detected database schema version 1.0.3 ... upgrading to database schema $dbschema_vers<br/><br/>";		
-		$update1_5 = true;
-		$update1_5_1 = true;
-		$update1_5_2 = true;
+{   
+   if( $overwriteDb )
+   {
+      echo "Overwrite any existing database set to TRUE ... installing fresh database for schema $dbschema_vers<br/><br/>";
+      $new1_5_2 = true;
+   }
+   else
+   {
+      echo "Detected database schema version 1.0.3 ... upgrading to database schema $dbschema_vers<br/><br/>";      
+      $update1_5 = true;
+      $update1_5_1 = true;
+      $update1_5_2 = true;
 
-	}
+   }
 }
 else if( $db_version == "ver 1.0.3" )
 {
-	if( $overwriteDb )
-	{
-		echo "Detected database schema version 1.0.3 but overwrite set to TRUE ... installing fresh database for schema $dbschema_vers<br/><br/>";
-		$new1_5_2 = true;
-	}
-	else
-	{
-		echo "Detected database schema version 1.0.3 ... upgrading to database schema $dbschema_vers<br/><br/>";
-		$update1_5 = true;
-		$update1_5_1 = true;
-		$update1_5_2 = true;
+   if( $overwriteDb )
+   {
+      echo "Detected database schema version 1.0.3 but overwrite set to TRUE ... installing fresh database for schema $dbschema_vers<br/><br/>";
+      $new1_5_2 = true;
+   }
+   else
+   {
+      echo "Detected database schema version 1.0.3 ... upgrading to database schema $dbschema_vers<br/><br/>";
+      $update1_5 = true;
+      $update1_5_1 = true;
+      $update1_5_2 = true;
 
-	}
+   }
 }
 else if( $db_version == "ver 1.5" )
 {
-	if( $overwriteDb )
-	{
-		echo "Detected database schema version 1.5 but overwrite set to TRUE ... installing fresh database for schema $dbschema_vers<br/><br/>";
-		$new1_5_2 = true;
-	}
-	else
-	{
-		echo "Detected database schema version 1.5 ... upgrading to database schema $dbschema_vers<br/><br/>";
-		$update1_5_1 = true;
-		$update1_5_2 = true;
-	}
+   if( $overwriteDb )
+   {
+      echo "Detected database schema version 1.5 but overwrite set to TRUE ... installing fresh database for schema $dbschema_vers<br/><br/>";
+      $new1_5_2 = true;
+   }
+   else
+   {
+      echo "Detected database schema version 1.5 ... upgrading to database schema $dbschema_vers<br/><br/>";
+      $update1_5_1 = true;
+      $update1_5_2 = true;
+   }
 }
 else if( $db_version == "ver 1.5.1" )
 {
-	if( $overwriteDb )
-	{
-		echo "Detected database schema version 1.5.1 but overwrite set to TRUE ... installing fresh database for schema $dbschema_vers<br/><br/>";
-		$new1_5_2 = true;
-	}
-	else
-	{
-		echo "Detected database schema version 1.5.1 ... upgrading to database schema $dbschema_vers<br/><br/>";
-		$update1_5_2 = true;
-	}
+   if( $overwriteDb )
+   {
+      echo "Detected database schema version 1.5.1 but overwrite set to TRUE ... installing fresh database for schema $dbschema_vers<br/><br/>";
+      $new1_5_2 = true;
+   }
+   else
+   {
+      echo "Detected database schema version 1.5.1 ... upgrading to database schema $dbschema_vers<br/><br/>";
+      $update1_5_2 = true;
+   }
 }
 else if( $db_version == "ver 1.5.2" )
 {
-	if( $overwriteDb )
-	{
-		echo "Detected database schema version 1.5.2 but overwrite set to TRUE ... installing fresh database for schema $dbschema_vers<br/><br/>";
-		$new1_5_2 = true;
-	}
-	else
-	{
-		echo "Detected database schema version 1.5.2 ... not updating database because the existing one should be fine!<br/><br/>";
-	}
+   if( $overwriteDb )
+   {
+      echo "Detected database schema version 1.5.2 but overwrite set to TRUE ... installing fresh database for schema $dbschema_vers<br/><br/>";
+      $new1_5_2 = true;
+   }
+   else
+   {
+      echo "Detected database schema version 1.5.2 ... not updating database because the existing one should be fine!<br/><br/>";
+   }
 }
 
 if( $new1_3 )
 {
-	parse_mysql_dump("structure.sql",$db);
+   parse_mysql_dump("structure.sql",$db);
 }
 
 if( $update1_5 )
-{	
-	parse_mysql_dump("convert_1_0_3_to_1_5_structure.sql",$db);
+{   
+   parse_mysql_dump("convert_1_0_3_to_1_5_structure.sql",$db);
 }
 
 if( $update1_5_1 )
 {
-	parse_mysql_dump("convert_1_5_to_1_5_1_structure.sql",$db);
+   parse_mysql_dump("convert_1_5_to_1_5_1_structure.sql",$db);
 }
 
 if( $update1_5_2 )
 {
-	parse_mysql_dump("convert_1_5_1_to_1_5_2_structure.sql",$db);
+   parse_mysql_dump("convert_1_5_1_to_1_5_2_structure.sql",$db);
 }
 
 if( $new1_5_1 )
 {
-	parse_mysql_dump("structure_1_5_1.sql",$db);
+   parse_mysql_dump("structure_1_5_1.sql",$db);
 }
 
 if( $new1_5_2 )
 {
-	parse_mysql_dump("structure_1_5_2.sql",$db);
+   parse_mysql_dump("structure_1_5_2.sql",$db);
 }
 
 if(isset($_POST['mail'])) {
-	$mail = 1;
+   $mail = 1;
 }
 else {
-	$mail = 0;
+   $mail = 0;
 }
 
 if(isset($_POST['sweet16Competition'])) {
-	$sweet16Competition = 1;
+   $sweet16Competition = 1;
 }
 else {
-	$mail = 0;
+   $mail = 0;
 }
 
 $_POST['title'] = str_replace("'","''",$_POST['title']); 
@@ -240,19 +240,19 @@ $main_scoring = "INSERT INTO `scoring` (`seed`, `1`, `2`, `3`, `4`, `5`, `6`, `t
 
 for( $i=1; $i < 17; $i++ )
 {
-	$row = "('".$i."',";
-	for( $j=1; $j < 6; $j++ )
-	{
-		$row .= "'".$_POST[$i."-".$j."_scoring"]."',";	
-	}
-	$row .= "'".$_POST[$i."-".$j."_scoring"]."','main')";
-	
-	if( $i < 16 )
-	{
-		$row .= ",";
-	}
-	
-	$main_scoring .= $row;
+   $row = "('".$i."',";
+   for( $j=1; $j < 6; $j++ )
+   {
+      $row .= "'".$_POST[$i."-".$j."_scoring"]."',";   
+   }
+   $row .= "'".$_POST[$i."-".$j."_scoring"]."','main')";
+   
+   if( $i < 16 )
+   {
+      $row .= ",";
+   }
+   
+   $main_scoring .= $row;
 }
 
 mysql_query($main_scoring,$db) or die(mysql_error());
@@ -270,14 +270,14 @@ $table_text = "<table border='1' align='center'><tr><td colspan='8'>Value of a w
 
 while ($row = mysql_fetch_assoc($scoring))
 {
-	$table_text .=  "<tr><td>".$row['seed']."</td>";
-	
-	for( $i=1; $i < 7; $i++ )
-	{
-		$table_text .=  "<td>".$row[$i]."</td>";
-	}
-	
-	$table_text .=  "</tr>";
+   $table_text .=  "<tr><td>".$row['seed']."</td>";
+   
+   for( $i=1; $i < 7; $i++ )
+   {
+      $table_text .=  "<td>".$row[$i]."</td>";
+   }
+   
+   $table_text .=  "</tr>";
 }
 
 
@@ -291,8 +291,8 @@ echo "<br>If no errors appear above, installation is complete!";
 ?>
 
 
-		</div>
-	</div>
+      </div>
+   </div>
 </div>
 </body>
 </html>

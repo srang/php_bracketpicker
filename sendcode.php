@@ -14,32 +14,32 @@ $adminEmail = $meta['email'];
 //clean input
 $i = 0;
 while($_POST[$i] != NULL) {
-	$_POST[$i] = Trim(stripslashes($_POST[$i])); 
-	++$i;
+   $_POST[$i] = Trim(stripslashes($_POST[$i])); 
+   ++$i;
 }
 
-	$userName = $_POST['name']; 
-	$userEmail = $_POST['email']; 
+   $userName = $_POST['name']; 
+   $userEmail = $_POST['email']; 
 
     //Add user to paid list
-	$query = "INSERT INTO `users` (`name`,`email`) VALUES ('$userName','$userEmail')";
-	mysql_query($query) or die(mysql_error()); //inserts entry into the dataase
+   $query = "INSERT INTO `users` (`name`,`email`) VALUES ('$userName','$userEmail')";
+   mysql_query($query) or die(mysql_error()); //inserts entry into the dataase
 
-	// prepare administrator email body text
-	$body = "Your submission code is: ";
-	$emailstr = strval(md5($userEmail));
-	$body .= substr($emailstr,12,1);
-	$body .= substr($emailstr,3,1);
-	$body .= substr($emailstr,19,1);
-	$body .= substr($emailstr,5,1);
-	$body .= substr($emailstr,15,1);
+   // prepare administrator email body text
+   $body = "Your submission code is: ";
+   $emailstr = strval(md5($userEmail));
+   $body .= substr($emailstr,12,1);
+   $body .= substr($emailstr,3,1);
+   $body .= substr($emailstr,19,1);
+   $body .= substr($emailstr,5,1);
+   $body .= substr($emailstr,15,1);
     $body .= substr($emailstr,8,1);
 
-	mail($userEmail, $subject, $body, "From: $adminEmail");
+   mail($userEmail, $subject, $body, "From: $adminEmail");
 
-	//redirects to a confirmation notice
-	$_SESSION['success'] = "Submission code has been sent.";
-	header('location:../index.php');
-	exit();
-	
-	?>
+   //redirects to a confirmation notice
+   $_SESSION['success'] = "Submission code has been sent.";
+   header('location:../index.php');
+   exit();
+   
+   ?>

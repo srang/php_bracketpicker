@@ -8,14 +8,14 @@ function viewBracket( $meta, $picks, $team_data, $rank, $score_data, $best_data 
 
 function displayNextRoundWinValue( val )
 {
-	window.status = "A win in the next round for this team is worth " + val;
-	return true;
+   window.status = "A win in the next round for this team is worth " + val;
+   return true;
 }
 
 function clearStatus()
 {
-	window.status = "";
-	return true;
+   window.status = "";
+   return true;
 }
 
 </script>
@@ -23,12 +23,12 @@ function clearStatus()
 <style type="text/css">
 .content
 {
-	width:1110px;
+   width:1110px;
 }
 
 #main
 {
-	width:1106px;
+   width:1106px;
 }
 </style>
 
@@ -37,27 +37,27 @@ function clearStatus()
   <div class="full"> 
      <div id="bracketheader">
      <?php
-     	if (isset($_COOKIE['useremail']) == true)
-		{
-			echo stripslashes($picks['name']) . " (" . stripslashes($picks['person']) . ")";
-		}
-		else
-		{
-     		echo stripslashes($picks['name']);
-     	}
-	?>
-		  <table border="0" width="100%">
-		 	<tr>
-				<?php if( $rank != "" ) { ?> <td>Rank: <?php echo $rank ?></td><?php } ?>
-				<?php if( $best_data['score'] != "" ) { ?> <td>Best Score Possible: <?php echo $best_data['score'] ?></td><?php } ?>
-			</tr>
-			 <tr>
-				<?php if( $score_data['score'] != "") { ?><td>Score: <?php echo $score_data['score'] ?></td><?php } ?>
-				<?php if( $best_data['score'] != "") { ?><td>Possible Points Remaining: <?php echo $best_data['score']- $score_data['score'] ?></td><?php } ?>
-			</tr>
-		 </table>
-	 </div>
-	 <div id="printlink"><h3><a href="#" onclick="window.print();">Printable Version</a></h3></div>
+        if (isset($_COOKIE['useremail']) == true)
+      {
+         echo stripslashes($picks['name']) . " (" . stripslashes($picks['person']) . ")";
+      }
+      else
+      {
+           echo stripslashes($picks['name']);
+        }
+   ?>
+        <table border="0" width="100%">
+          <tr>
+            <?php if( $rank != "" ) { ?> <td>Rank: <?php echo $rank ?></td><?php } ?>
+            <?php if( $best_data['score'] != "" ) { ?> <td>Best Score Possible: <?php echo $best_data['score'] ?></td><?php } ?>
+         </tr>
+          <tr>
+            <?php if( $score_data['score'] != "") { ?><td>Score: <?php echo $score_data['score'] ?></td><?php } ?>
+            <?php if( $best_data['score'] != "") { ?><td>Possible Points Remaining: <?php echo $best_data['score']- $score_data['score'] ?></td><?php } ?>
+         </tr>
+       </table>
+    </div>
+    <div id="printlink"><h3><a href="#" onclick="window.print();">Printable Version</a></h3></div>
      
      <div name="bracket" class="bracket" id="bracket">
       <table width="1100" border="1" cellspacing="0" cellpadding="0" > 

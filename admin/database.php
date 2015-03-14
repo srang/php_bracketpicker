@@ -34,9 +34,9 @@ $dbschema_vers = "ver 1.5.2";
 error_reporting(E_ERROR|E_CORE_ERROR|E_PARSE|E_COMPILE_ERROR|E_USER_ERROR|E_RECOVERABLE_ERROR);
 
 $db = mysql_connect($host, $user, $pass) 
-	or die(mysql_error());
+   or die(mysql_error());
 
 mysql_select_db($database,$db) 
-	or die(mysql_error());
+   or die(mysql_error());
 
 ?>

@@ -7,45 +7,45 @@ validatecookie();
 function scoreBrackets( $db, $master_data, $loserMap, $roundMap, $seedMap, $scoringType)
 {
 
-	$custompoints = getScoringArray($db, $scoringType);
-	$query = "SELECT * FROM `brackets`";
-	$result = mysql_query($query,$db);	
-	
-	while ($user_bracket = mysql_fetch_array($result, MYSQL_ASSOC))
-	{
-		$score = 0;
-		$bestScore = 0;
-		
-		for($j=1;$j<64;++$j) 
-		{
-			// calculate actual score
-			if($user_bracket[$j] == $master_data[$j] && $user_bracket[$j] != "" )
-			{				
-				$seedvalue = $seedMap[ $master_data[$j] ];
-				$score += $custompoints[ $seedvalue ][ $roundMap[$j] ];
-			}
-			
-			// calcualte best score
-			if( ( $user_bracket[$j] == $master_data[$j] || $loserMap[ $user_bracket[$j] ] == false ) 
-				&& $user_bracket[$j] != ""  )
-			{				
-				$seedvalue = $seedMap[ $user_bracket[$j] ];
-				$bestScore += $custompoints[ $seedvalue ][ $roundMap[$j] ];
-			}
-			
-		}
-		
-		if ($user_bracket['paid'] > 0)
-		{
-			$user_bracket['name'] = mysql_real_escape_string($user_bracket['name']);
-			
-			$score_query = "INSERT INTO `scores` () VALUES ('$user_bracket[id]','$user_bracket[name]','$score','$scoringType')";
-			mysql_query($score_query,$db) or die(mysql_error());
-			
-			$score_query = "INSERT INTO `best_scores` () VALUES ('$user_bracket[id]','$user_bracket[name]','$bestScore','$scoringType')";
-			mysql_query($score_query,$db) or die(mysql_error());
-		}
-	}
+   $custompoints = getScoringArray($db, $scoringType);
+   $query = "SELECT * FROM `brackets`";
+   $result = mysql_query($query,$db);   
+   
+   while ($user_bracket = mysql_fetch_array($result, MYSQL_ASSOC))
+   {
+      $score = 0;
+      $bestScore = 0;
+      
+      for($j=1;$j<64;++$j) 
+      {
+         // calculate actual score
+         if($user_bracket[$j] == $master_data[$j] && $user_bracket[$j] != "" )
+         {            
+            $seedvalue = $seedMap[ $master_data[$j] ];
+            $score += $custompoints[ $seedvalue ][ $roundMap[$j] ];
+         }
+         
+         // calcualte best score
+         if( ( $user_bracket[$j] == $master_data[$j] || $loserMap[ $user_bracket[$j] ] == false ) 
+            && $user_bracket[$j] != ""  )
+         {            
+            $seedvalue = $seedMap[ $user_bracket[$j] ];
+            $bestScore += $custompoints[ $seedvalue ][ $roundMap[$j] ];
+         }
+         
+      }
+      
+      if ($user_bracket['paid'] > 0)
+      {
+         $user_bracket['name'] = mysql_real_escape_string($user_bracket['name']);
+         
+         $score_query = "INSERT INTO `scores` () VALUES ('$user_bracket[id]','$user_bracket[name]','$score','$scoringType')";
+         mysql_query($score_query,$db) or die(mysql_error());
+         
+         $score_query = "INSERT INTO `best_scores` () VALUES ('$user_bracket[id]','$user_bracket[name]','$bestScore','$scoringType')";
+         mysql_query($score_query,$db) or die(mysql_error());
+      }
+   }
 
 }
 
@@ -77,19 +77,19 @@ $gamesLeft = 0;
 // only 63 games in yourney
 for( $i=1; $i<64; $i++ )
 {
-	if( $master_data[$i] == "" )
-	{
-		$gamesLeft++;
-	}
+   if( $master_data[$i] == "" )
+   {
+      $gamesLeft++;
+   }
 }
 
 // 11 may be able to execute before timing out
 if( $gamesLeft >= 11 )
 {
-	header( 'Location: index.php' );
+   header( 'Location: index.php' );
 }
 else
 {
-	header( 'Location: calculate_paths_to_victory.php' );
+   header( 'Location: calculate_paths_to_victory.php' );
 }
 ?>

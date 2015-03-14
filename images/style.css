@@ -161,37 +161,8 @@ color: #808080;
 
 
 /**/
-.nav { 
-text-align: left; 
-color: #808080;
-padding: 20px 0 0 0px; 
-width: 244px; 
-}
-.nav li { 
-margin: 5px 0 5px 0px; 
-padding: 0px 0 0 0px; 
-border-bottom: 1px dotted #888;
-}
-
 #stats li {
 list-style: none;
-}
-
-.nav li a { 
-color:#999999;
-font-weight:bold;
-text-decoration: none;  
-padding: 5px 0 1px 5px; 
-background: #101010;
-display: block; 
-margin-bottom: 2px;
-}
-.nav li a:hover { 
-color: #fff; 
-text-decoration: none; 
-background:#212121;
-display: block; 
-margin-bottom: 2px;
 }
 
 

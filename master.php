@@ -25,16 +25,16 @@ $picks = mysql_fetch_array($picks);
 $totalScore = 0;
 
 for( $i=1; $i<65; $i++ )
-{	
-	$team_data[$i] = $seedMap[$team_data[$i]].". ".$team_data[$i];
-	
-	if( $picks[$i] != NULL )
-	{
-		$correctValue = $scoring[ $seedMap[$picks[$i]] ][ $roundMap[$i]  ];
-		$correctValueStr = " <span class=\"gamevalue\">(".$correctValue.")</span>";
-		$totalScore += $correctValue;
-		$picks[$i] = $picks[$i].$correctValueStr;
-	}
+{   
+   $team_data[$i] = $seedMap[$team_data[$i]].". ".$team_data[$i];
+   
+   if( $picks[$i] != NULL )
+   {
+      $correctValue = $scoring[ $seedMap[$picks[$i]] ][ $roundMap[$i]  ];
+      $correctValueStr = " <span class=\"gamevalue\">(".$correctValue.")</span>";
+      $totalScore += $correctValue;
+      $picks[$i] = $picks[$i].$correctValueStr;
+   }
 }
 
 $score_data['score'] = $totalScore;
@@ -50,7 +50,7 @@ viewBracket( $meta, $picks, $team_data, $rank, $score_data, $best_data );
 
 ?>
 
-	<div id="footer"> </div>
+   <div id="footer"> </div>
 </div>
 </body>
 </html>
