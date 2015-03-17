@@ -6,13 +6,21 @@
 $database = "tourney2015";
 $user = "tourney2015";
 $pass = "Genfare123!";
+/* hosted db
 $host = "tourney2015.db.11244479.hostedresource.com";
+$tourneyURL = "http://www.samuelrang.com/tourney";
+ */
+
+/* local db */
+$host = "localhost";
+$tourneyURL = "localhost/tourney";
+
+
 /*
  * Add a full URL to your site install, like:
  * $tourneyURL = "http://tourney.example.com/";
  * $tourneyURL = "http://example.com/tourney/";
 */
-$tourneyURL = "http://www.samuelrang.com/tourney";
 
 /*
  * How many places do you want to have payout for in the final calculations?
