@@ -13,7 +13,7 @@ $meta = mysql_fetch_array($meta);
 	<meta http-equiv="Content-Language" content="en-us" />
 	<meta name="author" content="Matt Felser, Brian Battaglia, John Holder, Robert Jailall" />
 	<style type="text/css" media="all">@import "../images/style.css";</style>
-	<link rel="shortcut icon" href="../images/favicon.ico">
+        <link rel="shortcut icon" href="../images/basketball_icon.png">
 	
 	<?php
 	//if this is the submit or what-if page, include the necessary javascript

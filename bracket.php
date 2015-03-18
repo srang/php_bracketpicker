@@ -38,10 +38,18 @@ if(isset($_POST['print']))
 		$startIdx = 49;
 	}
 	
-	for( $i=$startIdx ; $i < 64; $i++ )
-	{
-		$picks[$i.""] = $seedMap[$_POST["game".$i]].". ".$_POST["game".$i];
-	}
+        if(!isset($email)) {//post is from admin
+          for( $i=$startIdx ; $i < 64; $i++ )
+          {
+                  $picks[$i.""] = $seedMap[$_POST[$i]].". ".$_POST[$i];
+          }
+
+        } else {
+          for( $i=$startIdx ; $i < 64; $i++ )
+          {
+                  $picks[$i.""] = $seedMap[$_POST["game".$i]].". ".$_POST["game".$i];
+          }
+        }
 	
 	$picks['name'] = stripslashes($bracketname);
 	$picks['tiebreaker'] = $tiebreaker;
