@@ -3,7 +3,7 @@
 /*
  * Add your DB config here!
  */
-$database = "tourney2015";
+$database = "tourney2016";
 $user = "tourney2015";
 $pass = "Genfare123!";
 /* hosted db

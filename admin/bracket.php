@@ -52,7 +52,7 @@ else {
 }
 
 ?>
-        <script type="text/javascript" src=js/bracket-valid.js> </script>
+        <script type="text/javascript" src=../js/bracket-valid.js> </script>
 	<div id="main">
 		<div class="full">
 			<?php if($id == 0) { ?>
@@ -737,7 +737,7 @@ else {
 					<p>Tiebreaker <input type="text" name="tiebreaker" value="<?php echo $picks['tiebreaker']?>" size="10" maxlength="3" /></p>
                                         <p>
                                           <input type="submit" name="Submit" value="Submit" />
-                                          <input type="submit" name="print" value="Print Your Bracket!" onclick="if(validateFields('')){ document.bracket.target='_blank'; } else { return false;}" />
+                                          <input type="submit" name="print" value="Print" onclick=" document.bracket.action='../bracket.php'; document.bracket.target='_blank'; " />
                                         </p>
 					</div>
 				</p>
