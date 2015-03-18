@@ -52,7 +52,6 @@ else {
 }
 
 ?>
-        <script type="text/javascript" src=../js/bracket-valid.js> </script>
 	<div id="main">
 		<div class="full">
 			<?php if($id == 0) { ?>
@@ -736,7 +735,7 @@ else {
 					<div align="center">
 					<p>Tiebreaker <input type="text" name="tiebreaker" value="<?php echo $picks['tiebreaker']?>" size="10" maxlength="3" /></p>
                                         <p>
-                                          <input type="submit" name="Submit" value="Submit" />
+                                          <input type="submit" name="Submit" value="Submit" onclick=" document.bracket.action='update.php?id=<?php echo $id?>'; document.bracket.target=''; "/>
                                           <input type="submit" name="print" value="Print" onclick=" document.bracket.action='../bracket.php'; document.bracket.target='_blank'; " />
                                         </p>
 					</div>

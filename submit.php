@@ -520,7 +520,7 @@ If you want a hard copy of your bracket before the tournament begins, please PRI
 					<input name="tiebreaker" type="text" id="tiebreaker" size="10" maxlength="3" />
 					<br />
 					<br />
-					<input type="submit" name="submit" value="Submit" onclick="return validateFields('All fields appear to be filled. Are you sure you want to submit this bracket?')" />
+                                        <input type="submit" name="submit" value="Submit" onclick="if(validateFields('All fields appear to be filled. Are you sure you want to submit this bracket?')) { document.bracket.target=''; return true; } else { return false; }" />
 					<input type="reset" name="reset"  value="Reset (BE CAREFUL!)" onclick="return resetBracket();" />
 					<input type="submit" name="print" value="Print Your Bracket!" onclick="if(validateFields('')){ document.bracket.target='_blank'; } else { return false;}" />
 				</p>
