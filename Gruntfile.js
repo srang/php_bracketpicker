@@ -65,6 +65,7 @@ module.exports = function(grunt) {
       qunit: {
         files: ['test/*.html']
       },
+      //--------------------LINTING---------------------//
       bootlint: {
         options: {
           stoponerror: false,
@@ -73,8 +74,9 @@ module.exports = function(grunt) {
         files: ['', '']
       },
       curl: {
-        'test/target/index.php' : 'http://localhost/tourney/'
+        'test/target/index.php' : 'http://localhost/tourney/index.php'
       }
+        
   });
 
   // Plugin loading
@@ -85,11 +87,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-phplint');
   grunt.loadNpmTasks('grunt-phpunit');
   grunt.loadNpmTasks('grunt-curl');
+  grunt.load
 
   // Task definition
   grunt.registerTask('default', ['']);
   grunt.registerTask('lint', ['curl','jshint','bootlint','phplint','clean']);
   grunt.registerTask('minify', ['less', 'concat', 'uglify']);
-  grunt.registerTask('qunit', ['qunit']);
+  grunt.registerTask('test', ['qunit']);
+  grunt.registerTask('dl', ['curl']);
 
 };
