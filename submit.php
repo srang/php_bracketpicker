@@ -67,47 +67,8 @@ for( $i=1; $i <= 64; $i++)
 
 
 ?>
-   <script type="text/javascript">
-
-function validateFields( alertText )
-{
-   for( var i=1; i<64; i++ )
-   {
-      var field = document.getElementsByName('game'+i)[0];
-      if( field.value == "" )
-      {
-         alert( "You must pick a winner for this game." );
-         field.focus();
-         return false;
-      }
-   }
    
-   var moreFields = new Array('bracketname','name','e-mail','tiebreaker');
-   
-   for( var i=0; i < moreFields.length; i++ )
-   {
-      var field = document.getElementsByName( moreFields[i] )[0];
-      if( field.value == "" )
-      {
-         alert( "You must fill out this field");
-         field.focus();
-         return false;
-      }
-   }
-   
-   if( alertText != "" )
-   {
-      return window.confirm(alertText);
-   }
-   else
-   {
-      return true;
-   }
-}
-   
-
-   </script>
-   
+  <script type="text/javascript" src=js/bracket-valid.js> </script>
    <div id="main">
       <div class="full">
          <h2>The Bracket</h2>
@@ -130,6 +91,7 @@ function validateFields( alertText )
             <?php } ?>
 <p>
 If you want a hard copy of your bracket before the tournament begins, please PRINT your bracket before submitting it.</p>
+<<<<<<< HEAD
             <table width="700" border="1">
                <tr>
                   <td colspan="5"><h1><?php echo $meta['region1']?></h1></td>
@@ -559,7 +521,7 @@ If you want a hard copy of your bracket before the tournament begins, please PRI
                <input name="tiebreaker" type="text" id="tiebreaker" size="10" maxlength="3" />
                <br />
                <br />
-               <input type="submit" name="submit" value="Submit" onclick="return validateFields('All fields appear to be filled. Are you sure you want to submit this bracket?')" />
+               <input type="submit" name="submit" value="Submit" onclick="if(validateFields('All fields appear to be filled. Are you sure you want to submit this bracket?')) { document.bracket.target=''; return true; } else { return false; }" />
                <input type="reset" name="reset"  value="Reset (BE CAREFUL!)" onclick="return resetBracket();" />
                <input type="submit" name="print" value="Print Your Bracket!" onclick="if(validateFields('')){ document.bracket.target='_blank'; } else { return false;}" />
             </p>

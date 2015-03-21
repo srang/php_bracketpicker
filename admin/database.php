@@ -3,16 +3,25 @@
 /*
  * Add your DB config here!
  */
-$database = "tourney2015";
 $user = "tourney2015";
 $pass = "Genfare123!";
+/* hosted db */
+$database = "tourney2015";
+$host = "tourney2015.db.11244479.hostedresource.com";
+$tourneyURL = "http://www.samuelrang.com/tourney";
+
+
+/* local db 
+$database = "tourney2016";
 $host = "localhost";
+$tourneyURL = "localhost/tourney";
+*/
+
 /*
  * Add a full URL to your site install, like:
  * $tourneyURL = "http://tourney.example.com/";
  * $tourneyURL = "http://example.com/tourney/";
 */
-$tourneyURL = "localhost/tourney";
 
 /*
  * How many places do you want to have payout for in the final calculations?
@@ -34,9 +43,9 @@ $dbschema_vers = "ver 1.5.2";
 error_reporting(E_ERROR|E_CORE_ERROR|E_PARSE|E_COMPILE_ERROR|E_USER_ERROR|E_RECOVERABLE_ERROR);
 
 $db = mysql_connect($host, $user, $pass) 
-   or die(mysql_error());
+	or die(mysql_error());
 
 mysql_select_db($database,$db) 
-   or die(mysql_error());
+	or die(mysql_error());
 
 ?>
