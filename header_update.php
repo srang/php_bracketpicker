@@ -134,44 +134,44 @@ function resetBracket( startId )
 
 <body>
   <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-          <div class="navbar-header page-scroll">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                  <span class="sr-only">Toggle navigation</span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#page-top"><?php echo $meta['title']; ?></a>
-          </div>
+    <div class="container">
+      <div class="navbar-header page-scroll">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#page-top"><?php echo $meta['title']; ?></a>
       </div>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav navbar-right">
-              <li class="hidden">
-                  <a href="#page-top"></a>
-              </li>
-              <li class="page-scroll">
-                <a href="index.php">HOME</a>
-              </li>
-              <li class="page-scroll">
-                  <a href="submit.php">CREATE BRACKET</a>
-              </li>
-              <li class="page-scroll">
-                  <a href="rules.php">RULES</a>
-              </li>
-              <li class="page-scroll">
-                  <a href="choose.php">STANDINGS</a>
-              </li>
-              <?php if($meta['cost'] != 0) { ?>
-              <li class="page-scroll">
-                  <a href="choose.php">STANDINGS</a>
-              </li>
-              <?php } ?>
-              <?php if($meta['mail'] != 0 ) { ?>
-              <li class="page-scroll">
-                  <a href="contact.php">CONTACT</a>
-              </li>
-              <?php } ?>
-          </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="hidden">
+            <a href="#page-top"></a>
+          </li>
+          <li class="page-scroll">
+            <a href="index.php">HOME</a>
+          </li>
+          <li class="page-scroll">
+            <a href="submit.php">CREATE BRACKET</a>
+          </li>
+          <li class="page-scroll">
+            <a href="rules.php">RULES</a>
+          </li>
+          <li class="page-scroll">
+            <a href="choose.php">STANDINGS</a>
+          </li>
+          <?php if($meta['cost'] != 0) { ?>
+          <li class="page-scroll">
+            <a href="choose.php">STANDINGS</a>
+          </li>
+          <?php } ?>
+          <?php if($meta['mail'] != 0 ) { ?>
+          <li class="page-scroll">
+            <a href="contact.php">CONTACT</a>
+          </li>
+          <?php } ?>
+        </ul>
       </div>
+    </div>
   </nav>

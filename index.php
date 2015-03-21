@@ -15,14 +15,15 @@ if($blog == NULL) {
 }
 ?>
 
-      <div id="main">
+    <header>
+      <div class="container" id="main-content">
          <?php
             $smackheader=0;
             while ($post = mysql_fetch_array($comments))
             {
                if( 0 == $smackheader )
                {
-                  echo "<div id='smacktalk'><h2>Latest Smack Talk</h2><div class='messages'><table width='100%'>";
+                 echo "<div class='row'><h2>Latest Smack Talk</h2><div class='messages'><table width='100%'>";
                   $smackheader=1;
                }
                echo "<tr><td><span class='postername' >".stripslashes($post['from']).":</span> <a class='teaser' href=\"view.php?id=" . stripslashes($post['bracket']) . "#comments\">" . substr(stripslashes($post['content']),0,250);
@@ -40,33 +41,36 @@ if($blog == NULL) {
                echo "</table></div></div>";
             }
          ?>
-         <div class="right_side">
-            <?php include("sidebar.php"); ?>
-         </div>
-         <div class="left_side">
-            <?php
-                if(isset($_SESSION['success'])) {
-            ?>
-                <div class="success"><?php echo $_SESSION['success']?></div>
-            <?php
-            }
-            if(isset($_SESSION['errors'])) {
-            ?>
-                <div class="errors"><p><em>Errors:</em></p><?php echo $_SESSION['errors']?></div>
-            <?php
-            }
-            unset($_SESSION['errors']);
-            unset($_SESSION['success']);
+         <div class="row">
+           <div class="col-md-6">
+              <?php include("sidebar.php"); ?>
+           </div>
+           <div class="col-md-6">
+              <?php
+                  if(isset($_SESSION['success'])) {
+              ?>
+                  <div class="success"><?php echo $_SESSION['success']?></div>
+              <?php
+              }
+              if(isset($_SESSION['errors'])) {
+              ?>
+                  <div class="errors"><p><em>Errors:</em></p><?php echo $_SESSION['errors']?></div>
+              <?php
+              }
+              unset($_SESSION['errors']);
+              unset($_SESSION['success']);
 
-            while ($post = mysql_fetch_row($blog)){
-               echo "<h2>$post[1]</h2>\n";
-               echo "<h3>$post[2]</h3>\n";
-               echo "$post[3]\n";
-               echo "<p class=\"date\">$post[4]</p>\n";
-            }
-         ?>
-            <br />
-         </div>
+              while ($post = mysql_fetch_row($blog)){
+                 echo "<h2>$post[1]</h2>\n";
+                 echo "<h3>$post[2]</h3>\n";
+                 echo "$post[3]\n";
+                 echo "<p class=\"date\">$post[4]</p>\n";
+              }
+           ?>
+              <br />
+           </div>
 
+       </div>
       </div>
+    </header>
 <?php include("footer.php"); ?>

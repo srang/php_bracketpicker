@@ -1,4 +1,4 @@
-<div class="nav">
+<div>
 
 <?php
 
