@@ -3,7 +3,7 @@ module.exports = function(grunt) {
   //Initializing the configuration object
   grunt.initConfig({
 
-      //--------------------CSS-GENERATION---------------------//
+      //--------------------CSS-GENERATION--------------------//
       less: { 
         development: {
           options: {
@@ -17,7 +17,7 @@ module.exports = function(grunt) {
           }
         }
       },
-      //--------------------MINIFICATION---------------------//
+      //--------------------MINIFICATION----------------------//
       concat: {
         options: {
           separator: ';',
@@ -41,7 +41,7 @@ module.exports = function(grunt) {
       },
       uglify: {
         options: {
-          mangle: false  // Use if you want the names of your functions and variables unchanged
+          mangle: false
         },
         frontend: {
           files: {
@@ -54,7 +54,7 @@ module.exports = function(grunt) {
           }
         },
       },
-      //--------------------TESTING---------------------//
+      //--------------------TESTING---------------------------//
       phpunit: {
         classes: {
         },
@@ -65,7 +65,7 @@ module.exports = function(grunt) {
       qunit: {
         files: ['test/*.html']
       },
-      //--------------------LINTING---------------------//
+      //--------------------LINTING---------------------------//
       bootlint: {
         options: {
           stoponerror: false,
@@ -73,27 +73,30 @@ module.exports = function(grunt) {
         },
         files: ['', '']
       },
+      jshint: {
+        files: ['test/target/*']
+      },
+      //--------------------FILE-GENERATE---------------------//
       curl: {
         'test/target/index.php' : 'http://localhost/tourney/index.php'
-      }
+      },
+      clean: ['test/target/*']
         
   });
 
   // Plugin loading
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-bootlint');
   grunt.loadNpmTasks('grunt-phplint');
   grunt.loadNpmTasks('grunt-phpunit');
   grunt.loadNpmTasks('grunt-curl');
-  grunt.load
 
   // Task definition
   grunt.registerTask('default', ['']);
-  grunt.registerTask('lint', ['curl','jshint','bootlint','phplint','clean']);
+  grunt.registerTask('lint', ['curl','jshint','clean']);
   grunt.registerTask('minify', ['less', 'concat', 'uglify']);
-  grunt.registerTask('test', ['qunit']);
-  grunt.registerTask('dl', ['curl']);
-
 };
