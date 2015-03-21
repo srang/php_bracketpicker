@@ -7,7 +7,7 @@ module.exports = function(grunt) {
       less: { 
         development: {
           options: {
-            compress: true,  //minifying the result
+            compress: true  //minifying the result
           },
           files: {
             //compiling frontend.less into frontend.css
@@ -20,24 +20,25 @@ module.exports = function(grunt) {
       //--------------------MINIFICATION----------------------//
       concat: {
         options: {
-          separator: ';',
+          separator: ';'
         },
         js_frontend: {
           src: [
             './bower_components/jquery/jquery.js',
             './bower_components/bootstrap/dist/js/bootstrap.js',
-            './js/frontend.js'
+            './js/script.js',
+            './js/emailall.js'
         ],
-        dest: './js/frontend.min.js',
+        dest: './js/frontend.js'
         },
         js_backend: {
           src: [
             './bower_components/jquery/jquery.js',
             './bower_components/bootstrap/dist/js/bootstrap.js',
-            './app/assets/javascript/backend.js'
-        ],
-        dest: './js/backend.min.js',
-        },
+            './js/bracket-valid.js'
+          ],
+          dest: './js/backend.js'
+        }
       },
       uglify: {
         options: {
@@ -45,14 +46,14 @@ module.exports = function(grunt) {
         },
         frontend: {
           files: {
-            './js/frontend.min.js': './js/frontend.min.js',
+            './js/frontend.min.js': './js/frontend.min.js'
           }
         },
         backend: {
           files: {
-            './js/backend.min.js': './js/backend.min.js',
+            './js/backend.min.js': './js/backend.min.js'
           }
-        },
+        }
       },
       //--------------------TESTING---------------------------//
       phpunit: {
@@ -74,14 +75,14 @@ module.exports = function(grunt) {
         files: ['', '']
       },
       jshint: {
-        files: ['test/target/*']
+        files: ['js/frontend.js','js/backend.js']
       },
       //--------------------FILE-GENERATE---------------------//
       curl: {
         'test/target/index.php' : 'http://localhost/tourney/index.php'
       },
       clean: ['test/target/*']
-        
+
   });
 
   // Plugin loading
@@ -97,6 +98,6 @@ module.exports = function(grunt) {
 
   // Task definition
   grunt.registerTask('default', ['']);
-  grunt.registerTask('lint', ['curl','jshint','clean']);
+  grunt.registerTask('lint', ['jshint','curl','clean']);
   grunt.registerTask('minify', ['less', 'concat', 'uglify']);
 };
