@@ -5,17 +5,10 @@
  */
 $user = "tourney2015";
 $pass = "Genfare123!";
-/* hosted db */
-$database = "tourney2015";
-$host = "tourney2015.db.11244479.hostedresource.com";
-$tourneyURL = "http://www.samuelrang.com/tourney";
 
-
-/* local db 
 $database = "tourney2016";
 $host = "localhost";
 $tourneyURL = "localhost/tourney";
-*/
 
 /*
  * Add a full URL to your site install, like:
