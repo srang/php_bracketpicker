@@ -1,46 +1,8 @@
 <?php
 include("header_update.php");
 include("admin/functions.php");
-
-$query = "SELECT * FROM `blog` ORDER BY id DESC LIMIT 3";
-$blog = mysql_query($query,$db);
-
-$query = "SELECT c.time, c.content, c.from, c.bracket, b.name, b.person  FROM `comments` c, `brackets` b WHERE b.id = c.bracket ORDER BY c.time DESC";
-$comments = mysql_query($query,$db);
-
-if($blog == NULL) {
-   echo "Please <a href=\"admin/install.htm\">configure</a> the site <br />
-               AFTER setting up admin/database.php to point to your database.\n";
-   exit();
-}
 ?>
-
-    <header>
       <div class="container" id="main-content">
-         <?php
-            $smackheader=0;
-            while ($post = mysql_fetch_array($comments))
-            {
-               if( 0 == $smackheader )
-               {
-                 echo "<div class='row'><h2>Latest Smack Talk</h2><div class='messages'><table width='100%'>";
-                  $smackheader=1;
-               }
-               echo "<tr><td><span class='postername' >".stripslashes($post['from']).":</span> <a class='teaser' href=\"view.php?id=" . stripslashes($post['bracket']) . "#comments\">" . substr(stripslashes($post['content']),0,250);
-
-               if (strlen($post['content'])>250)
-               {
-                  echo "...";
-               }
-
-               echo "</a></td><td><div class='bracketName'><a href=\"view.php?id=" . $post['bracket'] . "#comments\">" . stripslashes($post['name']) . "</a> - <span class='date'>" . timeBetween(strtotime($post['time']),time()) . "</span></div></td></tr>\n";
-
-            }
-            if( $smackheader )
-            {
-               echo "</table></div></div>";
-            }
-         ?>
          <div class="row">
            <div class="col-md-6">
               <?php include("sidebar.php"); ?>
@@ -72,5 +34,4 @@ if($blog == NULL) {
 
        </div>
       </div>
-    </header>
 <?php include("footer.php"); ?>
