@@ -2,7 +2,16 @@ module.exports = function(grunt) {
 
   //Initializing the configuration object
   grunt.initConfig({
-
+      //--------------------INSTALL-DEPENDENCIES--------------//
+      bower: {
+        install: {
+          options: {
+            cleanBowerDir: true,
+            verbose: true,
+            layout: "byType"
+          }
+        }
+      },
       //--------------------CSS-GENERATION--------------------//
       less: { 
         development: {
@@ -28,8 +37,8 @@ module.exports = function(grunt) {
             './bower_components/bootstrap/dist/js/bootstrap.js',
             './js/script.js',
             './js/emailall.js'
-        ],
-        dest: './js/frontend.js'
+          ],
+          dest: './js/frontend.js'
         },
         js_backend: {
           src: [
@@ -95,6 +104,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-phplint');
   grunt.loadNpmTasks('grunt-phpunit');
   grunt.loadNpmTasks('grunt-curl');
+  grunt.loadNpmTasks('grunt-bower-task');
 
   // Task definition
   grunt.registerTask('default', ['']);
