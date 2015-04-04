@@ -3,36 +3,57 @@ include("admin/db_connect.php");
 $query = "SELECT * FROM `meta` WHERE id=1";
 $meta = mysql_query($query,$db);
 @$meta = mysql_fetch_array($meta);
-
-//TODO Performance testing
-header("Expires: ".gmdate("D, d M Y H:i:s")." GMT"); // Always expired
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");// always modified
-header("Cache-Control: no-cache, must-revalidate");// HTTP/1.1
-header("Pragma: nocache");// HTTP/1.0
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
-  <head>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Bracket Challenge">
+    <meta name="author" content="srang">
+
     <!--<title><?php echo $pageTitle; ?></title>-->
     <title>Madness</title>
-    <meta name="robots" content="noarchive" />
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <meta http-equiv="Content-Language" content="en-us" />
-    <meta http-equiv="cache-control" content="no-cache, must-revalidate">
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="pragma" content="no-cache">
-    <link rel="shortcut icon" href="images/basketball_icon.png">
-    <link rel="stylesheet" href="css/bootstrap.min.css"></link>
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css"></link>
+
+    <link rel="icon" href="img/basketball_icon.png">
+    <link rel="stylesheet" href="css/frontend.css"></link>
+    <!--link rel="stylesheet" href="css/bootstrap-theme.min.css"></link-->
+
+
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-
   <body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
+            <div class="form-group">
+              <input placeholder="Email" class="form-control" type="text">
+            </div>
+            <div class="form-group">
+              <input placeholder="Password" class="form-control" type="password">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+    <!--
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -72,3 +93,4 @@ header("Pragma: nocache");// HTTP/1.0
         </div>
       </div>
     </nav>
+    -->

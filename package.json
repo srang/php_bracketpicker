@@ -1,5 +1,5 @@
 {
-  "name": "tourney-1.5.3.7",
+  "name": "tourney-manager",
   "version": "0.0.1",
   "description": "Bracket competition site",
   "main": "index.php",
@@ -33,6 +33,7 @@
     "grunt-phplint": "0.0.5",
     "grunt-curl": "~2.0.3",
     "grunt-contrib-clean": "~0.6.0",
-    "grunt-bower-task": "~0.4.0"
+    "grunt-bower-task": "~0.4.0",
+    "grunt-contrib-copy": "~0.8.0"
   }
 }

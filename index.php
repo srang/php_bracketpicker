@@ -1,37 +1,51 @@
 <?php
 include("header_update.php");
-include("admin/functions.php");
 ?>
-      <div class="container" id="main-content">
-         <div class="row">
-           <div class="col-md-6">
-              <?php include("sidebar.php"); ?>
-           </div>
-           <div class="col-md-6">
-              <?php
-                  if(isset($_SESSION['success'])) {
-              ?>
-                  <div class="success"><?php echo $_SESSION['success']?></div>
-              <?php
-              }
-              if(isset($_SESSION['errors'])) {
-              ?>
-                  <div class="errors"><p><em>Errors:</em></p><?php echo $_SESSION['errors']?></div>
-              <?php
-              }
-              unset($_SESSION['errors']);
-              unset($_SESSION['success']);
 
-              while ($post = mysql_fetch_row($blog)){
-                 echo "<h2>$post[1]</h2>\n";
-                 echo "<h3>$post[2]</h3>\n";
-                 echo "$post[3]\n";
-                 echo "<p class=\"date\">$post[4]</p>\n";
-              }
-           ?>
-              <br />
-           </div>
 
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
        </div>
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div>
       </div>
+
+      <hr>
+
+
+<!--
+<div class="container" >
+  <div class="row">
+    <div class="col-md-4 col-xs-12">
+      <p>
+        Standings
+      </p>
+    </div>
+    <div class="col-md-4 col-xs-12">
+      <p>
+        View Brackets
+      </p>
+    </div>
+    <div class="col-md-4 col-xs-12">
+      <p>
+        Watch Games
+      </p>
+    </div>
+  </div>
+</div>
+-->
 <?php include("footer.php"); ?>

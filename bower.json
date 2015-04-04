@@ -1,8 +1,22 @@
 {
-  "name": "gruntRocks",
+  "name": "tourney-manager",
   "dependencies": {
     "jquery" : "~1.11.2",
-    "jquery-ui" : "~1.11.4",
-    "bootstrap": "~3.3.2"
+    "bootstrap": "~3.3.2",
+    "fontawesome": "~4.3.0"
+  },
+  "exportsOverride": {
+    "bootstrap": {
+      "less": ["less/*.less","less/mixins/*.less"],
+      "js": "js/*.js",
+      "fonts": "fonts/*"
+    },
+    "fontawesome": {
+      "fonts": "fonts/*",
+      "less": "less/*.less"
+    },
+    "jquery": {
+      "js": "dist/jquery.js"
+    }
   }
 }

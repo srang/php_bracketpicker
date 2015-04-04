@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
 
   //Initializing the configuration object
+  var path = require('path');
   grunt.initConfig({
       //--------------------INSTALL-DEPENDENCIES--------------//
       bower: {
@@ -8,7 +9,14 @@ module.exports = function(grunt) {
           options: {
             cleanBowerDir: true,
             verbose: true,
-            layout: "byType"
+            layout: function(type, component, source) {
+              var newcomp = component;
+              console.log(source);
+              if(component == 'bootstrap' && source.indexOf('mixins/') > 0) {
+                newcomp = 'bootstrap/mixins';
+              }
+              return path.join(type,newcomp);
+            }
           }
         }
       },
@@ -16,7 +24,7 @@ module.exports = function(grunt) {
       less: { 
         development: {
           options: {
-            compress: true  //minifying the result
+            compress: false  //minifying the result
           },
           files: {
             //compiling frontend.less into frontend.css
@@ -33,17 +41,15 @@ module.exports = function(grunt) {
         },
         js_frontend: {
           src: [
-            './bower_components/jquery/jquery.js',
-            './bower_components/bootstrap/dist/js/bootstrap.js',
-            './js/script.js',
-            './js/emailall.js'
+            './lib/jquery/jquery.js',
+            './lib/bootstrap/js/bootstrap.js'
           ],
           dest: './js/frontend.js'
         },
         js_backend: {
           src: [
-            './bower_components/jquery/jquery.js',
-            './bower_components/bootstrap/dist/js/bootstrap.js',
+            './lib/jquery/jquery.js',
+            './lib/bootstrap/dist/js/bootstrap.js',
             './js/bracket-valid.js'
           ],
           dest: './js/backend.js'
@@ -90,8 +96,10 @@ module.exports = function(grunt) {
       curl: {
         'test/target/index.php' : 'http://localhost/tourney/index.php'
       },
-      clean: ['test/target/*']
-
+      clean: {
+        test: ['test/target/*'],
+        bower: ['bower_components','lib']
+      }
   });
 
   // Plugin loading
@@ -100,14 +108,15 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-bootlint');
   grunt.loadNpmTasks('grunt-phplint');
   grunt.loadNpmTasks('grunt-phpunit');
   grunt.loadNpmTasks('grunt-curl');
-  grunt.loadNpmTasks('grunt-bower-task');
 
   // Task definition
   grunt.registerTask('default', ['']);
-  grunt.registerTask('lint', ['jshint','curl','clean']);
-  grunt.registerTask('minify', ['less', 'concat', 'uglify']);
+  grunt.registerTask('lint', ['jshint','curl','clean:test']);
+  grunt.registerTask('minify', ['clean:bower','bower', 'less', 'concat', 'uglify']);
 };
