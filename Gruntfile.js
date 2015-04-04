@@ -118,5 +118,5 @@ module.exports = function(grunt) {
   // Task definition
   grunt.registerTask('default', ['']);
   grunt.registerTask('lint', ['jshint','curl','clean:test']);
-  grunt.registerTask('minify', ['clean:bower','bower', 'less', 'concat', 'uglify']);
+  grunt.registerTask('minify', ['bower', 'less', 'concat', 'uglify']);
 };
