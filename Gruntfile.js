@@ -3,22 +3,6 @@ module.exports = function(grunt) {
   //Initializing the configuration object
   var path = require('path');
   grunt.initConfig({
-      //--------------------INSTALL-DEPENDENCIES--------------//
-      bower: {
-        install: {
-          options: {
-            cleanBowerDir: true,
-            verbose: true,
-            layout: function(type, component, source) {
-              var newcomp = component;
-              if(component == 'bootstrap' && source.indexOf('mixins/') > 0) {
-                newcomp = 'bootstrap/mixins';
-              }
-              return path.join(type,newcomp);
-            }
-          }
-        }
-      },
       //--------------------CSS-GENERATION--------------------//
       less: { 
         development: {
@@ -97,7 +81,8 @@ module.exports = function(grunt) {
       },
       clean: {
         test: ['test/target/*'],
-        bower: ['bower_components','lib'],
+        lib: ['lib/*'],
+        bower: ['bower_components'],
         deploy: {
           src: ['/var/www/html/tourney/*'],
           options: { force: true }
@@ -107,6 +92,30 @@ module.exports = function(grunt) {
       copy: {
         deploy: {
           files: [{expand: true, src: ['**'], dest: '/var/www/html/tourney/'}]
+        },
+        bower: {
+          files: [{expand: true, cwd: 'bower_components', src: [
+                'bootstrap/{fonts,js,less}/**',
+                'fontawesome/{fonts,less}/**',
+                'jquery/dist/*.js',
+                'quill/dist/{quill.js,quill.base.css}'
+            ], dest: 'lib/'}]
+        }
+      },
+      //--------------------INSTALL-DEPENDENCIES--------------//
+      shell: {
+        bower_install: {
+          command: 'bower install'
+        },
+        bower_config: {
+          command: [
+            'mv lib/jquery/dist/* lib/jquery/',
+            'mv lib/quill/dist/* lib/quill/',
+            'rmdir lib/quill/dist lib/jquery/dist',
+            'mv lib/bootstrap/fonts/* fonts/',
+            'mv lib/fontawesome/fonts/* fonts/',
+            'rmdir lib/bootstrap/fonts lib/fontawesome/fonts'
+              ].join('&&')
         }
       }
   });
@@ -118,14 +127,15 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-bootlint');
   grunt.loadNpmTasks('grunt-phplint');
   grunt.loadNpmTasks('grunt-phpunit');
+  grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-curl');
 
   // Task definition
   grunt.registerTask('default', ['minify', 'deploy']);
+  grunt.registerTask('bower', ['clean:bower', 'clean:lib', 'shell:bower_install', 'copy:bower', 'shell:bower_config', 'clean:bower']);
   grunt.registerTask('deploy', ['clean:deploy', 'copy:deploy']);
   grunt.registerTask('lint', ['jshint','curl','clean:test']);
   grunt.registerTask('minify', ['bower', 'less', 'concat', 'uglify']);

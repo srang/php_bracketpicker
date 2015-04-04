@@ -5,26 +5,5 @@
     "bootstrap": "~3.3.2",
     "fontawesome": "~4.3.0",
     "quill": "~0.19.10"
-  },
-  "exportsOverride": {
-    "bootstrap": {
-      "less": [
-        "less/*.less",
-        "less/mixins/*.less"
-      ],
-      "js": "js/*.js",
-      "fonts": "fonts/*"
-    },
-    "fontawesome": {
-      "fonts": "fonts/*",
-      "less": "less/*.less"
-    },
-    "jquery": {
-      "js": "dist/jquery.js"
-    },
-    "quill": {
-      "css": "quill.base.css",
-      "js" : "quill.js"
-    }
   }
 }
