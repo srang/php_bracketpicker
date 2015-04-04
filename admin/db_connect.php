@@ -15,8 +15,8 @@ $tourneyURL = "localhost/tourney";
 /*
  * The below data must appear in a valid release.  Do not edit.
  */
-$mmm_vers = "ver 1.5.3.7";
-$mmm_info = "&copy;2007-2011 tourney project";
+$mmm_vers = "1.5.3.7";
+$mmm_info = "&copy; 2015 Tourney Project";
 $mmm_authors = "Copyright &copy; 2007-2008 Matt Felser,<br />Copyright &copy; 2008-2011 Brian Battaglia, John Holder, Robert Jailall<br />Copyright &copy; 2015 Sam Rang";
 $dbschema_vers = "ver 1.5.2";
 

@@ -11,7 +11,6 @@ module.exports = function(grunt) {
             verbose: true,
             layout: function(type, component, source) {
               var newcomp = component;
-              console.log(source);
               if(component == 'bootstrap' && source.indexOf('mixins/') > 0) {
                 newcomp = 'bootstrap/mixins';
               }
@@ -24,7 +23,7 @@ module.exports = function(grunt) {
       less: { 
         development: {
           options: {
-            compress: false  //minifying the result
+            compress: true  //minifying the result
           },
           files: {
             //compiling frontend.less into frontend.css
@@ -87,18 +86,28 @@ module.exports = function(grunt) {
           stoponerror: false,
           relaxerror: []
         },
-        files: ['', '']
+        files: ['test/target/*.php']
       },
       jshint: {
         files: ['js/frontend.js','js/backend.js']
       },
-      //--------------------FILE-GENERATE---------------------//
+      //--------------------TEST-FILE-GENERATE----------------//
       curl: {
         'test/target/index.php' : 'http://localhost/tourney/index.php'
       },
       clean: {
         test: ['test/target/*'],
-        bower: ['bower_components','lib']
+        bower: ['bower_components','lib'],
+        deploy: {
+          src: ['/var/www/html/tourney/*'],
+          options: { force: true }
+        }
+      },
+      //--------------------DEPLOY----------------------------//
+      copy: {
+        deploy: {
+          files: [{expand: true, src: ['**'], dest: '/var/www/html/tourney/'}]
+        }
       }
   });
 
@@ -116,7 +125,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-curl');
 
   // Task definition
-  grunt.registerTask('default', ['']);
+  grunt.registerTask('default', ['minify', 'deploy']);
+  grunt.registerTask('deploy', ['clean:deploy', 'copy:deploy']);
   grunt.registerTask('lint', ['jshint','curl','clean:test']);
   grunt.registerTask('minify', ['bower', 'less', 'concat', 'uglify']);
 };
