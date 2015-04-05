@@ -1,5 +1,5 @@
 <?php
-include("header_update.php");
+include("header.php");
 ?>
 
 
@@ -26,4 +26,4 @@ include("header_update.php");
   </div>
   <hr />
 </div>
-<?php include("footer_update.php"); ?>
+<?php include("footer.php"); ?>
