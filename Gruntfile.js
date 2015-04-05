@@ -25,14 +25,14 @@ module.exports = function(grunt) {
         js_frontend: {
           src: [
             './lib/jquery/jquery.js',
-            './lib/bootstrap/js/bootstrap.js'
+            './lib/bootstrap/js/*.js'
           ],
           dest: './js/frontend.js'
         },
         js_backend: {
           src: [
             './lib/jquery/jquery.js',
-            './lib/bootstrap/dist/js/bootstrap.js',
+            './lib/bootstrap/js/*.js',
             './js/bracket-valid.js'
           ],
           dest: './js/backend.js'
@@ -44,12 +44,12 @@ module.exports = function(grunt) {
         },
         frontend: {
           files: {
-            './js/frontend.min.js': './js/frontend.min.js'
+            './js/frontend.js': './js/frontend.min.js'
           }
         },
         backend: {
           files: {
-            './js/backend.min.js': './js/backend.min.js'
+            './js/backend.js': './js/backend.min.js'
           }
         }
       },
@@ -91,7 +91,14 @@ module.exports = function(grunt) {
       //--------------------DEPLOY----------------------------//
       copy: {
         deploy: {
-          files: [{expand: true, src: ['**'], dest: '/var/www/html/tourney/'}]
+          files: [{expand: true, src: [
+                '*.php',
+                'admin/*.php',
+                'js/{frontend,backend}.min.js',
+                'img/*',
+                'fonts/*',
+                'css/{frontend,backend}.css'
+          ], dest: '/var/www/html/tourney/'}]
         },
         bower: {
           files: [{expand: true, cwd: 'bower_components', src: [
