@@ -38,7 +38,9 @@ $meta = mysql_query($query,$db);
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#page-top"><span><img width="20" height="20" alt="Brand" src="images/basketball_icon.png"><?php echo $meta['title']; ?></span></a>
+          <a class="navbar-brand" href="#page-top">
+            <img class="brand-image" alt="Brand" src="img/basketball_icon.png" /><?php echo $meta['title']; ?>
+          </a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-main">
           <ul class="nav navbar-nav navbar-right">

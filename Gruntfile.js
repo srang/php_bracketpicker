@@ -7,12 +7,10 @@ module.exports = function(grunt) {
       less: { 
         development: {
           options: {
-            compress: true  //minifying the result
+            compress: true
           },
           files: {
-            //compiling frontend.less into frontend.css
             "./css/frontend.css":"./less/frontend.less",
-            //compiling backend.less into backend.css
             "./css/backend.css":"./less/backend.less"
           }
         }
@@ -25,7 +23,8 @@ module.exports = function(grunt) {
         js_frontend: {
           src: [
             './lib/jquery/jquery.js',
-            './lib/bootstrap/js/*.js'
+            './lib/bootstrap/js/bootstrap.js',
+            './js/script.js'
           ],
           dest: './js/frontend.js'
         },
@@ -44,12 +43,12 @@ module.exports = function(grunt) {
         },
         frontend: {
           files: {
-            './js/frontend.js': './js/frontend.min.js'
+            './js/frontend.min.js': './js/frontend.js'
           }
         },
         backend: {
           files: {
-            './js/backend.js': './js/backend.min.js'
+            './js/backend.min.js': './js/backend.js'
           }
         }
       },
@@ -94,7 +93,7 @@ module.exports = function(grunt) {
           files: [{expand: true, src: [
                 '*.php',
                 'admin/*.php',
-                'js/{frontend,backend}.min.js',
+                'js/{frontend,backend}*.js',
                 'img/*',
                 'fonts/*',
                 'css/{frontend,backend}.css'
@@ -102,7 +101,8 @@ module.exports = function(grunt) {
         },
         bower: {
           files: [{expand: true, cwd: 'bower_components', src: [
-                'bootstrap/{fonts,js,less}/**',
+                'bootstrap/{fonts,less}/**',
+                'bootstrap/dist/js/bootstrap.js',
                 'fontawesome/{fonts,less}/**',
                 'jquery/dist/*.js',
                 'quill/dist/{quill.js,quill.base.css}'
@@ -121,17 +121,22 @@ module.exports = function(grunt) {
             'rmdir lib/quill/dist lib/jquery/dist',
             'mv lib/bootstrap/fonts/* fonts/',
             'mv lib/fontawesome/fonts/* fonts/',
-            'rmdir lib/bootstrap/fonts lib/fontawesome/fonts'
+            'rmdir lib/bootstrap/fonts lib/fontawesome/fonts',
+            'mkdir lib/bootstrap/js',
+            'mv lib/bootstrap/dist/js/* lib/bootstrap/js/',
+            'rm -rf lib/bootstrap/dist'
               ].join('&&')
         }
       }
   });
 
   // Plugin loading
+  grunt.loadNpmTasks('grunt-contrib-csslint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-bootlint');
@@ -141,9 +146,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-curl');
 
   // Task definition
-  grunt.registerTask('default', ['minify', 'deploy']);
+  grunt.registerTask('default', ['install']);
+  grunt.registerTask('install', ['build', 'deploy']);
   grunt.registerTask('bower', ['clean:bower', 'clean:lib', 'shell:bower_install', 'copy:bower', 'shell:bower_config', 'clean:bower']);
   grunt.registerTask('deploy', ['clean:deploy', 'copy:deploy']);
-  grunt.registerTask('lint', ['jshint','curl','clean:test']);
-  grunt.registerTask('minify', ['bower', 'less', 'concat', 'uglify']);
+  grunt.registerTask('lint', ['jshint','curl','bootlint','clean:test']);
+  grunt.registerTask('unit', ['phpunit','quint']);
+  grunt.registerTask('test', ['lint','unit']);
+  grunt.registerTask('build', ['bower','less','concat','uglify']);
 };

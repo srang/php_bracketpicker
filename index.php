@@ -2,8 +2,51 @@
 include("header.php");
 ?>
 
+<div id="smack-carousel" class="carousel slide" data-ride="carousel">
+  <!-- Wrapper for slides -->
+  <ol class="carousel-indicators">
+    <li data-target="#smack-carousel" data-slide-to="0" class="active"></li>
+    <li data-target="#smack-carousel" data-slide-to="1"></li>
+    <li data-target="#smack-carousel" data-slide-to="2"></li>
+  </ol>
+  <div class="row">
+    <div class="col-xs-offset-3 col-xs-6">
+      <div class="carousel-inner">
+        <div class="item active">
+          <div class="carousel-content">
+            <div>
+              <h3>#1: Bill Friedman</h3>
+              <p>Harvard is the best school on the planet!</p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="carousel-content">
+            <div>
+              <h3>#2: Sam Rang</h3>
+              <p>This is another much longer item. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, sint fuga temporibus nam saepe delectus expedita vitae magnam necessitatibus dolores tempore consequatur dicta cumque repellendus eligendi ducimus placeat! Sapiente, ducimus, voluptas, mollitia voluptatibus nemo explicabo sit blanditiis laborum dolore illum fuga veniam quae expedita libero accusamus quas harum ex numquam necessitatibus provident deleniti tenetur iusto officiis recusandae corporis culpa quaerat?</p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="carousel-content">
+            <div>
+              <h3>#3: Anon</h3>
+              <p>This is the third item.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Controls --> <a class="left carousel-control" href="#smack-carousel" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+  </a>
+  <a class="right carousel-control" href="#smack-carousel" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right"></span>
+  </a>
 
-
+</div>
 <div class="container">
   <!-- Example row of columns -->
   <div class="row">
@@ -12,7 +55,7 @@ include("header.php");
         <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
         <p><a class="btn btn-default app-content" href="#" role="button">View details &raquo;</a></p>
       </div>
-      <div class="col-md-4 col-xs-12">
+      <div class="col-md-4 col-xs-12 app-content">
         <h2>Brackets</h2>
         <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
         <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
