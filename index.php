@@ -1,6 +1,4 @@
-<?php
-include("header.php");
-?>
+<?php include("header.php"); ?>
 
 <div id="smack-carousel" class="carousel slide" data-ride="carousel">
   <!-- Wrapper for slides -->
