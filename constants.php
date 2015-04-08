@@ -1,3 +1,0 @@
-<?php
-$pageTitle='March Madness';
-?>
