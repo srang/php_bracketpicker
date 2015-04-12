@@ -93,6 +93,7 @@ module.exports = function(grunt) {
           files: [{expand: true, src: [
                 '*.php',
                 'admin/*.php',
+                'fragments/*.php',
                 'js/{frontend,backend}*.js',
                 'img/*',
                 'fonts/*',

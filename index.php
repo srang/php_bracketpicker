@@ -1,4 +1,4 @@
-<?php include("/fragments/header.php"); ?>
+<?php include("fragments/header.php"); ?>
 
 <div id="smack-carousel" class="carousel slide" data-ride="carousel">
   <!-- Wrapper for slides -->
@@ -46,6 +46,29 @@
 
 </div>
 <div class="container">
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".basic-modal">Login</button>
+  <div class="modal fade basic-modal" tabindex="-1" role="dialog" aria-labelledby="basic-modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        </div>
+        <form class="form-signin">
+          <h2 class="form-signin-heading">Please Sign In</h2>
+          <label for="inputemail" class="sr-only">email address</label>
+          <input type="email" id="inputemail" class="form-control" placeholder="email address" required autofocus>
+          <label for="inputpassword" class="sr-only">password</label>
+          <input type="password" id="inputpassword" class="form-control" placeholder="password" required>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me"> remember me
+            </label>
+          </div>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+        </form>
+      </div>
+    </div>
+  </div>
   <!-- Example row of columns -->
   <div class="row">
       <div class="col-md-4 col-xs-12 app-content">
@@ -67,4 +90,5 @@
   </div>
   <hr />
 </div>
-<?php include("footer.php"); ?>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<?php include("fragments/footer.php"); ?>
