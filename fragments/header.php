@@ -1,7 +1,5 @@
-<?php
-include(SERVER_ROOT . 'fragments/meta.php');
-?>
-  <link rel='stylesheet' href='<?php echo BASE_URL; ?>css/frontend.css'></link>
+<?php include(SERVER_ROOT . 'fragments/meta.php'); ?>
+    <link rel='stylesheet' href='<?php echo BASE_URL; ?>css/frontend.css'></link>
   </head>
   <body>
     <nav class='navbar navbar-default navbar-fixed-top'>
@@ -20,13 +18,13 @@ include(SERVER_ROOT . 'fragments/meta.php');
         <div class='collapse navbar-collapse' id='navbar-collapse-main'>
           <ul class='nav navbar-nav navbar-right'>
             <li>
-              <a href='index.php'>HOME</a>
+              <a href='<?php echo BASE_URL; ?>'>HOME</a>
             </li>
             <li>
               <a href='submit.php'>CREATE BRACKET</a>
             </li>
             <li>
-              <a href='rules.php'>RULES</a>
+              <a href='<?php echo BASE_URL; ?>smack/'>SMACK-TALK</a>
             </li>
             <li>
               <a href='choose.php'>STANDINGS</a>

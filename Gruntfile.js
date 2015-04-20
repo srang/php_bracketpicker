@@ -4,14 +4,14 @@ module.exports = function(grunt) {
   var path = require('path');
   grunt.initConfig({
       //--------------------CSS-GENERATION--------------------//
-      less: { 
+      less: {
         development: {
           options: {
             compress: true
           },
           files: {
-            "./css/frontend.css":"./less/frontend.less",
-            "./css/backend.css":"./less/backend.less"
+            './css/frontend.css':'./less/frontend.less',
+            './css/backend.css':'./less/backend.less'
           }
         }
       },
@@ -24,6 +24,7 @@ module.exports = function(grunt) {
           src: [
             './lib/jquery/jquery.js',
             './lib/bootstrap/js/bootstrap.js',
+            './lib/quill/quill.js',
             './js/script.js'
           ],
           dest: './js/frontend.js'
@@ -93,6 +94,7 @@ module.exports = function(grunt) {
           files: [{expand: true, src: [
                 '*.php',
                 'admin/*.php',
+                'smack/*.php',
                 'fragments/*.php',
                 'js/{frontend,backend}*.js',
                 'img/*',
