@@ -3,15 +3,19 @@ require_once('fragments/constants.php');
 include(SERVER_ROOT . 'fragments/header.php');
 ?>
 
-<div id='smack-carousel' class='carousel slide' data-ride='carousel'>
+<div id='smack-carousel' class='carousel slide' data-pause='hover' data-ride='carousel'>
   <!-- Wrapper for slides -->
   <ol class='carousel-indicators'>
     <li data-target='#smack-carousel' data-slide-to='0' class='active'></li>
     <li data-target='#smack-carousel' data-slide-to='1'></li>
     <li data-target='#smack-carousel' data-slide-to='2'></li>
+    <li data-target='#smack-carousel' data-slide-to='3'></li>
+    <li data-target='#smack-carousel' data-slide-to='4'></li>
+    <li data-target='#smack-carousel' data-slide-to='5'></li>
+    <li data-target='#smack-carousel' data-slide-to='6'></li>
   </ol>
   <div class='row'>
-    <div class='col-xs-offset-3 col-xs-6'>
+    <div class='col-xs-offset-2 col-xs-8 col-md-offset-3 col-md-6'>
       <div class='carousel-inner'>
         <div class='item active'>
           <div class='carousel-content'>
@@ -25,15 +29,54 @@ include(SERVER_ROOT . 'fragments/header.php');
           <div class='carousel-content'>
             <div>
               <h3>#2: Sam Rang</h3>
-              <p>This is another much longer item. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, sint fuga temporibus nam saepe delectus expedita vitae magnam necessitatibus dolores tempore consequatur dicta cumque repellendus eligendi ducimus placeat! Sapiente, ducimus, voluptas, mollitia voluptatibus nemo explicabo sit blanditiis laborum dolore illum fuga veniam quae expedita libero accusamus quas harum ex numquam necessitatibus provident deleniti tenetur iusto officiis recusandae corporis culpa quaerat?</p>
+              <p>
+                This is another much longer item. Lorem ipsum dolor sit amet,
+                consectetur adipisicing elit. Animi, sint fuga temporibus nam
+                saepe delectus expedita vitae.
+              </p>
             </div>
           </div>
         </div>
         <div class='item'>
           <div class='carousel-content'>
             <div>
-              <h3>#3: Anon</h3>
-              <p>This is the third item.</p>
+              <h3>#3: Jake Friedman</h3>
+              <p>
+                My name is Jake Friedman and I am a banana. I like big spoons
+                and tend to be grouchy when its past my bedtime.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class='item'>
+          <div class='carousel-content'>
+            <div>
+              <h3>#4: Jake Friedman</h3>
+              <p>
+                This is another item but I am running out of ideas for what to put
+                here so I'm just writing whatever comes into my head at the time.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class='item'>
+          <div class='carousel-content'>
+            <div>
+              <h3>#5: Jake Friedman</h3>
+              <p>
+                Dke is the best frat. All the others suck. Delta Kappa Epsilon.
+                Ra ra duck.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class='item'>
+          <div class='carousel-content'>
+            <div>
+              <h3>#6: Mario</h3>
+              <p>
+                Its-a-meee!
+              </p>
             </div>
           </div>
         </div>
