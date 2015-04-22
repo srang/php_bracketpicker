@@ -93,3 +93,5 @@ include(SERVER_ROOT . 'fragments/header.php');
 </div>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <?php include(SERVER_ROOT . 'fragments/footer.php'); ?>
+</body>
+</html>

@@ -24,7 +24,7 @@ module.exports = function(grunt) {
           src: [
             './lib/jquery/jquery.js',
             './lib/bootstrap/js/bootstrap.js',
-            './lib/quill/quill.js',
+            './lib/summernote/summernote.js',
             './js/script.js'
           ],
           dest: './js/frontend.js'
@@ -106,9 +106,9 @@ module.exports = function(grunt) {
           files: [{expand: true, cwd: 'bower_components', src: [
                 'bootstrap/{fonts,less}/**',
                 'bootstrap/dist/js/bootstrap.js',
-                'fontawesome/{fonts,less}/**',
+                'font-awesome/{fonts,less}/**',
                 'jquery/dist/*.js',
-                'quill/dist/{quill.js,quill.base.css}'
+                'summernote/dist/{summernote.js,*.css}'
             ], dest: 'lib/'}]
         }
       },
@@ -120,11 +120,11 @@ module.exports = function(grunt) {
         bower_config: {
           command: [
             'mv lib/jquery/dist/* lib/jquery/',
-            'mv lib/quill/dist/* lib/quill/',
-            'rmdir lib/quill/dist lib/jquery/dist',
+            'mv lib/summernote/dist/* lib/summernote/',
+            'rmdir lib/summernote/dist lib/jquery/dist',
             'mv lib/bootstrap/fonts/* fonts/',
-            'mv lib/fontawesome/fonts/* fonts/',
-            'rmdir lib/bootstrap/fonts lib/fontawesome/fonts',
+            'mv lib/font-awesome/fonts/* fonts/',
+            'rmdir lib/bootstrap/fonts lib/font-awesome/fonts',
             'mkdir lib/bootstrap/js',
             'mv lib/bootstrap/dist/js/* lib/bootstrap/js/',
             'rm -rf lib/bootstrap/dist'
