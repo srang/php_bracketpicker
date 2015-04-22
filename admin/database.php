@@ -6,7 +6,6 @@
 $user = "tourney2015";
 $pass = "Genfare123!";
 
-
 $database = "tourney2016";
 $host = "localhost";
 $tourneyURL = "localhost/tourney";
