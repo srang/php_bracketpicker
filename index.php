@@ -3,7 +3,7 @@ require_once('fragments/constants.php');
 include(SERVER_ROOT . 'fragments/header.php');
 ?>
 
-<div id='smack-carousel' class='carousel slide' data-pause='hover' data-ride='carousel'>
+<div id='smack-carousel' class='carousel slide' data-ride='carousel'>
   <!-- Wrapper for slides -->
   <ol class='carousel-indicators'>
     <li data-target='#smack-carousel' data-slide-to='0' class='active'></li>
