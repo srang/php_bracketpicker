@@ -120,8 +120,10 @@ module.exports = function(grunt) {
         bower_config: {
           command: [
             'mv lib/jquery/dist/* lib/jquery/',
-            'mv lib/summernote/dist/* lib/summernote/',
-            'rmdir lib/summernote/dist lib/jquery/dist',
+            'rmdir lib/jquery/dist',
+            'mv lib/summernote/dist/summernote.js lib/summernote/',
+            'mv lib/summernote/dist/summernote.css lib/summernote/summernote.less',
+            'rm -rf lib/summernote/dist',
             'mv lib/bootstrap/fonts/* fonts/',
             'mv lib/font-awesome/fonts/* fonts/',
             'rmdir lib/bootstrap/fonts lib/font-awesome/fonts',
