@@ -39,9 +39,6 @@
               <a href='#'>CONTACT</a>
             </li>
 <?php } ?>
-            <li>
-              <button type='button' class='btn btn-link' data-toggle='modal' data-target='.basic-modal'>LOGIN</button>
-            </li>
           </ul>
         </div>
       </div>

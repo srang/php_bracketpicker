@@ -124,7 +124,10 @@ include(SERVER_ROOT . 'fragments/header.php');
         ...unless you don't pick Duke to win it all, in which case I know a Nigerian prince who is in dire need. But
         seriously this is our attempt to upgrade to the future of the interwebs and I personally hope you join us!!
       </p>
-      <p><a class='btn btn-primary btn-lg' href='<?php echo BASE_URL; ?>signup/'>Sign Up!</a></p>
+      <p>
+        <a class='btn btn-primary btn-lg' href='<?php echo BASE_URL; ?>signup/'>Sign Up!</a>
+        <button type='button' class='btn btn-success btn-lg' data-toggle='modal' data-target='.basic-modal'>Login</button>
+      </p>
     </div>
   </div>
   <div class='row'>
