@@ -15,7 +15,7 @@ include(SERVER_ROOT . 'fragments/header.php');
     <li data-target='#smack-carousel' data-slide-to='6'></li>
   </ol>
   <div class='row'>
-    <div class='col-xs-offset-2 col-xs-8 col-md-offset-3 col-md-6'>
+    <div class='col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4'>
       <div class='carousel-inner'>
         <div class='item active'>
           <div class='carousel-content'>
@@ -115,6 +115,18 @@ include(SERVER_ROOT . 'fragments/header.php');
     </div>
   </div>
   <!-- Example row of columns -->
+  <div class='row'>
+    <div class='jumbotron'>
+      <h1 class='jumbo-title'>It's that time again!</h1>
+      <p>
+        It feels like the season just started an already it is tournament time, but this year we are unveiling
+        our brand new site so wipe away those tears and click sign up now! We promise not to share any information<br />
+        ...unless you don't pick Duke to win it all, in which case I know a Nigerian prince who is in dire need. But
+        seriously this is our attempt to upgrade to the future of the interwebs and I personally hope you join us!!
+      </p>
+      <p><a class='btn btn-primary btn-lg' href='<?php echo BASE_URL; ?>signup/'>Sign Up!</a></p>
+    </div>
+  </div>
   <div class='row'>
     <div class='col-md-4 col-xs-12 app-content'>
       <h2>Standings</h2>

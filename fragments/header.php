@@ -21,22 +21,22 @@
               <a href='<?php echo BASE_URL; ?>'>HOME</a>
             </li>
             <li>
-              <a href='submit.php'>CREATE BRACKET</a>
+              <a href='#'>CREATE BRACKET</a>
             </li>
             <li>
               <a href='<?php echo BASE_URL; ?>smack/'>SMACK-TALK</a>
             </li>
             <li>
-              <a href='choose.php'>STANDINGS</a>
+              <a href='#'>STANDINGS</a>
             </li>
 <?php if($meta['cost'] != 0) { ?>
             <li>
-              <a href='paid.php'>PAYMENT TRACKER</a>
+              <a href='#'>PAYMENT TRACKER</a>
             </li>
 <?php } ?>
 <?php if($meta['mail'] != 0 ) { ?>
             <li>
-              <a href='contact.php'>CONTACT</a>
+              <a href='#'>CONTACT</a>
             </li>
 <?php } ?>
             <li>
