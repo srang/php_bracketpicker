@@ -152,12 +152,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-curl');
 
   // Task definition
-  grunt.registerTask('default', ['install']);
-  grunt.registerTask('install', ['build', 'deploy']);
+  grunt.registerTask('default', ['install-ol']);
+  grunt.registerTask('install', ['bower','build', 'deploy']);
+  grunt.registerTask('install-ol', ['build', 'deploy']);
+  grunt.registerTask('build', ['less','concat','uglify']);
   grunt.registerTask('bower', ['clean:bower', 'clean:lib', 'shell:bower_install', 'copy:bower', 'shell:bower_config', 'clean:bower']);
   grunt.registerTask('deploy', ['clean:deploy', 'copy:deploy']);
   grunt.registerTask('lint', ['jshint','curl','bootlint','clean:test']);
   grunt.registerTask('unit', ['phpunit','quint']);
   grunt.registerTask('test', ['lint','unit']);
-  grunt.registerTask('build', ['bower','less','concat','uglify']);
 };
