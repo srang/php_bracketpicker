@@ -20,3 +20,9 @@
 -User can change their picks for a bracket before the tournament begins
 -User cannot change their picks for a bracket after the tournament begins
 -Admin can post information to the site that is accessible to all users and visibile from the home page
+-User can edit their profile information
+-User can sign in
+
+
+-User can view team information from within the site
+-User can select a favorite team and theme the site from that
