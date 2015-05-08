@@ -11,7 +11,7 @@
             <span class='icon-bar'></span>
             <span class='icon-bar'></span>
           </button>
-          <a class='navbar-brand' href='#page-top'>
+          <a class='navbar-brand' href='<?php echo BASE_URL; ?>'>
             <img class='brand-image' alt='Brand' src='<?php echo BASE_URL; ?>img/basketball_icon.png' /><?php echo $meta['title']; ?>
           </a>
         </div>
