@@ -15,6 +15,7 @@ include(SERVER_ROOT . 'fragments/header.php');
     <li data-target='#smack-carousel' data-slide-to='6'></li>
   </ol>
   <div class='row'>
+    <div class='col-md-12'>
     <div class='col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4'>
       <div class='carousel-inner'>
         <div class='item active'>
@@ -82,6 +83,7 @@ include(SERVER_ROOT . 'fragments/header.php');
         </div>
       </div>
     </div>
+  </div>
   </div>
   <!-- Controls --> <a class='left carousel-control' href='#smack-carousel' data-slide='prev'>
     <span class='glyphicon glyphicon-chevron-left'></span>
