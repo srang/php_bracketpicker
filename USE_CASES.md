@@ -1,0 +1,22 @@
+-User can create one or more brackets in a specific bracket challenge
+-Site can support multiple bracket challenges
+-User can view their bracket(s) before the tournament starts
+-User cannot view others' bracket(s) before the tournament starts
+-User can view others' bracke(s) after the tournament starts
+-User can see their score relative to others
+-Admin can define scoring system
+-User can see current real bracket and scores of previous games
+-User can comment on a particular game, upcoming current or future game
+-User can comment on a bracket, either their own or another user's
+-Admin can remove comments from anywhere if they are deemed inappropriate
+-Admin can disable a user's commenting privileges
+-Admin can remove a user/bracket from the tournament
+-Admin can define the price for participating in the tournament
+-Admin can list/view payment status for all users
+-Admin can contact user
+-User can signup with valid email address
+-User can see their chance of winning based on possible outcomes and other brackets
+-User can see potential 'paths to victory' showing which set of outcomes guarantee victory in the tournament
+-User can change their picks for a bracket before the tournament begins
+-User cannot change their picks for a bracket after the tournament begins
+-Admin can post information to the site that is accessible to all users and visibile from the home page
