@@ -26,3 +26,4 @@
 
 -User can view team information from within the site
 -User can select a favorite team and theme the site from that
+-User can sign in with their gmail or facebook accounts
