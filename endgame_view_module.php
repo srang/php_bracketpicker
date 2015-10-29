@@ -23,10 +23,6 @@ function drawEndGames( $pageMode, $id, $rank, $endgameIds, $db )
 	}
 
 </style>
-<script type="text/javascript" src="js/wz_tooltip/wz_tooltip.js"></script>
-<script type="text/javascript" src="js/tip.js"></script>
-
-</script>
 <div id="main" class='widetable'>
 	<?php
 		$roundMap = getRoundMap();
@@ -243,7 +239,8 @@ function drawEndGames( $pageMode, $id, $rank, $endgameIds, $db )
 
 	</div>
 </div>
-
+<script type="text/javascript" src="js/wz_tooltip/wz_tooltip.js"></script>
+<script type="text/javascript" src="js/tip.js"></script>
 
 <?php
 
