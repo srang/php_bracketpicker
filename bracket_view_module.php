@@ -268,7 +268,7 @@ function viewBracket( $meta, $picks, $team_data, $rank, $score_data, $best_data 
     </div>
    </div>
 </div>
-<script type="text/javascript" src="js/status.js" />
+<script type="text/javascript" src="js/status.js"></script>
 
 
 <?php
