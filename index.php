@@ -141,7 +141,7 @@ include(SERVER_ROOT . 'fragments/header.php');
     <div class='col-md-4 col-xs-12 app-content'>
       <h2>Brackets</h2>
       <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      <p><a class='btn btn-default' href='#' role='button'>View details &raquo;</a></p>
+      <p><a class='btn btn-default' href='<?php echo BASE_URL; ?>bracket/' role='button'>View details &raquo;</a></p>
     </div>
     <div class='col-md-4 col-xs-12 app-content'>
       <h2>Rules</h2>

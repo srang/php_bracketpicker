@@ -21,7 +21,7 @@
               <a href='<?php echo BASE_URL; ?>'>HOME</a>
             </li>
             <li>
-              <a href='#'>CREATE BRACKET</a>
+              <a href='<?php echo BASE_URL; ?>bracket/'>CREATE BRACKET</a>
             </li>
             <li>
               <a href='<?php echo BASE_URL; ?>smack/'>SMACK-TALK</a>

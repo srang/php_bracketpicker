@@ -96,6 +96,8 @@ module.exports = function(grunt) {
                 'admin/*.php',
                 'smack/*.php',
                 'signup/*.php',
+                'bracket/*.php',
+                'standings/*.php',
                 'fragments/*.php',
                 'js/{frontend,backend}*.js',
                 'img/*',
