@@ -58,16 +58,30 @@ CREATE TABLE IF NOT EXISTS `tourney`.`Game` (
   `update_time` TIMESTAMP NULL,
   `update_by` VARCHAR(45) NULL,
   PRIMARY KEY (`game_id`),
+  KEY `teamgame_a` (`team_a`),
+  KEY `teamgame_b` (`team_b`),
+  KEY `childgame_a` (`child_game_a`),
+  KEY `childgame_b` (`child_game_b`),
   INDEX `fk_team_idx` (`team_a` ASC, `team_b` ASC),
   INDEX `fk_game_idx` (`child_game_a` ASC, `child_game_b` ASC),
-  CONSTRAINT `fk_team`
-    FOREIGN KEY (`team_a` , `team_b`)
-    REFERENCES `tourney`.`Team` (`team_id` , `team_id`)
+  CONSTRAINT `fk_teamgame1`
+    FOREIGN KEY (`team_a`)
+    REFERENCES `tourney`.`Team` (`team_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_game`
-    FOREIGN KEY (`child_game_a` , `child_game_b`)
-    REFERENCES `tourney`.`Game` (`game_id` , `game_id`)
+  CONSTRAINT `fk_teamgame2`
+    FOREIGN KEY (`team_b`)
+    REFERENCES `tourney`.`Team` (`team_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_gamegame1`
+    FOREIGN KEY (`child_game_a`)
+    REFERENCES `tourney`.`Game` (`game_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_gamegame2`
+    FOREIGN KEY (`child_game_b`)
+    REFERENCES `tourney`.`Game` (`game_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -83,6 +97,7 @@ CREATE TABLE IF NOT EXISTS `tourney`.`User` (
   `username` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NULL,
   `name` VARCHAR(45) NULL,
+  `phone` VARCHAR(20) NULL,
   `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `create_by` VARCHAR(45) NULL,
   `update_time` TIMESTAMP NULL,
@@ -106,14 +121,16 @@ CREATE TABLE IF NOT EXISTS `tourney`.`Bracket` (
   `update_time` TIMESTAMP NULL,
   `update_by` VARCHAR(45) NULL,
   PRIMARY KEY (`bracket_id`),
+  KEY `userbracket` (`user_id`),
+  KEY `root_game` (`root_game`),
   INDEX `fk_user_idx` (`user_id` ASC),
   INDEX `fk_game_idx` (`root_game` ASC),
-  CONSTRAINT `fk_user`
+  CONSTRAINT `fk_userbracket`
     FOREIGN KEY (`user_id`)
     REFERENCES `tourney`.`User` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_game`
+  CONSTRAINT `fk_gamebracket`
     FOREIGN KEY (`root_game`)
     REFERENCES `tourney`.`Game` (`game_id`)
     ON DELETE NO ACTION
@@ -154,14 +171,16 @@ CREATE TABLE IF NOT EXISTS `tourney`.`Blog` (
   `update_time` TIMESTAMP NULL,
   `update_by` VARCHAR(45) NULL,
   PRIMARY KEY (`blog_id`),
+  KEY `parentblog` (`parent_id`),
+  KEY `userblog` (`user_id`),
   INDEX `fk_parent_idx` (`parent_id` ASC),
   INDEX `fk_user_idx` (`user_id` ASC),
-  CONSTRAINT `fk_parent`
+  CONSTRAINT `fk_parentblog`
     FOREIGN KEY (`parent_id`)
     REFERENCES `tourney`.`Blog` (`blog_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user`
+  CONSTRAINT `fk_userblog`
     FOREIGN KEY (`user_id`)
     REFERENCES `tourney`.`User` (`user_id`)
     ON DELETE NO ACTION
@@ -184,14 +203,16 @@ CREATE TABLE IF NOT EXISTS `tourney`.`Score` (
   `update_time` TIMESTAMP NULL,
   `update_by` VARCHAR(45) NULL,
   PRIMARY KEY (`score_id`),
+  KEY `rulesetscore` (`ruleset_id`),
+  KEY `bracketscore` (`bracket_id`),
   INDEX `fk_ruleset_idx` (`ruleset_id` ASC),
   INDEX `fk_bracket_idx` (`bracket_id` ASC),
-  CONSTRAINT `fk_ruleset`
+  CONSTRAINT `fk_rulesetscore`
     FOREIGN KEY (`ruleset_id`)
     REFERENCES `tourney`.`RuleSet` (`ruleset_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_bracket`
+  CONSTRAINT `fk_bracketscore`
     FOREIGN KEY (`bracket_id`)
     REFERENCES `tourney`.`Bracket` (`bracket_id`)
     ON DELETE NO ACTION
@@ -230,6 +251,8 @@ CREATE TABLE IF NOT EXISTS `tourney`.`BlogLink` (
   `update_time` TIMESTAMP NULL,
   `update_by` VARCHAR(45) NULL,
   PRIMARY KEY (`link_id`),
+  KEY `linktypebloglink` (`linktype_id`),
+  KEY `blogbloglink` (`blog_id`),
   INDEX `fk_linktype_idx` (`linktype_id` ASC),
   INDEX `fk_blog_idx` (`blog_id` ASC),
   CONSTRAINT `fk_linktype`
