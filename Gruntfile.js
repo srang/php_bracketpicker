@@ -10,8 +10,8 @@ module.exports = function(grunt) {
             compress: true
           },
           files: {
-            './css/frontend.css':'./less/frontend.less',
-            './css/backend.css':'./less/backend.less'
+            'css/frontend.css':'./less/frontend.less',
+            'css/backend.css':'./less/backend.less'
           }
         }
       },
@@ -25,9 +25,9 @@ module.exports = function(grunt) {
             './lib/jquery/jquery.js',
             './lib/bootstrap/js/bootstrap.js',
             './lib/summernote/summernote.js',
-            './js/script.js'
+            'js/script.js'
           ],
-          dest: './js/frontend.js'
+          dest: 'js/frontend.js'
         },
         js_backend: {
           src: [

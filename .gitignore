@@ -2,3 +2,8 @@
 node_modules
 bower_components
 lib
+/vendor
+/node_modules
+Homestead.yaml
+Homestead.json
+.env
