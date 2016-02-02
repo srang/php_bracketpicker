@@ -1,0 +1,191 @@
+// Lumen 3.2.0
+// Variables
+// --------------------------------------------------
+
+
+//== Colors
+//
+//## Gray and brand colors for use across Bootstrap.
+
+@gray-darker:            lighten(#000, 13.5%); // #222
+@gray-dark:              lighten(#000, 20%);   // #333
+@gray:                   lighten(#000, 33.5%); // #555
+@gray-light:             lighten(#000, 60%);   // #999
+@gray-lighter:           lighten(#000, 93.5%); // #eee
+
+@brand-primary:         #158CBA;
+@brand-success:         #28B62C;
+@brand-info:            #75CAEB;
+@brand-warning:         #FF851B;
+@brand-danger:          #FF4136;
+
+
+//== Typography
+//
+//## Font, line-height, and color for body text, headings, and more.
+
+@font-family-sans-serif:  "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@font-family-serif:       Georgia, "Times New Roman", Times, serif;
+//** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
+@font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
+@font-family-base:        @font-family-sans-serif;
+
+@font-size-base:          14px;
+@font-size-large:         ceil((@font-size-base * 1.25)); // ~18px
+@font-size-small:         ceil((@font-size-base * 0.85)); // ~12px
+
+@font-size-h1:            floor((@font-size-base * 2.6)); // ~36px
+@font-size-h2:            floor((@font-size-base * 2.15)); // ~30px
+@font-size-h3:            ceil((@font-size-base * 1.7)); // ~24px
+@font-size-h4:            ceil((@font-size-base * 1.25)); // ~18px
+@font-size-h5:            @font-size-base;
+@font-size-h6:            ceil((@font-size-base * 0.85)); // ~12px
+
+//** Unit-less `line-height` for use in components like buttons.
+@line-height-base:        1.428571429; // 20/14
+//** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
+@line-height-computed:    floor((@font-size-base * @line-height-base)); // ~20px
+
+//** By default, this inherits from the `<body>`.
+@headings-font-family:    inherit;
+@headings-font-weight:    400;
+@headings-line-height:    1.1;
+
+
+//== Iconography
+//
+//## Specify custom location and filename of the included Glyphicons icon font. Useful for those including Bootstrap via Bower.
+
+//** Load fonts from this directory.
+@icon-font-path:          "../fonts/";
+//** File name for all font files.
+@icon-font-name:          "glyphicons-halflings-regular";
+//** Element ID within SVG icon file.
+@icon-font-svg-id:        "glyphicons_halflingsregular";
+
+
+//== Components
+//
+//## Define common padding and border radius sizes and more. Values based on 14px text and 1.428 line-height (~20px to start).
+
+@padding-base-vertical:     6px;
+@padding-base-horizontal:   12px;
+
+@padding-large-vertical:    10px;
+@padding-large-horizontal:  16px;
+
+@padding-small-vertical:    5px;
+@padding-small-horizontal:  10px;
+
+@padding-xs-vertical:       1px;
+@padding-xs-horizontal:     5px;
+
+@line-height-large:         1.33;
+@line-height-small:         1.5;
+
+@border-radius-base:        4px;
+@border-radius-large:       5px;
+@border-radius-small:       2px;
+
+//** Global color for active items (e.g., navs or dropdowns).
+@component-active-color:    #fff;
+//** Global background color for active items (e.g., navs or dropdowns).
+@component-active-bg:       @brand-primary;
+
+//** Width of the `border` for generating carets that indicator dropdowns.
+@caret-width-base:          4px;
+//** Carets increase slightly in size for larger components.
+@caret-width-large:         5px;
+
+
+//== Buttons
+//
+//## For each of Bootstrap's buttons, define text, background and border color.
+
+@btn-font-weight:                normal;
+
+@btn-default-color:              @gray;
+@btn-default-bg:                 @gray-lighter;
+@btn-default-border:             darken(@btn-default-bg, 5%);
+
+@btn-primary-color:              #fff;
+@btn-primary-bg:                 @brand-primary;
+@btn-primary-border:             darken(@btn-primary-bg, 5%);
+
+@btn-success-color:              #fff;
+@btn-success-bg:                 @brand-success;
+@btn-success-border:             darken(@btn-success-bg, 5%);
+
+@btn-info-color:                 #fff;
+@btn-info-bg:                    @brand-info;
+@btn-info-border:                darken(@btn-info-bg, 5%);
+
+@btn-warning-color:              #fff;
+@btn-warning-bg:                 @brand-warning;
+@btn-warning-border:             darken(@btn-warning-bg, 5%);
+
+@btn-danger-color:               #fff;
+@btn-danger-bg:                  @brand-danger;
+@btn-danger-border:              darken(@btn-danger-bg, 5%);
+
+@btn-link-disabled-color:        @gray-light;
+
+
+//-- Z-index master list
+//
+// Warning: Avoid customizing these values. They're used for a bird's eye view
+// of components dependent on the z-axis and are designed to all work together.
+//
+// Note: These variables are not generated into the Customizer.
+
+@zindex-navbar:            1000;
+@zindex-dropdown:          1000;
+@zindex-popover:           1060;
+@zindex-tooltip:           1070;
+@zindex-navbar-fixed:      1030;
+@zindex-modal-background:  1040;
+@zindex-modal:             1050;
+
+
+// Basics of a navbar
+@navbar-height:                    50px;
+
+@navbar-default-color:             white;
+@navbar-default-bg:                #001A57;
+@navbar-default-link-color:        @navbar-default-color;
+@navbar-default-link-hover-color:  darken(@navbar-default-link-color, 7%);
+//== Pagination
+//
+//##
+
+@pagination-color:                     @btn-default-color;
+@pagination-bg:                        @btn-default-bg;
+@pagination-border:                    @btn-default-border;
+
+@pagination-hover-color:               @pagination-color;
+@pagination-hover-bg:                  @pagination-bg;
+@pagination-hover-border:              @pagination-border;
+
+@pagination-active-color:              #fff;
+@pagination-active-bg:                 @brand-primary;
+@pagination-active-border:             @btn-primary-border;
+
+@pagination-disabled-color:            @gray-light;
+@pagination-disabled-bg:               @pagination-bg;
+@pagination-disabled-border:           @pagination-border;
+
+
+//== Pager
+//
+//##
+
+@pager-bg:                             @pagination-bg;
+@pager-border:                         @pagination-border;
+@pager-border-radius:                  15px;
+
+@pager-hover-bg:                       @pagination-hover-bg;
+
+@pager-active-bg:                      @pagination-active-bg;
+@pager-active-color:                   @pagination-active-color;
+
+@pager-disabled-color:                 @pagination-disabled-color;
