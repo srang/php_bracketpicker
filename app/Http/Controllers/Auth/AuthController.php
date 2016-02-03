@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Log;
 use App\User;
+use App\UserRole;
+use App\Role;
+use App\Status;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -63,10 +67,19 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        //TODO make atomic so if user role fails there isn't a half created user
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'status_id' => Status::where('status','unverified')->first()->status_id,
             'password' => bcrypt($data['password']),
         ]);
+        $user->roles()->attach(Role::where('role','user')->first()->role_id);
+        Log::info('Created user: '.$user->email.' with roles: '.$user->roles);
+        #UserRole::create([
+        #    'user_id' => $user->user_id,
+        #    'role_id' => Role::where('role','user')->first()->role_id,
+        #]);
+        return $user;
     }
 }

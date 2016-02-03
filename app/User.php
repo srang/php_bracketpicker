@@ -2,17 +2,26 @@
 
 namespace App;
 
+use DB;
+use Log;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    /**
+     * Override the default primary key
+     *
+     * @var array
+     */
+    protected $primaryKey = 'user_id';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'phone', 'email', 'password',
+        'name', 'email', 'password', 'status_id',
     ];
 
     /**
@@ -24,13 +33,22 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function status()
+    {
+      return $this->belongsTo('App\Status','status_id','status_id');
+    }
+
     public function roles()
     {
-      return $this->belongsToMany('App\Role', 'userroles','user_id','role_id');
+      $roles = $this->belongsToMany('App\Role','userroles');
+      return $roles;
     }
 
     public function hasRole($role)
     {
-      return true;
+      $roles = $this->roles;
+      $ret = $roles->where('role',$role)->count();
+      Log::info("Does user: ".$this->email." have role: ".$role." : ".(($ret)?"true":"false"));
+      return $ret;
     }
 }

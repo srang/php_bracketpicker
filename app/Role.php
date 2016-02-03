@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    /**
+     * Override the default primary key
+     *
+     * @var array
+     */
+    protected $primaryKey = 'role_id';
 
-    public function users()
-    {
-      return $this->belongsToMany('App\User', 'userroles','role_id','user_id');
-    }
-    //
 }

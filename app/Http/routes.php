@@ -27,14 +27,12 @@ Route::get('/', function () {
 */
 
 Route::group(['middleware' => ['web']], function () {
-  Route::get('/brackets', 'BracketController@index');
-  Route::post('/bracket', 'BracketController@store');
-  Route::delete('/bracket/{bracket}','BracketController@destroy');
+  Route::group(['middleware' => ['auth','role:admin']], function() {
+    Route::get('/brackets', 'BracketController@index');
+    Route::post('/bracket', 'BracketController@store');
+    Route::delete('/bracket/{bracket}','BracketController@destroy');
+    Route::get('/home', 'HomeController@index');
+  });
+  Route::auth();
 
-  Route::get('auth/login', 'Auth\AuthController@getLogin');
-  Route::post('auth/login', 'Auth\AuthController@postLogin');
-  Route::get('auth/logout', 'Auth\AuthController@getLogout');
-
-  Route::get('auth/register', 'Auth\AuthController@getRegister');
-  Route::post('auth/register', 'Auth\AuthController@postRegister');
 });
