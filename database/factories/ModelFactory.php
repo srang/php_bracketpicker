@@ -1,5 +1,6 @@
 <?php
 
+use App\Status;
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -15,6 +16,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,
+        'status_id' => Status::where('status','unverified')->first()->status_id,
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
     ];

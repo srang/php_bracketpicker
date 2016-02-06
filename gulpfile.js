@@ -1,7 +1,8 @@
 var elixir = require('laravel-elixir'),
     gulp = require('gulp'),
     bower = require('gulp-bower'),
-    qunit = require('gulp-qunit');
+    qunit = require('gulp-qunit'),
+    phpunit = require('gulp-phpunit');
 
 /*
  |--------------------------------------------------------------------------
@@ -18,7 +19,6 @@ elixir(function(mix) {
     mix.less('base.less');
     mix.less('frontend.less');
     mix.version('css/frontend.css');
-    mix.phpUnit();
 });
 
 gulp.task('bower', function(){
@@ -26,6 +26,7 @@ gulp.task('bower', function(){
 });
 
 gulp.task('test',function() {
+  gulp.src('').pipe(phpunit());
   return gulp.src('tests/index.html').pipe(qunit());
 });
 

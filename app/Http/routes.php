@@ -12,8 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-})->middleware('guest');
+    return redirect('home');
+})->middleware(['guest']);
 
 /*
 |--------------------------------------------------------------------------
@@ -27,12 +27,22 @@ Route::get('/', function () {
 */
 
 Route::group(['middleware' => ['web']], function () {
-  Route::group(['middleware' => ['auth','role:admin']], function() {
+  Route::auth();
+  Route::group(['middleware' => ['auth','role:user']], function() {
     Route::get('/brackets', 'BracketController@index');
     Route::post('/bracket', 'BracketController@store');
+    Route::put('/bracket/{bracket}', 'BracketController@update');
     Route::delete('/bracket/{bracket}','BracketController@destroy');
     Route::get('/home', 'HomeController@index');
   });
-  Route::auth();
+  Route::group(['middleware' => ['auth','role:admin']], function() {
+    Route::get('/admin', 'AdminController@index');
+    Route::get('/admin/bracket', 'AdminController@showMaster');
+    Route::post('/admin/bracket', 'AdminController@setMaster');
+    Route::get('/admin/teams', 'AdminController@listTeams');
+    Route::post('/admin/team', 'AdminController@createTeam');
+    Route::put('/admin/team/{team}', 'AdminController@updateTeam');
+    Route::delete('/admin/team/{team}','AdminController@destroyTeam');
+  });
 
 });

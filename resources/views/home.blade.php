@@ -8,7 +8,9 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                {{ $user->name }} is logged in with {{ $user->status->status }} status.
+                    {{ $user->name }} is logged in with {{ $user->status->status }} status.
+                    <br>
+                    Hello, {{ $user->name }}
                 </div>
             </div>
         </div>

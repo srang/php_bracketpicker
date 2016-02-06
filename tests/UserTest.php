@@ -1,29 +1,67 @@
 <?php
 
+use App\User;
+use App\Role;
+use App\Status;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $this->assertTrue(true);
-    }
+    use DatabaseTransactions;
 
     /**
-     * A basic test example.
+     * Test user creation
      *
      * @return void
      */
     public function testUserCreate()
     {
-      $u = new User;
-      $this->asserInstanceOf('App\Uer',$u);
+      $name = 'Bob';
+      $email = 'bob@bob.com';
+      $password = 'password';
+      $u = new User([
+          'name' => $name,
+          'email' => $email,
+          'status_id' => Status::where('status','unverified')->first()->status_id,
+          'password' => bcrypt($password),
+      ]);
+      $this->assertInstanceOf('App\User',$u);
+      $this->assertEquals($u->email, $email);
+      $this->assertEquals($u->name, $name);
+      // make sure encrypted
+      $this->assertNotEquals($u->password, $password);
+      $this->assertEquals($u->status->status,'unverified');
+    }
+
+    /**
+     * Test user persistence
+     *
+     * @return void
+     */
+    public function testUserSave()
+    {
+      $name = 'Bob';
+      $email = 'bob@bob.com';
+      $password = 'password';
+      $u = new User([
+          'name' => $name,
+          'email' => $email,
+          'status_id' => Status::where('status','unverified')->first()->status_id,
+          'password' => bcrypt($password),
+      ]);
+      $u->save();
+      $u->roles()->attach(Role::where('role','user')->first()->role_id);
+      $this->seeInDatabase('users',[
+        'email'=>$email,
+        'name' =>$name
+      ]);
+      $r = Role::where('role','user')->first();
+      $this->seeInDatabase('userroles',[
+        'user_id' => $u->user_id,
+        'role_id' => $r->role_id
+      ]);
+      $this->assertTrue($u->hasRole('user'));
     }
 }

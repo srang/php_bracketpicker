@@ -1,54 +1,31 @@
-<?php
-session_start();
+<?php include("/fragments/meta.php"); ?>
+    <link rel="stylesheet" href="css/frontend.css"></link>
+  </head>
 
-include("admin/database.php");
-
-$db = mysql_connect($host, $user, $pass) 
-	or die(mysql_error());
-
-mysql_select_db($database,$db) 
-	or die(mysql_error());
-
-$_SESSION['admin'] = true;
-		header("Location: admin/index.php"); 
-
-// Comment out for now. protect by htaccess in the mean time
-/*
-$username = mysql_query("SELECT * FROM meta");
-
-if( $username['name'] != $_POST["password"] )
-{	
-	// Retrieve all the data from the "example" table
-	$result = mysql_query("SELECT * FROM passwords where label ='admin_password'")
-	or die(mysql_error());  
-	
-	// store the record of the "example" table into $row
-	$row = mysql_fetch_array( $result );
-	// Print out the contents of the entry 
-	
-	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-	
-		echo md5($_POST["password"]);
-		echo  $row["value"];
-		if ((md5($_POST["password"]) == $row["value"]) && ($row["label"] == "admin_password"))
-		{
-			$_SESSION['admin'] = true;
-			header("Location: admin/index.php"); 
-			exit();
-		}
-		
-		if ((md5($_POST["password"]) == $row["value"]) && ($row["label"] == "general_user_password"))
-		{
-			$_SESSION['admin'] = true;
-			header("Location: index.php"); 
-			exit();
-		}
-	
-	}
-}
-else
-{
-	//header("Location: login.html");
-}*/
-
-?>
+  <body>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".basic-modal">Modal</button>
+    <div class="modal fade basic-modal" tabindex="-1" role="dialog" aria-labelledby="basic-modal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+          </div> <form class="form-signin">
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="remember-me"> Remember me
+              </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script type="text/javascript" src="js/frontend.js"></script>
+  </body>
+</html>

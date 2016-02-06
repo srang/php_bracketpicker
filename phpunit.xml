@@ -7,6 +7,7 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
+         verbose="true"
          stopOnFailure="false">
     <testsuites>
         <testsuite name="Application Test Suite">
@@ -18,6 +19,11 @@
             <directory suffix=".php">app/</directory>
         </whitelist>
     </filter>
+    <logging>
+        <log type="json" target="logs/log.json"/>
+        <log type="testdox-html" target="logs/test.html"/>
+        <!--log type="coverage-html" target="logs/cover.html"/-->
+    </logging>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>

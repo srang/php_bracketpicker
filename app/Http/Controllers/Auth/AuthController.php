@@ -32,7 +32,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/home';
 
     /**
      * Create a new authentication controller instance.
@@ -68,18 +68,16 @@ class AuthController extends Controller
     protected function create(array $data)
     {
         //TODO make atomic so if user role fails there isn't a half created user
-        $user = User::create([
+        $user = new User([
             'name' => $data['name'],
             'email' => $data['email'],
+            // users need to follow email verification before becoming 'active'
             'status_id' => Status::where('status','unverified')->first()->status_id,
             'password' => bcrypt($data['password']),
         ]);
+        $user->save();
         $user->roles()->attach(Role::where('role','user')->first()->role_id);
         Log::info('Created user: '.$user->email.' with roles: '.$user->roles);
-        #UserRole::create([
-        #    'user_id' => $user->user_id,
-        #    'role_id' => Role::where('role','user')->first()->role_id,
-        #]);
         return $user;
     }
 }
