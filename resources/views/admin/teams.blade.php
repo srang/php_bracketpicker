@@ -12,17 +12,17 @@
                 <div class="row">
                 <!-- Team Name -->
                     <div class="col-sm-6">
-                        <div class="form-group">
+                        <div class="form-group @if ($errors->has('name')) has-error @endif">
                             <label for="team-name" class="col-sm-3 control-label">Team</label>
-                            <input type="text" name="name" id="team-name" class="form-control">
+                            <input type="text" name="name" placeholder="Duke" id="team-name" class="form-control" value="{{ old('name') }}">
                         </div>
                     </div>
 
                     <!-- Team Mascot -->
                     <div class="col-sm-6">
-                        <div class="form-group">
+                        <div class="form-group @if ($errors->has('mascot')) has-error @endif">
                             <label for="team-mascot" class="col-sm-3 control-label">Mascot</label>
-                            <input type="text" name="name" id="team-name" class="form-control">
+                            <input type="text" name="mascot" placeholder="Blue Devils" id="team-name" class="form-control" value="{{ old('mascot') }}">
                         </div>
                     </div>
                 </div>
@@ -30,15 +30,15 @@
                 <!-- Colors -->
                 <div class="row">
                     <div class="col-sm-6">
-                        <div class="form-group">
+                        <div class="form-group @if ($errors->has('primary_color')) has-error @endif">
                             <label for="primary" class="col-sm-3 control-label">Primary Color</label>
-                            <input type="text" name="primary_color" id="primary" class="form-control">
+                            <input type="text" name="primary_color" placeholder="0000FF" id="primary" class="form-control" value="{{ old('primary_color') }}">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-sm-6">
+                    <div class="col-sm-6">
+                        <div class="form-group @if ($errors->has('accent_color')) has-error @endif">
                             <label for="secondary" class="col-sm-3 control-label">Accent Color</label>
-                            <input type="text" name="accent_color" id="secondary" class="form-control">
+                            <input type="text" name="accent_color" placeholder="0000FF" id="secondary" class="form-control" value="{{ old('accent_color') }}">
                         </div>
                     </div>
                 </div>
@@ -67,6 +67,10 @@
                     <!-- Table Headings -->
                     <thead>
                         <th>Team</th>
+                        <th>Masct</th>
+                        <th>Primary Color</th>
+                        <th>Accent Color</th>
+                        <th>Icon Path</th>
                         <th>&nbsp;</th>
                     </thead>
 
@@ -78,13 +82,27 @@
                             <td class="table-text">
                                 <div>{{ $team->name }}</div>
                             </td>
+                            <td class="table-text">
+                                <div>{{ $team->mascot }}</div>
+                            </td>
+                            <td class="table-text">
+                                <div>{{ $team->primary_color }}</div>
+                            </td>
+                            <td class="table-text">
+                                <div>{{ $team->accent_color }}</div>
+                            </td>
+                            <td class="table-text">
+                                <div>{{ $team->icon_path }}</div>
+                            </td>
 
                             <td>
                                 <form action="{{ url('team/'.$team->team_id) }}" method="POST">
                                     {!! csrf_field() !!}
                                     {!! method_field('DELETE') !!}
 
-                                    <button>Delete Team</button>
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fa fa-trash"></i> Delete Team
+                                    </button>
                                 </form>
                             </td>
                         </tr>

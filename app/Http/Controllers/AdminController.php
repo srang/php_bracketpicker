@@ -53,8 +53,8 @@ class AdminController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'mascot' => 'max:255',
-            'primary_color' => 'max:6',
-            'accent_color' => 'max:6'
+            'primary_color' => array('regex:/^([a-fA-F0-9]){3}(([a-fA-F0-9]){3})?$/'),
+            'accent_color' => array('regex:/^([a-fA-F0-9]){3}(([a-fA-F0-9]){3})?$/')
         ]);
         // save team
         Team::create([
