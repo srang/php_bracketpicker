@@ -22,16 +22,47 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
+    /**
+     * Show master bracket unless needs to be created
+     * in which case, redirect to showCreateMaster
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function showMaster(Request $request)
     {
         $bracket = Bracket::where('master',true)->first();
+        if(empty($bracket)) {
+            //need to set up master bracket
+            $teams = Team::all();
+            return view('admin.create_master',[
+                'teams' => $teams
+            ]);
+        }
         return view('admin.bracket',[
             'master' => $bracket
         ]);
     }
 
-    public function setMaster(Request $request)
+    public function createMaster(Request $request)
     {
+        // $this->validate($request, [
+        // game1 => 'required'
+        // ...
+        // ]);
+
+        $alert = [
+            'message' => 'Save successful',
+            'level' => 'success'
+        ];
+        $request->session()->put('alert', $alert);
+
+        return redirect()->action('AdminController@showMaster');
+    }
+
+    public function setMaster(BracketSetRequest $request)
+    {
+        $master = Bracket::where('master',true)->first();
         // $this->validate($request, [
         // game1 => 'required'
         // ...
@@ -64,8 +95,25 @@ class AdminController extends Controller
             'primary_color' => $request->primary_color,
             'accent_color' => $request->accent_color
         ]);
+        $alert = [
+            'message' => 'Save successful',
+            'level' => 'success'
+        ];
 
         return redirect()->action('AdminController@listTeams');
+    }
+
+    public function viewTeam(Request $request, Team $team)
+    {
+        return view('admin.team_details',[
+            'old' => [
+                'name'=>$team->name,
+                'mascot'=>$team->mascot,
+                'primary_color'=>$team->primary_color,
+                'accent_color'=>$team->accent_color
+            ],
+            'team' => $team
+        ]);
     }
 
     public function updateTeam(Request $request, Team $team)
@@ -77,14 +125,32 @@ class AdminController extends Controller
             'accent_color' => 'max:6'
         ]);
 
-        //save team
+        $team->name = $request->name;
+        $team->mascot = $request->mascot;
+        $team->primary_color = $request->primary_color;
+        $team->accent_color = $request->accent_color;
+
+        $team->save();
+
+        $alert = [
+            'message' => 'Save successful',
+            'level' => 'success'
+        ];
+        $request->session()->put('alert', $alert);
 
         return redirect()->action('AdminController@listTeams');
     }
 
     public function destroyTeam(Request $request, Team $team)
     {
-        // delete team
+        $name = $team->name;
+        $team->delete();
+
+        $alert = [
+            'message' => 'Team ('.$name.') deleted',
+            'level' => 'warning'
+        ];
+        $request->session()->put('alert', $alert);
 
         return redirect()->action('AdminController@listTeams');
     }

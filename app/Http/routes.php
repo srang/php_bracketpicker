@@ -38,9 +38,11 @@ Route::group(['middleware' => ['web']], function () {
   Route::group(['middleware' => ['auth','role:admin']], function() {
     Route::get('/admin', 'AdminController@index');
     Route::get('/admin/bracket', 'AdminController@showMaster');
-    Route::post('/admin/bracket', 'AdminController@setMaster');
+    Route::post('/admin/bracket', 'AdminController@createMaster');
+    Route::put('/admin/bracket', 'AdminController@setMaster');
     Route::get('/admin/teams', 'AdminController@listTeams');
     Route::post('/admin/team', 'AdminController@createTeam');
+    Route::get('/admin/team/{team}', 'AdminController@viewTeam');
     Route::put('/admin/team/{team}', 'AdminController@updateTeam');
     Route::delete('/admin/team/{team}','AdminController@destroyTeam');
   });

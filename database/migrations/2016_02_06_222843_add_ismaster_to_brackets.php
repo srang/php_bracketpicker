@@ -13,7 +13,7 @@ class AddIsmasterToBrackets extends Migration
     public function up()
     {
         Schema::table('brackets', function (Blueprint $table) {
-            $table->boolean('master')->default(false);
+            $table->boolean('master')->default(false)->after('name');
         });
     }
 

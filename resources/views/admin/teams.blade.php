@@ -4,50 +4,15 @@
     <div class="container">
        <div class="panel-body">
             <!-- Display Validation Errors -->
+@include('common.alerts')
 @include('common.errors')
             <!-- New Team Form -->
             <form action="{{ url('admin/team') }}" method="POST">
-                {!! csrf_field() !!}
-
-                <div class="row">
-                <!-- Team Name -->
-                    <div class="col-sm-6">
-                        <div class="form-group @if ($errors->has('name')) has-error @endif">
-                            <label for="team-name" class="col-sm-3 control-label">Team</label>
-                            <input type="text" name="name" placeholder="Duke" id="team-name" class="form-control" value="{{ old('name') }}">
-                        </div>
-                    </div>
-
-                    <!-- Team Mascot -->
-                    <div class="col-sm-6">
-                        <div class="form-group @if ($errors->has('mascot')) has-error @endif">
-                            <label for="team-mascot" class="col-sm-3 control-label">Mascot</label>
-                            <input type="text" name="mascot" placeholder="Blue Devils" id="team-name" class="form-control" value="{{ old('mascot') }}">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Colors -->
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group @if ($errors->has('primary_color')) has-error @endif">
-                            <label for="primary" class="col-sm-3 control-label">Primary Color</label>
-                            <input type="text" name="primary_color" placeholder="0000FF" id="primary" class="form-control" value="{{ old('primary_color') }}">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group @if ($errors->has('accent_color')) has-error @endif">
-                            <label for="secondary" class="col-sm-3 control-label">Accent Color</label>
-                            <input type="text" name="accent_color" placeholder="0000FF" id="secondary" class="form-control" value="{{ old('accent_color') }}">
-                        </div>
-                    </div>
-                </div>
-
-
+@include('common.team_form')
                 <!-- Add Team Button -->
                 <div class="form-group">
                     <div class="pull-right">
-                        <button type="submit" class="btn btn-default">
+                        <button type="submit" class="btn btn-success">
                             <i class="fa fa-plus"></i> Add Team
                         </button>
                     </div>
@@ -96,13 +61,17 @@
                             </td>
 
                             <td>
-                                <form action="{{ url('team/'.$team->team_id) }}" method="POST">
+                                <form action="{{ url('admin/team/'.$team->team_id) }}" method="POST">
                                     {!! csrf_field() !!}
                                     {!! method_field('DELETE') !!}
 
+                                    <div class="btn-group">
                                     <button type="submit" class="btn btn-danger">
                                         <i class="fa fa-trash"></i> Delete Team
                                     </button>
+                                    <a class="btn btn-info" href="{{ url('admin/team/'.$team->team_id) }}">
+                                        <i class="fa fa-pencil"></i> Edit Team
+                                    </a>
                                 </form>
                             </td>
                         </tr>
