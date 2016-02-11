@@ -18,21 +18,21 @@ class UserTest extends TestCase
      */
     public function testUserCreate()
     {
-      $name = 'Bob';
-      $email = 'bob@bob.com';
-      $password = 'password';
-      $u = new User([
-          'name' => $name,
-          'email' => $email,
-          'status_id' => Status::where('status','unverified')->first()->status_id,
-          'password' => bcrypt($password),
-      ]);
-      $this->assertInstanceOf('App\User',$u);
-      $this->assertEquals($u->email, $email);
-      $this->assertEquals($u->name, $name);
-      // make sure encrypted
-      $this->assertNotEquals($u->password, $password);
-      $this->assertEquals($u->status->status,'unverified');
+        $name = 'Bob';
+        $email = 'bob@bob.com';
+        $password = 'password';
+        $u = new User([
+            'name' => $name,
+            'email' => $email,
+            'status_id' => Status::where('status','unverified')->first()->status_id,
+            'password' => bcrypt($password),
+        ]);
+        $this->assertInstanceOf('App\User',$u);
+        $this->assertEquals($u->email, $email);
+        $this->assertEquals($u->name, $name);
+        // make sure encrypted
+        $this->assertNotEquals($u->password, $password);
+        $this->assertEquals($u->status->status,'unverified');
     }
 
     /**
@@ -42,26 +42,26 @@ class UserTest extends TestCase
      */
     public function testUserSave()
     {
-      $name = 'Bob';
-      $email = 'bob@bob.com';
-      $password = 'password';
-      $u = new User([
-          'name' => $name,
-          'email' => $email,
-          'status_id' => Status::where('status','unverified')->first()->status_id,
-          'password' => bcrypt($password),
-      ]);
-      $u->save();
-      $u->roles()->attach(Role::where('role','user')->first()->role_id);
-      $this->seeInDatabase('users',[
-        'email'=>$email,
-        'name' =>$name
-      ]);
-      $r = Role::where('role','user')->first();
-      $this->seeInDatabase('userroles',[
-        'user_id' => $u->user_id,
-        'role_id' => $r->role_id
-      ]);
-      $this->assertTrue($u->hasRole('user'));
+        $name = 'Bob';
+        $email = 'bob@bob.com';
+        $password = 'password';
+        $u = new User([
+            'name' => $name,
+            'email' => $email,
+            'status_id' => Status::where('status','unverified')->first()->status_id,
+            'password' => bcrypt($password),
+        ]);
+        $u->save();
+        $r = Role::where('role','user')->first();
+        $u->roles()->attach($r->role_id);
+        $this->seeInDatabase('users',[
+            'email'=>$email,
+            'name' =>$name
+        ]);
+        $this->seeInDatabase('userroles',[
+            'user_id' => $u->user_id,
+            'role_id' => $r->role_id
+        ]);
+        $this->assertTrue($u->hasRole('user'));
     }
 }

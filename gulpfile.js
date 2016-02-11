@@ -16,15 +16,15 @@ var elixir = require('laravel-elixir'),
  */
 
 elixir(function(mix) {
-    mix.task('test');
     mix.task('bower');
     mix.copy('bower_components/bootstrap/less/*.less','resources/assets/less/bootstrap/');
     mix.copy('bower_components/bootstrap/less/mixins/*.less','resources/assets/less/bootstrap/mixins/');
     mix.copy('bower_components/summernote/dist/summernote.js','resources/assets/js/');
     mix.copy('bower_components/summernote/dist/summernote.css','resources/assets/css/summernote/');
     mix.less('frontend.less');
-    mix.version('css/frontend.css');
     mix.browserify('summernote.js');
+    mix.browserify('master_bracket.js');
+    mix.version(['js/master_bracket.js','css/frontend.css','js/summernote.js']);
 });
 
 gulp.task('bower', function(){

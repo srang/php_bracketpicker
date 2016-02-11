@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Team;
 use App\Bracket;
+use App\Region;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -35,8 +36,11 @@ class AdminController extends Controller
         if(empty($bracket)) {
             //need to set up master bracket
             $teams = Team::all();
+            $regions = Region::all();
             return view('admin.create_master',[
-                'teams' => $teams
+                'teams' => $teams,
+                'regions' => $regions,
+                'region_size' => 16,
             ]);
         }
         return view('admin.bracket',[
@@ -74,8 +78,10 @@ class AdminController extends Controller
     public function listTeams(Request $request)
     {
         $teams = Team::all();
+        $regions = Region::all();
         return view('admin.teams',[
-            'teams' => $teams
+            'teams' => $teams,
+            'regions' => $regions
         ]);
     }
 
@@ -85,7 +91,9 @@ class AdminController extends Controller
             'name' => 'required|max:255',
             'mascot' => 'max:255',
             'primary_color' => array('regex:/^([a-fA-F0-9]){3}(([a-fA-F0-9]){3})?$/'),
-            'accent_color' => array('regex:/^([a-fA-F0-9]){3}(([a-fA-F0-9]){3})?$/')
+            'accent_color' => array('regex:/^([a-fA-F0-9]){3}(([a-fA-F0-9]){3})?$/'),
+            'region' => 'exists:regions,region',
+            'rank' => 'between:0,17'
         ]);
         // save team
         Team::create([
@@ -93,7 +101,9 @@ class AdminController extends Controller
             'mascot' => $request->mascot,
             'icon_path' => '/path/to/icon',
             'primary_color' => $request->primary_color,
-            'accent_color' => $request->accent_color
+            'accent_color' => $request->accent_color,
+            'region_id' => Region::where('region',$request->region)->first()->region_id,
+            'rank' => $request->rank,
         ]);
         $alert = [
             'message' => 'Save successful',

@@ -6868,5 +6868,12 @@ body {
   font-family: Corben;
   font-style: italic;
 }
+.fa-btn {
+  padding-right: 4px;
+}
+.row.master-bracket {
+  margin-top: 75px;
+  margin-bottom: 20px;
+}
 
 /*# sourceMappingURL=frontend.css.map */

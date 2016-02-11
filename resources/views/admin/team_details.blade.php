@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <div class="pull-right">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-pencil"></i> Update Team
+                            <i class="fa fa-btn fa-pencil"></i> Update Team
                         </button>
                     </div>
                 </div>

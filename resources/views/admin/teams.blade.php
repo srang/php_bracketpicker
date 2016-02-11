@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <div class="pull-right">
                         <button type="submit" class="btn btn-success">
-                            <i class="fa fa-plus"></i> Add Team
+                            <i class="fa fa-btn fa-plus"></i> Add Team
                         </button>
                     </div>
                 </div>
@@ -67,10 +67,10 @@
 
                                     <div class="btn-group">
                                     <button type="submit" class="btn btn-danger">
-                                        <i class="fa fa-trash"></i> Delete Team
+                                        <i class="fa fa-btn fa-trash"></i> Delete Team
                                     </button>
                                     <a class="btn btn-info" href="{{ url('admin/team/'.$team->team_id) }}">
-                                        <i class="fa fa-pencil"></i> Edit Team
+                                        <i class="fa fa-btn fa-pencil"></i> Edit Team
                                     </a>
                                 </form>
                             </td>
@@ -84,3 +84,28 @@
     </div>
 
 @endsection
+
+@push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
+    <script>
+    var teams =
+    [
+@foreach($teams as $team)
+        {
+        'name': "{{ $team->name }}",
+        'team_id': "{{ $team->team_id }}"
+        },
+@endforeach
+    ];
+    var regions =
+    [
+@foreach($regions as $region)
+        {
+        'region': "{{ $region>region }}",
+        'region_id': "{{ $region->region_id }}"
+        },
+@endforeach
+    ];
+    </script>
+    <script src="{{ elixir('js/team_list.js') }}"></script>
+@endpush

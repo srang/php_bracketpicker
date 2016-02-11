@@ -19,6 +19,6 @@ class Team extends Model
      * @var array
      */
     protected $fillable = [
-      'name','mascot','icon_path','primary_color','accent_color',
+      'name','mascot','icon_path','primary_color','accent_color','region_id','rank',
     ];
 }

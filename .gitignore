@@ -8,3 +8,4 @@ lib
 Homestead.yaml
 Homestead.json
 .env
+public/build/css/
