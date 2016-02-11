@@ -9,3 +9,4 @@ Homestead.yaml
 Homestead.json
 .env
 public/build/css/
+public/build/js/
