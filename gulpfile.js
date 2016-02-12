@@ -22,9 +22,12 @@ elixir(function(mix) {
     mix.copy('bower_components/summernote/dist/summernote.js','resources/assets/js/');
     mix.copy('bower_components/summernote/dist/summernote.css','resources/assets/css/summernote/');
     mix.less('frontend.less');
+    mix.styles('freelancer.css');
+    mix.styles('typeahead-bootstrap.css');
     mix.browserify('summernote.js');
     mix.browserify('master_bracket.js');
-    mix.version(['js/master_bracket.js','css/frontend.css','js/summernote.js']);
+    mix.browserify('team_list.js');
+    mix.version(['js/master_bracket.js','css/frontend.css','js/summernote.js','js/team_list.js','css/freelancer.css','css/typeahead-bootstrap.css']);
 });
 
 gulp.task('bower', function(){

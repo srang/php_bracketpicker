@@ -29,7 +29,7 @@
                     <div class="col-sm-3">
                         <div class="form-group @if ($errors->has('region')) has-error @endif">
                             <label for="region" class="control-label">Region</label>
-                            <input type="text" name="region" placeholder="West" id="region" class="form-control" value="{{ (!empty(old('region'))||!isset($team))?old('region'):$team->region }}">
+                            <input type="text" name="region" placeholder="West" id="region" class="form-control" value="{{ (!empty(old('region'))||!isset($team))?old('region'):$team->region->region }}">
                         </div>
                     </div>
                     <!-- Colors -->

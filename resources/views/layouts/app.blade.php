@@ -9,6 +9,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+@stack('styles')
     <link href="{{ elixir('css/frontend.css') }}" rel="stylesheet">
 </head>
 <body id="app-layout">

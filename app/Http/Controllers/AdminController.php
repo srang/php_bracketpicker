@@ -36,7 +36,7 @@ class AdminController extends Controller
         if(empty($bracket)) {
             //need to set up master bracket
             $teams = Team::all();
-            $regions = Region::all();
+            $regions = Region::where('region','<>','')->get();
             return view('admin.create_master',[
                 'teams' => $teams,
                 'regions' => $regions,
@@ -120,7 +120,9 @@ class AdminController extends Controller
                 'name'=>$team->name,
                 'mascot'=>$team->mascot,
                 'primary_color'=>$team->primary_color,
-                'accent_color'=>$team->accent_color
+                'accent_color'=>$team->accent_color,
+                'rank'=>$team->rank,
+                'region'=>$team->region
             ],
             'team' => $team
         ]);
@@ -131,14 +133,18 @@ class AdminController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'mascot' => 'max:255',
-            'primary_color' => 'max:6',
-            'accent_color' => 'max:6'
+            'primary_color' => array('regex:/^([a-fA-F0-9]){3}(([a-fA-F0-9]){3})?$/'),
+            'accent_color' => array('regex:/^([a-fA-F0-9]){3}(([a-fA-F0-9]){3})?$/'),
+            'region' => 'exists:regions,region',
+            'rank' => 'between:0,17'
         ]);
 
         $team->name = $request->name;
         $team->mascot = $request->mascot;
         $team->primary_color = $request->primary_color;
         $team->accent_color = $request->accent_color;
+        $team->region_id = Region::where('region',$request->region)->first()->region_id;
+        $team->rank = $request->rank;
 
         $team->save();
 

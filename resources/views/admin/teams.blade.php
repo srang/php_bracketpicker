@@ -10,6 +10,11 @@
             <form action="{{ url('admin/team') }}" method="POST">
 @include('common.team_form')
                 <!-- Add Team Button -->
+                <div class="pull-left">
+                    <a class="btn btn-primary" href="{{ url('/admin') }}">
+                        <i class="fa fa-btn fa-arrow-left"></i> Back
+                    </a>
+                </div>
                 <div class="form-group">
                     <div class="pull-right">
                         <button type="submit" class="btn btn-success">
@@ -32,10 +37,9 @@
                     <!-- Table Headings -->
                     <thead>
                         <th>Team</th>
-                        <th>Masct</th>
-                        <th>Primary Color</th>
-                        <th>Accent Color</th>
-                        <th>Icon Path</th>
+                        <th>Mascot</th>
+                        <th>Region</th>
+                        <th>Rank</th>
                         <th>&nbsp;</th>
                     </thead>
 
@@ -51,13 +55,10 @@
                                 <div>{{ $team->mascot }}</div>
                             </td>
                             <td class="table-text">
-                                <div>{{ $team->primary_color }}</div>
+                                <div>{{ $team->region->region }}</div>
                             </td>
                             <td class="table-text">
-                                <div>{{ $team->accent_color }}</div>
-                            </td>
-                            <td class="table-text">
-                                <div>{{ $team->icon_path }}</div>
+                                <div>{{ $team->rank }}</div>
                             </td>
 
                             <td>
@@ -88,24 +89,24 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
     <script>
-    var teams =
-    [
-@foreach($teams as $team)
-        {
-        'name': "{{ $team->name }}",
-        'team_id': "{{ $team->team_id }}"
-        },
-@endforeach
-    ];
-    var regions =
-    [
-@foreach($regions as $region)
-        {
-        'region': "{{ $region>region }}",
-        'region_id': "{{ $region->region_id }}"
-        },
-@endforeach
-    ];
+//    var teams =
+//    [
+//@foreach($teams as $_team)
+//        {
+//        'name': "{{ $_team->name }}",
+//        'team_id': "{{ $_team->team_id }}",
+//        },
+//@endforeach
+//    ];
+//    var regions =
+//    [
+//@foreach($regions as $region)
+//        {
+//        'region': "{{ $region->region }}",
+//        'region_id': "{{ $region->region_id }}"
+//        },
+//@endforeach
+//    ];
     </script>
     <script src="{{ elixir('js/team_list.js') }}"></script>
 @endpush
