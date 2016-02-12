@@ -30,32 +30,32 @@
                     </div>
                 </div>
                 <div class="row master-bracket">
-@for ($region = 1; $region <= $regions->count(); $region++)
+@foreach ($regions as $region)
                     <div class="col-md-2 col-md-offset-1">
-                        <h3>{{ $regions->get($region-1)['region'] }}</h3>
+                        <h3>{{ $region->region }}</h3>
 @for ($team = 1; $team <= $region_size/2; $team++)
                         <div class="form-group">
-                            <label for="{{ 'region-'.$region.'-team-'.$team }}" class="control-label master-label text-center @if ($errors->has('region-'.$region.'-team-'.$team)) has-error @endif">
-@if (!empty(old('region-'.$region.'-team-'.$team)))
-                                {{old('region-'.$region.'-team-'.$team)}}
+                    <label for="{{ 'region-'.$region->region.'-rank-'.$team }}" class="control-label master-label text-center @if ($errors->has('region-'.$region->region.'-rank-'.$team)) has-error @endif">
+                    @if (!empty(old('region-'.$region->region.'-rank-'.$team)))
+                        {{old('region-'.$region->region.'-rank-'.$team)}}
 @else
                                 {{'Team '.$team}}
 @endif
                             </label>
-                            <input type="text" name="{{ 'region-'.$region.'-team-'.$team }}" id="{{ 'region-'.$region.'-team-'.$team }}" class="form-control master-input hide" value="{{ old('region-'.$region.'-team-'.$team) }}">
+                            <input type="text" name="{{ 'region-'.$region->region.'-rank-'.$team }}" id="{{ 'region-'.$region->region.'-rank-'.$team }}" class="form-control master-input hide" value="{{ old('region-'.$region->region.'-rank-'.$team) }}">
                             <br>
-                            <label for="{{ 'region-'.$region.'-team-'.($region_size+1-$team) }}" class="control-label master-label text-center @if ($errors->has('region-'.$region.'-team-'.($region_size+1-$team))) has-error @endif">
-@if (empty(old('region-'.$region.'-team-'.($region_size+1-$team))))
+                        <label for="{{ 'region-'.$region->region.'-rank-'.($region_size+1-$team) }}" class="control-label master-label text-center @if ($errors->has('region-'.$region->region.'-rank-'.($region_size+1-$team))) has-error @endif">
+                        @if (empty(old('region-'.$region->region.'-rank-'.($region_size+1-$team))))
                                 {{'Team '.($region_size+1-$team)}}
 @else
-                                {{old('region-'.$region.'-team-'.($region_size+1-$team))}}
+    {{old('region-'.$region->region.'-rank-'.($region_size+1-$team))}}
 @endif
                             </label>
-                            <input type="text" name="{{ 'region-'.$region.'-team-'.($region_size+1-$team) }}" id="{{ 'region-'.$region.'-team-'.($region_size+1-$team) }}" class="form-control master-input hide" value="{{ old('region-'.$region.'-team-'.($region_size+1-$team)) }}">
+                            <input type="text" name="{{ 'region-'.$region->region.'-rank-'.($region_size+1-$team) }}" id="{{ 'region-'.$region->region.'-rank-'.($region_size+1-$team) }}" class="form-control master-input hide" value="{{ old('region-'.$region->region.'-rank-'.($region_size+1-$team)) }}">
                         </div>
 @endfor {{-- rows --}}
                     </div>
-@endfor {{-- columns --}}
+@endforeach {{-- columns --}}
                 </div>
             </form>
         </div>

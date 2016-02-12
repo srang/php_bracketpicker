@@ -6875,16 +6875,21 @@ body {
   margin-top: 75px;
   margin-bottom: 20px;
 }
+.master-label {
+  border-radius: 5px;
+}
 .master-label:hover {
   background-color: #999999;
   padding-left: 10px;
   padding-right: 10px;
-  border-radius: 5px;
   border-color: #CCC;
 }
 .master-label.unsaved {
   border-color: #FF4136;
+  border-style: solid;
+  border-width: 2px;
   font-weight: bold;
+  background-color: #ffa19c;
 }
 
 /*# sourceMappingURL=frontend.css.map */
