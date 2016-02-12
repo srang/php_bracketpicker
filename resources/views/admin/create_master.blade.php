@@ -34,24 +34,26 @@
                     <div class="col-md-2 col-md-offset-1">
                         <h3>{{ $region->region }}</h3>
 @for ($team = 1; $team <= $region_size/2; $team++)
+        {{--*/ $firstid='region-'.$region->region.'-rank-'.$team /*--}}
+        {{--*/ $secondid='region-'.$region->region.'-rank-'.($region_size+1-$team) /*--}}
                         <div class="form-group">
-                    <label for="{{ 'region-'.$region->region.'-rank-'.$team }}" class="control-label master-label text-center @if ($errors->has('region-'.$region->region.'-rank-'.$team)) has-error @endif">
-                    @if (!empty(old('region-'.$region->region.'-rank-'.$team)))
-                        {{old('region-'.$region->region.'-rank-'.$team)}}
+                            <label for="{{ $firstid }}" class="control-label master-label text-center @if ($errors->has($firstid)) has-error @endif">
+@if (!empty(old($firstid)))
+                                {{old($firstid)}}
 @else
                                 {{'Team '.$team}}
 @endif
                             </label>
-                            <input type="text" name="{{ 'region-'.$region->region.'-rank-'.$team }}" id="{{ 'region-'.$region->region.'-rank-'.$team }}" class="form-control master-input hide" value="{{ old('region-'.$region->region.'-rank-'.$team) }}">
+                            <input type="text" name="{{ $firstid }}" id="{{ $firstid }}" class="form-control master-input hide" value="{{ old($firstid) }}">
                             <br>
-                        <label for="{{ 'region-'.$region->region.'-rank-'.($region_size+1-$team) }}" class="control-label master-label text-center @if ($errors->has('region-'.$region->region.'-rank-'.($region_size+1-$team))) has-error @endif">
-                        @if (empty(old('region-'.$region->region.'-rank-'.($region_size+1-$team))))
+                            <label for="{{ $secondid }}" class="control-label master-label text-center @if ($errors->has($secondid)) has-error @endif">
+@if (empty(old($secondid)))
                                 {{'Team '.($region_size+1-$team)}}
 @else
-    {{old('region-'.$region->region.'-rank-'.($region_size+1-$team))}}
+                                {{old($secondid)}}
 @endif
                             </label>
-                            <input type="text" name="{{ 'region-'.$region->region.'-rank-'.($region_size+1-$team) }}" id="{{ 'region-'.$region->region.'-rank-'.($region_size+1-$team) }}" class="form-control master-input hide" value="{{ old('region-'.$region->region.'-rank-'.($region_size+1-$team)) }}">
+                            <input type="text" name="{{ $secondid }}" id="{{ $secondid }}" class="form-control master-input hide" value="{{ old($secondid) }}">
                         </div>
 @endfor {{-- rows --}}
                     </div>
