@@ -2,6 +2,7 @@
 node_modules
 bower_components
 lib
+/old
 /vendor
 /logs
 /node_modules
