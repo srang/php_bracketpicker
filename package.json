@@ -43,7 +43,7 @@
     "gulp-phpunit": "~0.12.1",
     "gulp-qunit": "^1.3.0",
     "laravel-elixir": "~4.2.1",
-    "phplint": "^1.7.0"
+    "phplint": "^1.7.0",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "laravel-elixir": "~4.2.1"
