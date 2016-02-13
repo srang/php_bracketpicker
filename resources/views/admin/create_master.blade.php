@@ -40,6 +40,7 @@
                             <label for="{{ $firstid }}" class="control-label master-label text-center @if ($errors->has($firstid)) has-error @endif">
 @if (!empty(old($firstid)))
                                 {{old($firstid)}}
+@elseif (
 @else
                                 {{'Team '.$team}}
 @endif

@@ -6885,11 +6885,13 @@ body {
   border-color: #CCC;
 }
 .master-label.unsaved {
-  border-color: #FF4136;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-color: #ffa19c;
   border-style: solid;
   border-width: 2px;
   font-weight: bold;
-  background-color: #ffa19c;
+  background-color: #ffffff;
 }
 
 /*# sourceMappingURL=frontend.css.map */
