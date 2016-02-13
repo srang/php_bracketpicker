@@ -20,11 +20,11 @@
                 </div>
                 <div class="row">
                     <div class="form-group btn-group pull-right">
-                        <p class="btn btn-danger" id="start-madness">
+                        <p class="btn btn-danger" id="start-madness" data-toggle="tooltip" data-placement="bottom" title="Save and Open Submissions">
                             <i class="fa fa-btn fa-warning"></i> Start
                         </p>
                         <input type="text" name="start-madness" value="false" class="hide" id="madness-flag" >
-                        <button type="submit" class="btn btn-success" id="save-button">
+                        <button type="submit" class="btn btn-success" id="save-button" data-toggle="tooltip" data-placement="bottom" title="Save Master Bracket">
                             <i class="fa fa-btn fa-save"></i> Save
                         </button>
                     </div>
@@ -32,29 +32,41 @@
                 <div class="row master-bracket">
 @foreach ($regions as $region)
                     <div class="col-md-2 col-md-offset-1">
-                        <h3>{{ $region->region }}</h3>
-@for ($team = 1; $team <= $region_size/2; $team++)
-        {{--*/ $firstid='region-'.$region->region.'-rank-'.$team /*--}}
-        {{--*/ $secondid='region-'.$region->region.'-rank-'.($region_size+1-$team) /*--}}
+                        <h3 class="region-header col-md-offset-2">{{ $region->region }}</h3>
+@for ($team_rank = 1; $team_rank <= $region_size/2; $team_rank++)
+        {{--*/ $firstid='region-'.$region->region.'-rank-'.$team_rank /*--}}
+        {{--*/ $secondid='region-'.$region->region.'-rank-'.($region_size+1-$team_rank) /*--}}
                         <div class="form-group">
-                            <label for="{{ $firstid }}" class="control-label master-label text-center @if ($errors->has($firstid)) has-error @endif">
+                            <div class="row">
+                                <span class="rank-info text-right col-md-3">#{{ $team_rank}} </span>
+                                <div class="text-left col-md-9">
+                                    <label for="{{ $firstid }}" class="control-label master-label @if ($errors->has($firstid)) has-error @endif">
 @if (!empty(old($firstid)))
-                                {{old($firstid)}}
-@elseif (
+                                        {{ old($firstid) }}
+@elseif (!empty($teamrepo->byRankRegion($team_rank,$region)))
+                                        {{ $teamrepo->byRankRegion($team_rank,$region)->name }}
 @else
-                                {{'Team '.$team}}
+                                        {{ 'Team '.$team_rank }}
 @endif
-                            </label>
-                            <input type="text" name="{{ $firstid }}" id="{{ $firstid }}" class="form-control master-input hide" value="{{ old($firstid) }}">
-                            <br>
-                            <label for="{{ $secondid }}" class="control-label master-label text-center @if ($errors->has($secondid)) has-error @endif">
-@if (empty(old($secondid)))
-                                {{'Team '.($region_size+1-$team)}}
+                                    </label>
+                                    <input type="text" name="{{ $firstid }}" id="{{ $firstid }}" class="form-control master-input hide" value="{{ old($firstid) }}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <span class="rank-info text-right col-md-3">#{{$region_size+1-$team_rank}} </span>
+                                <div class="text-left col-md-9">
+                                    <label for="{{ $secondid }}" class="control-label master-label @if ($errors->has($secondid)) has-error @endif">
+@if (!empty(old($secondid)))
+                                        {{old($secondid)}}
+@elseif (!empty($teamrepo->byRankRegion(($region_size+1-$team_rank),$region)))
+                                        {{ $teamrepo->byRankRegion($team_rank,$region)->name }}
 @else
-                                {{old($secondid)}}
+                                        <span class="placeholder">{{'Team '.($region_size+1-$team_rank)}}</span>
 @endif
-                            </label>
-                            <input type="text" name="{{ $secondid }}" id="{{ $secondid }}" class="form-control master-input hide" value="{{ old($secondid) }}">
+                                    </label>
+                                    <input type="text" name="{{ $secondid }}" id="{{ $secondid }}" class="form-control master-input hide" value="{{ old($secondid) }}">
+                                </div>
+                            </div>
                         </div>
 @endfor {{-- rows --}}
                     </div>

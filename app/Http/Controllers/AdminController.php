@@ -9,9 +9,27 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Repositories\TeamRepository;
 
 class AdminController extends Controller
 {
+    /**
+     * The team repository instance
+     *
+     * @var TeamRepository
+     */
+    protected $teamrepo;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  TaskRepository  $tasks
+     * @return void
+     */
+    public function __construct(TeamRepository $teams)
+    {
+        $this->teamrepo = $teams;
+    }
     /**
      * Display admin home page
      *
@@ -38,6 +56,7 @@ class AdminController extends Controller
             $teams = Team::all();
             $regions = Region::where('region','<>','')->get();
             return view('admin.create_master',[
+                'teamrepo' => $this->teamrepo,
                 'teams' => $teams,
                 'regions' => $regions,
                 'region_size' => 16,

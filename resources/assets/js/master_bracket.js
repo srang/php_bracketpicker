@@ -5,13 +5,20 @@ function searchTeams(query, sync_cb) {
 }
 
 $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+    $('[data-toggle="tooltip"]').tooltip();
+});
 
 $('#start-madness').on('click',function() {
     console.log("let the fun begin");
     $('#madness-flag').val('true');
     $('#save-button').click();
+});
+
+$(window).keydown(function(event){
+    if(event.keyCode == 13) {
+        event.preventDefault();
+        return true;
+    }
 });
 
 $('label.master-label').on('click', function() {
@@ -32,12 +39,13 @@ $('label.master-label').on('click', function() {
                 'No Results',
                 '</div>'
                     ].join('\n'),
-        suggestion : function (val) {
+            suggestion : function (val) {
                         return '<p class="typeahead-result" data-value="' + val.id + '">' + val.name + '</p>';
                     }
         }
     });
     input.on('typeahead:select', function(event, selection) {
+        $(this).typeahead('val',selection.name);
         $(this).typeahead('destroy');
         $(this).val(selection.id);
         $(this).addClass('hide');
@@ -47,5 +55,12 @@ $('label.master-label').on('click', function() {
         label.addClass('unsaved');
     });
 
+    input.on('blur', function() {
+        $(this).typeahead('val','');
+        $(this).typeahead('destroy');
+        $(this).addClass('hide');
+        var label = $('label.master-label[for='+$(this).attr('name')+']');
+        label.removeClass('hide');
+    });
 });
 

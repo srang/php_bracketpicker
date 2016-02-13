@@ -6872,10 +6872,18 @@ body {
   padding-right: 4px;
 }
 .row.master-bracket {
-  margin-top: 75px;
+  margin-top: 60px;
   margin-bottom: 20px;
 }
+.master-bracket .form-group {
+  border-style: solid;
+  border-width: 3px;
+  border-color: #999999;
+  border-radius: 8px;
+  padding: 6px;
+}
 .master-label {
+  font-weight: normal;
   border-radius: 5px;
 }
 .master-label:hover {
@@ -6883,6 +6891,9 @@ body {
   padding-left: 10px;
   padding-right: 10px;
   border-color: #CCC;
+}
+.master-label .placeholder {
+  color: #555555;
 }
 .master-label.unsaved {
   padding-left: 8px;
@@ -6892,6 +6903,16 @@ body {
   border-width: 2px;
   font-weight: bold;
   background-color: #ffffff;
+}
+.rank-info {
+  font-weight: normal;
+  padding-right: 15px;
+  color: #999999;
+}
+.master-bracket .region-header {
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 25px;
 }
 
 /*# sourceMappingURL=frontend.css.map */
