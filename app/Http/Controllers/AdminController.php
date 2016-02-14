@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Log;
 use App\Team;
 use App\Bracket;
 use App\Region;
@@ -67,13 +68,43 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * Validate all constraints are met and then save
+     * master bracket. Check for start tournament flag
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function createMaster(Request $request)
     {
-        // $this->validate($request, [
-        // game1 => 'required'
-        // ...
-        // ]);
+        if ($request->start_madness==='true') {
+            Log::debug('Master initiation request received');
+            $this->validate($request, [
+                'team.South.*' => 'required|exists:teams,name',
+                'team.East.*' => 'required|exists:teams,name',
+                'team.West.*' => 'required|exists:teams,name',
+                'team.Midwest.*' => 'required|exists:teams,name',
+            ]);
+            // update teams
+        } else {
+            Log::debug('Master creation request received');
+            $this->validate($request, [
+                'team.South.*' => 'exists:teams,name',
+                'team.East.*' => 'exists:teams,name',
+                'team.West.*' => 'exists:teams,name',
+                'team.Midwest.*' => 'exists:teams,name',
+            ]);
+        }
 
+        foreach ($request->team as $region => $teams) {
+            foreach ($teams as $rank => $team) {
+                if(!empty($team)) {
+                    Log::debug('Team: '.$team.' found in form with region: '.$region.' and rank: '.$rank);
+                    $team_actual = Team::where('name',$team)->first();
+                    $team_actual->setRegionRank($region,$rank);
+                }
+            }
+        }
         $alert = [
             'message' => 'Save successful',
             'level' => 'success'
@@ -86,10 +117,6 @@ class AdminController extends Controller
     public function setMaster(BracketSetRequest $request)
     {
         $master = Bracket::where('master',true)->first();
-        // $this->validate($request, [
-        // game1 => 'required'
-        // ...
-        // ]);
 
         return redirect()->action('AdminController@showMaster');
     }
@@ -134,6 +161,7 @@ class AdminController extends Controller
 
     public function viewTeam(Request $request, Team $team)
     {
+        $regions = Region::all();
         return view('admin.team_details',[
             'old' => [
                 'name'=>$team->name,
@@ -143,6 +171,7 @@ class AdminController extends Controller
                 'rank'=>$team->rank,
                 'region'=>$team->region
             ],
+            'regions' => $regions,
             'team' => $team
         ]);
     }
@@ -162,8 +191,7 @@ class AdminController extends Controller
         $team->mascot = $request->mascot;
         $team->primary_color = $request->primary_color;
         $team->accent_color = $request->accent_color;
-        $team->region_id = Region::where('region',$request->region)->first()->region_id;
-        $team->rank = $request->rank;
+        $team->setRegionRank($request->region, $request->rank);
 
         $team->save();
 

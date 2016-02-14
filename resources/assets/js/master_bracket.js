@@ -23,7 +23,7 @@ $(window).keydown(function(event){
 
 $('label.master-label').on('click', function() {
     $(this).addClass('hide');
-    var input = $('input.master-input[name='+$(this).attr('for')+']');
+    var input = $('input.master-input[id='+$(this).attr('for')+']');
     input.removeClass('hide');
     input.typeahead({
             minLength: 1,
@@ -47,9 +47,9 @@ $('label.master-label').on('click', function() {
     input.on('typeahead:select', function(event, selection) {
         $(this).typeahead('val',selection.name);
         $(this).typeahead('destroy');
-        $(this).val(selection.id);
+        $(this).val(selection.name);
         $(this).addClass('hide');
-        var label = $('label.master-label[for='+$(this).attr('name')+']');
+        var label = $('label.master-label[for='+$(this).attr('id')+']');
         label.text(selection.name);
         label.removeClass('hide');
         label.addClass('unsaved');
@@ -59,7 +59,7 @@ $('label.master-label').on('click', function() {
         $(this).typeahead('val','');
         $(this).typeahead('destroy');
         $(this).addClass('hide');
-        var label = $('label.master-label[for='+$(this).attr('name')+']');
+        var label = $('label.master-label[for='+$(this).attr('id')+']');
         label.removeClass('hide');
     });
 });

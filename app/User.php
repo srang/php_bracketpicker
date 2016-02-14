@@ -53,7 +53,7 @@ class User extends Authenticatable
     {
         $roles = $this->roles;
         $ret = $roles->where('role',$role)->count();
-        Log::info("Does user: ".$this->email." have role: ".$role." : ".(($ret)?"true":"false"));
+        Log::debug("Does user: ".$this->email." have role: ".$role." : ".(($ret)?"true":"false"));
         return $ret != 0;
     }
 

@@ -20,14 +20,29 @@ elixir(function(mix) {
     mix.copy('bower_components/bootstrap/less/*.less','resources/assets/less/bootstrap/');
     mix.copy('bower_components/bootstrap/less/mixins/*.less','resources/assets/less/bootstrap/mixins/');
     mix.copy('bower_components/summernote/dist/summernote.js','resources/assets/js/');
-    mix.copy('bower_components/summernote/dist/summernote.css','resources/assets/css/summernote/');
+    mix.copy('bower_components/summernote/dist/summernote.css','resources/assets/css/');
+    mix.copy('bower_components/tinycolor/dist/tinycolor-min.js','resources/assets/js/');
+    mix.copy('bower_components/pick-a-color/build/1.2.3/js/pick-a-color-1.2.3.min.js','resources/assets/js/pick-a-color.js');
+    mix.copy('bower_components/pick-a-color/build/1.2.3/css/pick-a-color-1.2.3.min.css','resources/assets/css/pick-a-color.css');
     mix.less('frontend.less');
-    mix.styles('freelancer.css');
+    mix.styles('summernote.css');
     mix.styles('typeahead-bootstrap.css');
+    mix.styles('pick-a-color.css');
+    mix.scripts(['pick-a-color.js','tinycolor-min.js'],'public/js/color.js');
     mix.browserify('summernote.js');
     mix.browserify('master_bracket.js');
     mix.browserify('team_list.js');
-    mix.version(['js/master_bracket.js','css/frontend.css','js/summernote.js','js/team_list.js','css/freelancer.css','css/typeahead-bootstrap.css']);
+    mix.browserify('team_create.js');
+    mix.version([
+            'js/master_bracket.js',
+            'js/team_list.js',
+            'js/team_create.js',
+            'js/summernote.js',
+            'js/color.js',
+            'css/frontend.css',
+            'css/pick-a-color.css',
+            'css/typeahead-bootstrap.css'
+    ]);
 });
 
 gulp.task('bower', function(){

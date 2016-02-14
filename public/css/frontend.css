@@ -6872,7 +6872,7 @@ body {
   padding-right: 4px;
 }
 .row.master-bracket {
-  margin-top: 60px;
+  margin-top: 40px;
   margin-bottom: 20px;
 }
 .master-bracket .form-group {
@@ -6888,21 +6888,19 @@ body {
 }
 .master-label:hover {
   background-color: #999999;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 1px 10px;
   border-color: #CCC;
 }
 .master-label .placeholder {
   color: #555555;
 }
 .master-label.unsaved {
-  padding-left: 8px;
-  padding-right: 8px;
-  border-color: #ffa19c;
+  padding: 0px 8px;
+  border-color: #ffbc81;
   border-style: solid;
   border-width: 2px;
   font-weight: bold;
-  background-color: #ffffff;
+  background-color: #fff2e7;
 }
 .rank-info {
   font-weight: normal;
@@ -6913,6 +6911,23 @@ body {
   font-weight: bold;
   color: #333333;
   margin-bottom: 25px;
+  text-align: center;
+}
+.team-name {
+  font-weight: bold;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+.btn-group > form {
+  display: inline;
+}
+.master-label.has-error {
+  padding: 0px 8px;
+  border-color: #ffa19c;
+  border-style: solid;
+  border-width: 2px;
+  font-weight: bold;
+  background-color: #ffffff;
 }
 
 /*# sourceMappingURL=frontend.css.map */

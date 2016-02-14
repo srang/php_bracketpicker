@@ -76,7 +76,7 @@ body {
 }
 
 .row.master-bracket {
-    margin-top: 60px;
+    margin-top: 40px;
     margin-bottom: 20px;
 }
 
@@ -95,8 +95,7 @@ body {
 
 .master-label:hover {
     background-color: @gray-light;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 1px 10px;
     border-color: #CCC;
 }
 
@@ -105,13 +104,12 @@ body {
 }
 
 .master-label.unsaved {
-    padding-left: 8px;
-    padding-right: 8px;
-    border-color: lighten(@brand-danger, 20%);
+    padding: 0px 8px;
+    border-color: lighten(@brand-warning, 20%);
     border-style: solid;
     border-width: 2px;
     font-weight: bold;
-    background-color: lighten(@brand-danger, 40%);
+    background-color: lighten(@brand-warning, 40%);
 }
 
 .rank-info {
@@ -124,4 +122,23 @@ body {
     font-weight: bold;
     color: @gray-dark;
     margin-bottom: 25px;
+    text-align: center;
+}
+
+.team-name {
+    font-weight: bold;
+    padding: 1px 5px;
+    border-radius: 3px;
+}
+.btn-group > form {
+    display: inline;
+}
+
+.master-label.has-error {
+    padding: 0px 8px;
+    border-color: lighten(@brand-danger, 20%);
+    border-style: solid;
+    border-width: 2px;
+    font-weight: bold;
+    background-color: lighten(@brand-danger, 40%);
 }

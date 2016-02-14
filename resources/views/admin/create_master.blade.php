@@ -23,7 +23,7 @@
                         <p class="btn btn-danger" id="start-madness" data-toggle="tooltip" data-placement="bottom" title="Save and Open Submissions">
                             <i class="fa fa-btn fa-warning"></i> Start
                         </p>
-                        <input type="text" name="start-madness" value="false" class="hide" id="madness-flag" >
+                        <input type="hidden" name="start_madness" value="false" id="madness-flag" >
                         <button type="submit" class="btn btn-success" id="save-button" data-toggle="tooltip" data-placement="bottom" title="Save Master Bracket">
                             <i class="fa fa-btn fa-save"></i> Save
                         </button>
@@ -31,40 +31,54 @@
                 </div>
                 <div class="row master-bracket">
 @foreach ($regions as $region)
-                    <div class="col-md-2 col-md-offset-1">
-                        <h3 class="region-header col-md-offset-2">{{ $region->region }}</h3>
+                    <div class="col-md-3">
+                        <h3 class="region-header">{{ $region->region }}</h3>
 @for ($team_rank = 1; $team_rank <= $region_size/2; $team_rank++)
         {{--*/ $firstid='region-'.$region->region.'-rank-'.$team_rank /*--}}
+        {{--*/ $firstname='team['.$region->region.']['.$team_rank.']' /*--}}
         {{--*/ $secondid='region-'.$region->region.'-rank-'.($region_size+1-$team_rank) /*--}}
+        {{--*/ $secondname='team['.$region->region.']['.($region_size+1-$team_rank).']' /*--}}
                         <div class="form-group">
                             <div class="row">
                                 <span class="rank-info text-right col-md-3">#{{ $team_rank}} </span>
                                 <div class="text-left col-md-9">
-                                    <label for="{{ $firstid }}" class="control-label master-label @if ($errors->has($firstid)) has-error @endif">
-@if (!empty(old($firstid)))
-                                        {{ old($firstid) }}
-@elseif (!empty($teamrepo->byRankRegion($team_rank,$region)))
-                                        {{ $teamrepo->byRankRegion($team_rank,$region)->name }}
-@else
-                                        {{ 'Team '.$team_rank }}
-@endif
+                                    <label for="{{ $firstid }}" class="control-label master-label @if ($errors->has($firstname)) has-error @endif">
+@if (!empty($old_val=old($firstname)))
+                                        {{ $old_val }}
                                     </label>
-                                    <input type="text" name="{{ $firstid }}" id="{{ $firstid }}" class="form-control master-input hide" value="{{ old($firstid) }}">
+                                    <input type="text" name="{{ $firstname }}" id="{{ $firstid }}" class="form-control master-input hide" value="{{ $old_val }}">
+@elseif (!empty($team=$teamrepo->byRankRegion($team_rank,$region)))
+                                        <span class="team-name" style="background-color: #{{ $team->primary_color }}; color: #{{ $team->accent_color }};">
+                                            {{ $team->name }}
+                                        </span>
+                                    </label>
+                                    <input type="text" name="{{ $firstname }}" id="{{ $firstid }}" class="form-control master-input hide" value="{{ $team->name }}">
+@else
+                                        <span class="placeholder">{{ 'Team '.$team_rank }}</span>
+                                    </label>
+                                    <input type="text" name="{{ $firstname }}" id="{{ $firstid }}" class="form-control master-input hide" >
+@endif
                                 </div>
                             </div>
                             <div class="row">
-                                <span class="rank-info text-right col-md-3">#{{$region_size+1-$team_rank}} </span>
+                                <span class="rank-info text-right col-md-3">#{{ $region_size+1-$team_rank }} </span>
                                 <div class="text-left col-md-9">
-                                    <label for="{{ $secondid }}" class="control-label master-label @if ($errors->has($secondid)) has-error @endif">
-@if (!empty(old($secondid)))
-                                        {{old($secondid)}}
-@elseif (!empty($teamrepo->byRankRegion(($region_size+1-$team_rank),$region)))
-                                        {{ $teamrepo->byRankRegion($team_rank,$region)->name }}
+                                    <label for="{{ $secondid }}" class="control-label master-label @if ($errors->has($secondname)) has-error @endif">
+@if (!empty($old_val=old($secondname)))
+                                        {{$old_val}}
+                                    </label>
+                                    <input type="text" name="{{ $secondname }}" id="{{ $secondid }}" class="form-control master-input hide" value="{{ $old_val }}">
+@elseif (!empty($team=$teamrepo->byRankRegion(($region_size+1-$team_rank),$region)))
+                                        <span class="team-name" style="background-color: #{{ $team->primary_color }}; color: #{{ $team->accent_color }};">
+                                            {{ $team->name }}
+                                        </span>
+                                    </label>
+                                    <input type="text" name="{{ $secondname }}" id="{{ $secondid }}" class="form-control master-input hide" value="{{ $team->name }}">
 @else
                                         <span class="placeholder">{{'Team '.($region_size+1-$team_rank)}}</span>
-@endif
                                     </label>
-                                    <input type="text" name="{{ $secondid }}" id="{{ $secondid }}" class="form-control master-input hide" value="{{ old($secondid) }}">
+                                    <input type="text" name="{{ $secondname }}" id="{{ $secondid }}" class="form-control master-input hide" value="">
+@endif
                                 </div>
                             </div>
                         </div>

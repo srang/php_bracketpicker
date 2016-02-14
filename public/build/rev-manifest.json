@@ -1,8 +1,10 @@
 {
-  "css/freelancer.css": "css/freelancer-9dadc506b4.css",
-  "css/frontend.css": "css/frontend-207636763a.css",
+  "css/frontend.css": "css/frontend-c3e392ea99.css",
+  "css/pick-a-color.css": "css/pick-a-color-42c906b849.css",
   "css/typeahead-bootstrap.css": "css/typeahead-bootstrap-0c1ae9e005.css",
-  "js/master_bracket.js": "js/master_bracket-d4ed53b2f5.js",
+  "js/color.js": "js/color-c6a94ecb14.js",
+  "js/master_bracket.js": "js/master_bracket-77f4a785f9.js",
   "js/summernote.js": "js/summernote-3b07836088.js",
-  "js/team_list.js": "js/team_list-bff80e9183.js"
+  "js/team_create.js": "js/team_create-963109fdcf.js",
+  "js/team_list.js": "js/team_list-282864b7cd.js"
 }

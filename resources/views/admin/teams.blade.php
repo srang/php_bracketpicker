@@ -40,6 +40,7 @@
                         <th>Mascot</th>
                         <th>Region</th>
                         <th>Rank</th>
+                        <th>Colors</th>
                         <th>&nbsp;</th>
                     </thead>
 
@@ -60,20 +61,37 @@
                             <td class="table-text">
                                 <div>{{ $team->rank }}</div>
                             </td>
-
+                            <td class="table-text" >
+                                <span class="text-center team-name" style="background-color: #{{ $team->primary_color }}; color: #{{ $team->accent_color }};">
+                                    {{ $team->name }}
+                                </span>
+                            </td>
                             <td>
-                                <form action="{{ url('admin/team/'.$team->team_id) }}" method="POST">
-                                    {!! csrf_field() !!}
-                                    {!! method_field('DELETE') !!}
-
-                                    <div class="btn-group">
-                                    <button type="submit" class="btn btn-danger">
-                                        <i class="fa fa-btn fa-trash"></i> Delete Team
-                                    </button>
-                                    <a class="btn btn-info" href="{{ url('admin/team/'.$team->team_id) }}">
-                                        <i class="fa fa-btn fa-pencil"></i> Edit Team
-                                    </a>
-                                </form>
+                                <div class="btn-group" role="group">
+                                    <form action="{{ url('admin/team/'.$team->team_id) }}" method="POST">
+                                        {!! csrf_field() !!}
+                                        {!! method_field('DELETE') !!}
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fa fa-btn fa-trash"></i> Delete
+                                        </button>
+                                        <a class="btn btn-info" href="{{ url('admin/team/'.$team->team_id) }}">
+                                            <i class="fa fa-btn fa-pencil"></i> Edit
+                                        </a>
+                                    </form>
+                                    <form action="{{ url('admin/team/'.$team->team_id) }}" method="POST">
+                                        {!! csrf_field() !!}
+                                        {!! method_field('PUT') !!}
+                                        <input type="hidden" name="name" value="{{ $team->name }}">
+                                        <input type="hidden" name="mascot" value="{{ $team->mascot }}">
+                                        <input type="hidden" name="rank" value="{{ $team->rank }}">
+                                        <input type="hidden" name="region" value="{{ $team->region->region }}">
+                                        <input type="hidden" name="primary_color" value="{{ $team->accent_color }}">
+                                        <input type="hidden" class="btn" name="accent_color" value="{{ $team->primary_color }}">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-btn fa-refresh"></i> Swap Colors
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
 @endforeach
@@ -88,25 +106,4 @@
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
-    <script>
-//    var teams =
-//    [
-//@foreach($teams as $_team)
-//        {
-//        'name': "{{ $_team->name }}",
-//        'team_id': "{{ $_team->team_id }}",
-//        },
-//@endforeach
-//    ];
-//    var regions =
-//    [
-//@foreach($regions as $region)
-//        {
-//        'region': "{{ $region->region }}",
-//        'region_id': "{{ $region->region_id }}"
-//        },
-//@endforeach
-//    ];
-    </script>
-    <script src="{{ elixir('js/team_list.js') }}"></script>
 @endpush
