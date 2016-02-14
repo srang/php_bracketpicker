@@ -4,5 +4,8 @@
     "bootstrap": "^3.3.6",
     "summernote": "~0.6.4",
     "pick-a-color": "^1.2.3"
+  },
+  "resolutions":{
+    "bootstrap": "^3.3.6"
   }
 }
