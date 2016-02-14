@@ -36,16 +36,16 @@
     "phplint": "^1.7.0"
   },
   "dependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
     "gulp": "~3.9.0",
     "gulp-bower": "0.0.13",
     "gulp-less": "~3.0.5",
+    "gulp-notify": "^2.2.0",
     "gulp-phpcbf": "^0.1.2",
     "gulp-phpunit": "~0.12.1",
     "gulp-qunit": "^1.3.0",
     "laravel-elixir": "~4.2.1",
-    "phplint": "^1.7.0",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-react": "^6.3.13",
-    "laravel-elixir": "~4.2.1"
+    "phplint": "^1.7.0"
   }
 }
