@@ -41,6 +41,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admin/bracket', 'AdminController@createMaster');
     Route::put('/admin/bracket', 'AdminController@setMaster');
     Route::get('/admin/teams', 'AdminController@listTeams');
+    Route::get('/admin/users', 'AdminController@listUsers');
     Route::post('/admin/team', 'AdminController@createTeam');
     Route::get('/admin/team/{team}', 'AdminController@viewTeam');
     Route::put('/admin/team/{team}', 'AdminController@updateTeam');

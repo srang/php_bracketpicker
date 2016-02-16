@@ -43,12 +43,12 @@ class Team extends Model
         $region_actual = Region::where('region',$region)->first();
         $other_team = Team::where('rank',$rank)->where('region_id',$region_actual->region_id)->first();
         if(isset($other_team) && $other_team->name != $this->name) {
-            $other_team->attributes['rank'] = NULL;
-            $other_team->attributes['region_id'] = Region::where('region','')->first()->region_id;// null region
+            $other_team->rank = NULL;
+            $other_team->region_id = Region::where('region','')->first()->region_id;// null region
             $other_team->save();
         }
-        $this->attributes['rank'] = $rank;
-        $this->attributes['region_id'] = $region_actual->region_id;
+        $this->rank = $rank;
+        $this->region_id = $region_actual->region_id;
         $this->save();
         return $this;
     }

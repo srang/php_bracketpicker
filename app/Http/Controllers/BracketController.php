@@ -27,4 +27,9 @@ class BracketController extends Controller
   {
     return view('brackets.index');
   }
+
+  public function submitBracket(Request $request)
+  {
+
+  }
 }

@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use Log;
+use DB;
 use App\Team;
+use App\User;
 use App\Bracket;
+use App\Game;
 use App\Region;
+use App\Factories\BracketFactory;
+use App\Strategies\CreateMasterBracketStrategy;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -19,18 +24,19 @@ class AdminController extends Controller
      *
      * @var TeamRepository
      */
-    protected $teamrepo;
+    protected $teamRepo;
 
     /**
      * Create a new controller instance.
      *
-     * @param  TaskRepository  $tasks
+     * @param  TeamRepository  $teams
      * @return void
      */
     public function __construct(TeamRepository $teams)
     {
-        $this->teamrepo = $teams;
+        $this->teamRepo = $teams;
     }
+
     /**
      * Display admin home page
      *
@@ -54,10 +60,10 @@ class AdminController extends Controller
         $bracket = Bracket::where('master',true)->first();
         if(empty($bracket)) {
             //need to set up master bracket
-            $teams = Team::all();
+            $teams = Team::where('name','<>','TBD')->get();
             $regions = Region::where('region','<>','')->get();
             return view('admin.create_master',[
-                'teamrepo' => $this->teamrepo,
+                'teamRepo' => $this->teamRepo,
                 'teams' => $teams,
                 'regions' => $regions,
                 'region_size' => 16,
@@ -85,7 +91,6 @@ class AdminController extends Controller
                 'team.West.*' => 'required|exists:teams,name',
                 'team.Midwest.*' => 'required|exists:teams,name',
             ]);
-            // update teams
         } else {
             Log::debug('Master creation request received');
             $this->validate($request, [
@@ -96,19 +101,51 @@ class AdminController extends Controller
             ]);
         }
 
+        $team_names = collect([]);
         foreach ($request->team as $region => $teams) {
             foreach ($teams as $rank => $team) {
-                if(!empty($team)) {
+                if(!empty($team) && !$team_names->contains($team)) {
                     Log::debug('Team: '.$team.' found in form with region: '.$region.' and rank: '.$rank);
-                    $team_actual = Team::where('name',$team)->first();
-                    $team_actual->setRegionRank($region,$rank);
+                    $team_actual = $this->teamRepo->byName($team);
+                    // check if update
+                    if($team_actual->region->region != $region || $team_actual->rank != $rank) {
+                        Log::debug('Updating team: '.$team.' from rank: '.$team_actual->rank.' to '.$rank.' and region: '.$team_actual->region->region.' to '.$region);
+                        $team_names->push($team);
+                        $team_actual->setRegionRank($region,$rank);
+                    }
                 }
             }
         }
+
         $alert = [
             'message' => 'Save successful',
             'level' => 'success'
         ];
+
+        if ($request->start_madness==='true') {
+            DB::beginTransaction();
+
+            $bracket = BracketFactory::createBracket($request, new CreateMasterBracketStrategy($this->teamRepo));
+
+            if (isset($bracket)) {
+                //do something
+                $bracket->name = 'Master Bracket';
+                $bracket->save();
+                DB::commit();
+                $alert = [
+                    'message' => 'Save successful. Bracket submission is open',
+                    'level' => 'success'
+                ];
+            } else {
+                DB::rollBack();
+                $alert = [
+                    'message' => 'Save successful but unable to start tournament due to problems with the master bracket as a whole',
+                    'level' => 'danger'
+                ];
+            }
+
+
+        }
         $request->session()->put('alert', $alert);
 
         return redirect()->action('AdminController@showMaster');
@@ -123,7 +160,7 @@ class AdminController extends Controller
 
     public function listTeams(Request $request)
     {
-        $teams = Team::all();
+        $teams = Team::where('name','<>','TBD')->get();
         $regions = Region::all();
         return view('admin.teams',[
             'teams' => $teams,
@@ -134,7 +171,7 @@ class AdminController extends Controller
     public function createTeam(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:255',
+            'name' => 'required|unique:teams,name|max:255',
             'mascot' => 'max:255',
             'primary_color' => array('regex:/^([a-fA-F0-9]){3}(([a-fA-F0-9]){3})?$/'),
             'accent_color' => array('regex:/^([a-fA-F0-9]){3}(([a-fA-F0-9]){3})?$/'),
@@ -187,6 +224,16 @@ class AdminController extends Controller
             'rank' => 'between:0,17'
         ]);
 
+        // check if more than one team has name (include self)
+        if (!empty($team_check=$this->teamRepo->byName($request-name)) && $team_check->team_id != $team->team_id) {
+            $alert = [
+                'message' => 'Team name already in use elsewhere',
+                'level' => 'danger'
+            ];
+            $request->session()->put('alert', $alert);
+            return redirect('/admin/team/'.$team->team_id)->withInput();
+        }
+
         $team->name = $request->name;
         $team->mascot = $request->mascot;
         $team->primary_color = $request->primary_color;
@@ -216,6 +263,15 @@ class AdminController extends Controller
         $request->session()->put('alert', $alert);
 
         return redirect()->action('AdminController@listTeams');
+    }
+
+    public function listUsers(Request $request)
+    {
+        // TODO track user payments
+        $users = User::all();
+        return view('admin.users',[
+            'users' => $users,
+        ]);
     }
 
 }
