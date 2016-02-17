@@ -11,6 +11,7 @@ use App\Game;
 use App\Region;
 use App\Factories\BracketFactory;
 use App\Strategies\CreateMasterBracketStrategy;
+use App\Strategies\ReverseBaseBracketStrategy;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -69,8 +70,12 @@ class AdminController extends Controller
                 'region_size' => 16,
             ]);
         }
+        $games = BracketFactory::reverseBracket($bracket,new ReverseBaseBracketStrategy());
+        $rounds = count($games);
         return view('admin.bracket',[
-            'master' => $bracket
+            'master' => $bracket,
+            'games' => $games,
+            'rounds' => $rounds
         ]);
     }
 
@@ -192,6 +197,7 @@ class AdminController extends Controller
             'message' => 'Save successful',
             'level' => 'success'
         ];
+        $request->session()->put('alert', $alert);
 
         return redirect()->action('AdminController@listTeams');
     }
@@ -225,7 +231,7 @@ class AdminController extends Controller
         ]);
 
         // check if more than one team has name (include self)
-        if (!empty($team_check=$this->teamRepo->byName($request-name)) && $team_check->team_id != $team->team_id) {
+        if (!empty($team_check=$this->teamRepo->byName($request->name)) && $team_check->team_id != $team->team_id) {
             $alert = [
                 'message' => 'Team name already in use elsewhere',
                 'level' => 'danger'

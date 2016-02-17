@@ -5,6 +5,7 @@
        <div class="panel-body">
             <!-- Display Validation Errors -->
 @include('common.errors')
+@include('common.alerts')
             <!-- New Team Form -->
             <form action="{{ url('admin/team/'.$team->team_id) }}" method="POST">
                 {!! method_field('PUT') !!}

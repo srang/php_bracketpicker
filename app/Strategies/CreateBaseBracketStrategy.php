@@ -20,6 +20,8 @@ class CreateBaseBracketStrategy extends AbstractCreateBracketStrategy
      */
     protected $master = 0;
 
+    protected $teamRepo;
+
     /**
      * Create a new bracket from request
      *
@@ -29,11 +31,28 @@ class CreateBaseBracketStrategy extends AbstractCreateBracketStrategy
     public function read(Request $req)
     {
         $games = collect([]);
-        // foreach round
-        // foreach game
-        // assert winner is one of team1,team2
-        return attemptBracketize(null, null);
-
+        foreach($req->round as $round_id => $round) {
+            foreach($round->game as $game) {
+                $team_a = $teamRepo->byName($game->team_a);
+                $team_b = $teamRepo->byName($game->team_b);
+                $winner;
+                if ($team_a->name === $game->winner) {
+                    $winner = $teamRepo->byName($game->team_a);
+                } else if ($team_b->name === $game->winner) {
+                    $winner = $teamRepo->byName($game->team_b);
+                } else {
+                    Log::error('Winner doesn\'t match either of the teams in the game.');
+                    return null;
+                }
+                $this->connectChildren($round, $games, Team $team_a, Team $team_b, Team $winner)
+            }
+        }
+        $bracket = $this->attemptBracketize($round, $games);
+        if (isset($bracket)) {
+            return $bracket;
+        }
+        Log::error('Something went wrong with master bracket creation');
+        return null;
     }
 
 }
