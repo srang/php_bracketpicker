@@ -13,6 +13,7 @@
                     <div class="list-group">
                         <a class="list-group-item" href={{ url('admin/teams') }}>Teams</a>
                         <a class="list-group-item" href={{ url('admin/bracket') }}>Master Bracket</a>
+                        <a class="list-group-item" href={{ url('admin/users') }}>Users</a>
                     </ul>
                 </div>
             </div>

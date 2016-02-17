@@ -47,7 +47,7 @@
                                         {{ $old_val }}
                                     </label>
                                     <input type="text" name="{{ $firstname }}" id="{{ $firstid }}" class="form-control master-input hide" value="{{ $old_val }}">
-@elseif (!empty($team=$teamrepo->byRankRegion($team_rank,$region)))
+@elseif (!empty($team=$teamRepo->byRankRegion($team_rank,$region->region)))
                                         <span class="team-name" style="background-color: #{{ $team->primary_color }}; color: #{{ $team->accent_color }};">
                                             {{ $team->name }}
                                         </span>
@@ -68,7 +68,7 @@
                                         {{$old_val}}
                                     </label>
                                     <input type="text" name="{{ $secondname }}" id="{{ $secondid }}" class="form-control master-input hide" value="{{ $old_val }}">
-@elseif (!empty($team=$teamrepo->byRankRegion(($region_size+1-$team_rank),$region)))
+@elseif (!empty($team=$teamRepo->byRankRegion(($region_size+1-$team_rank),$region->region)))
                                         <span class="team-name" style="background-color: #{{ $team->primary_color }}; color: #{{ $team->accent_color }};">
                                             {{ $team->name }}
                                         </span>

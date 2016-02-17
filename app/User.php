@@ -33,11 +33,31 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * The status of the user
+     *
+     * @return status
+     */
     public function status()
     {
         return $this->belongsTo('App\Status','status_id','status_id');
     }
 
+    /**
+     * The brackets belonging to the user
+     *
+     * @return brackets
+     */
+    public function brackets()
+    {
+        return $this->hasMany('App\Bracket','user_id','user_id');
+    }
+
+    /**
+     * The roles assigned to the user
+     *
+     * @return roles
+     */
     public function roles()
     {
         $roles = $this->belongsToMany('App\Role','userroles');

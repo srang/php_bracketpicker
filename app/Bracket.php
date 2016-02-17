@@ -13,4 +13,14 @@ class Bracket extends Model
      */
     protected $primaryKey = 'bracket_id';
 
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_id', 'root_game', 'name', 'master',
+    ];
+
 }
