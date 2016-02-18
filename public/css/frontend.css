@@ -6929,5 +6929,21 @@ body {
   font-weight: bold;
   background-color: #ffffff;
 }
+.bracket-body .bracket-game {
+  display: block;
+  margin: 20px auto;
+}
+.bracket-body .bracket-round {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+}
+.bracket-body .bracket-row {
+  margin: 60px 0;
+}
+.bracket-body .btn-team {
+  font-size: 0.75em;
+  width: 100%;
+}
 
 /*# sourceMappingURL=frontend.css.map */

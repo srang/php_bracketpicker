@@ -71,11 +71,13 @@ class AdminController extends Controller
             ]);
         }
         $games = BracketFactory::reverseBracket($bracket,new ReverseBaseBracketStrategy());
+        $regions = Region::where('region','<>','')->get();
         $rounds = count($games);
         return view('admin.bracket',[
+            'teamRepo' => $this->teamRepo,
             'master' => $bracket,
             'games' => $games,
-            'rounds' => $rounds
+            'regions' => $regions
         ]);
     }
 

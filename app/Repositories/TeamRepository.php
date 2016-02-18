@@ -52,4 +52,8 @@ class TeamRepository
         }
     }
 
+    public function byTeamId($team_id) {
+        return Team::where('team_id',$team_id)->first();
+    }
+
 }
