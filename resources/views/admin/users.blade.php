@@ -46,8 +46,8 @@
                                     <a class="btn btn-info" href="#">
                                         <i class="fa fa-btn fa-pencil"></i> Edit
                                     </a>
-                                    <button class="btn btn-primary">
-                                        <i class="fa fa-btn fa-warning"></i> Disable
+                                    <button class="btn btn-warning">
+                                        <i class="fa fa-btn fa-ban"></i> Disable
                                     </button>
                                 </div>
                             </td>

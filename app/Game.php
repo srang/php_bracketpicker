@@ -30,8 +30,14 @@ class Game extends Model
      */
     public function teams()
     {
-      $team_a = Team::where('team_id',$this->team_a)->first();
-      $team_b = Team::where('team_id',$this->team_b)->first();
-      return collect([$team_a, $team_b]);
+        $team_a = Team::where('team_id',$this->team_a)->first();
+        $team_b = Team::where('team_id',$this->team_b)->first();
+        return collect([$team_a, $team_b]);
     }
+
+    public function winner()
+    {
+        return $this->belongsTo('App\Team','winner','team_id');
+    }
+
 }

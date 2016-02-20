@@ -73,11 +73,15 @@ class AdminController extends Controller
         $games = BracketFactory::reverseBracket($bracket,new ReverseBaseBracketStrategy());
         $regions = Region::where('region','<>','')->get();
         $rounds = count($games);
-        return view('admin.bracket',[
+        return view('brackets.bracket_display',[
             'teamRepo' => $this->teamRepo,
-            'master' => $bracket,
+            'bracket' => $bracket,
+            'master' => true,
             'games' => $games,
-            'regions' => $regions
+            'regions' => $regions,
+            'game_container' => 'brackets.game_buttons',
+            'bracket_link' => url('admin/brackets/master'),
+            'back_link' => url('admin/brackets')
         ]);
     }
 
@@ -281,6 +285,76 @@ class AdminController extends Controller
         return view('admin.users',[
             'users' => $users,
         ]);
+    }
+
+    public function viewBracket(Request $request, Bracket $bracket)
+    {
+        // should this show the same bracket form?
+        // pass bracketbutton/bracketlabel based on tournament state?
+        $users = User::all();
+        $games = BracketFactory::reverseBracket($bracket,new ReverseBaseBracketStrategy());
+        $regions = Region::where('region','<>','')->get();
+        $rounds = count($games);
+        return view('brackets.bracket_display',[
+            'teamRepo' => $this->teamRepo,
+            'bracket' => $bracket,
+            'master' => false,
+            'games' => $games,
+            'regions' => $regions,
+            'users' => $users,
+            'game_container' => 'brackets.game_buttons',
+            'bracket_link' => url('admin/brackets/new'),
+            'back_link' => url('admin/brackets')
+        ]);
+    }
+
+    public function createBracket(Request $request)
+    {
+        Log::info($request);
+        // validation that no teams tbd
+        // creae user bracket
+        return redirect()->action('AdminController@bracketsIndex');
+    }
+
+    public function createUserBracket(Request $request)
+    {
+        $bracket = Bracket::where('master',true)->first();
+        $users = User::all();
+        $games = BracketFactory::reverseBracket($bracket,new ReverseBaseBracketStrategy());
+        $regions = Region::where('region','<>','')->get();
+        $rounds = count($games);
+        return view('brackets.bracket_display',[
+            'teamRepo' => $this->teamRepo,
+            'bracket' => $bracket,
+            'master' => false,
+            'games' => $games,
+            'regions' => $regions,
+            'users' => $users,
+            'game_container' => 'brackets.game_buttons',
+            'bracket_link' => url('admin/brackets/new'),
+            'back_link' => url('admin/brackets')
+        ]);
+    }
+
+    public function updateBracket(Request $request, Bracket $bracket)
+    {
+
+    }
+
+    public function deleteBracket(Request $request, Bracket $bracket)
+    {
+
+    }
+
+    public function bracketsIndex(Request $request)
+    {
+        $master = Bracket::where('master',true)->first();
+        $brackets = Bracket::where('master',false)->get();
+        return view('admin.brackets_home',[
+            'master' => $master,
+            'brackets' => $brackets
+        ]);
+
     }
 
 }

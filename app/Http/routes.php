@@ -37,9 +37,15 @@ Route::group(['middleware' => ['web']], function () {
   });
   Route::group(['middleware' => ['auth','role:admin']], function() {
     Route::get('/admin', 'AdminController@index');
-    Route::get('/admin/bracket', 'AdminController@showMaster');
-    Route::post('/admin/bracket', 'AdminController@createMaster');
-    Route::put('/admin/bracket', 'AdminController@setMaster');
+    Route::get('/admin/brackets', 'AdminController@bracketsIndex');
+    Route::get('/admin/brackets/master', 'AdminController@showMaster');
+    Route::post('/admin/brackets/master', 'AdminController@createMaster');
+    Route::put('/admin/brackets/master', 'AdminController@setMaster');
+    Route::get('/admin/brackets/new', 'AdminController@createUserBracket');
+    Route::get('/admin/brackets/{bracket}', 'AdminController@viewBracket');
+    Route::put('/admin/brackets/new','AdminController@createBracket');
+    Route::put('/admin/brackets/{bracket}', 'AdminController@updateBracket');
+    Route::delete('/admin/brackets/{bracket}','AdminController@destroyBracket');
     Route::get('/admin/teams', 'AdminController@listTeams');
     Route::get('/admin/users', 'AdminController@listUsers');
     Route::post('/admin/team', 'AdminController@createTeam');

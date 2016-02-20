@@ -1,9 +1,9 @@
-// initialize all tooltips
 function searchTeams(query, sync_cb) {
     var results = $.grep(teams,function(e){ return e.name.toLowerCase().indexOf(query.toLowerCase())>=0; });
     sync_cb(results);
 }
 
+// initialize all tooltips
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });

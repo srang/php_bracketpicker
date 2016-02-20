@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Bracket extends Model
@@ -22,5 +23,20 @@ class Bracket extends Model
     protected $fillable = [
         'user_id', 'root_game', 'name', 'master',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\User','user_id','user_id');
+    }
+
+    public function root()
+    {
+        return $this->belongsTo('App\Game','root_game','game_id');
+    }
+
+    public function winner()
+    {
+        return $this->root->winner;
+    }
 
 }

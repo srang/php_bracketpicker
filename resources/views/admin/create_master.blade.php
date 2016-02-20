@@ -10,14 +10,10 @@
 @include('common.alerts')
 @include('common.errors')
             <!-- Master Bracket Create Form -->
-            <form action="{{ url('admin/bracket') }}" method="POST">
+            <form action="{{ url('admin/brackets/master') }}" method="POST">
                 {!! csrf_field() !!}
+@include('common.back_button',['back_link'=>url('admin/brackets')])
                 <!-- Submit Button -->
-                <div class="pull-left">
-                    <a class="btn btn-primary" href="{{ url('/admin') }}">
-                        <i class="fa fa-btn fa-arrow-left"></i> Back
-                    </a>
-                </div>
                 <div class="row">
                     <div class="form-group btn-group pull-right">
                         <p class="btn btn-danger" id="start-madness" data-toggle="tooltip" data-placement="bottom" title="Save and Open Submissions">

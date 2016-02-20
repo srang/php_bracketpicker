@@ -11,7 +11,7 @@
 @include('admin.team_form')
                 <!-- Add Team Button -->
                 <div class="pull-left">
-                    <a class="btn btn-primary" href="{{ url('/admin') }}">
+                    <a class="btn btn-primary" href="{{ url('admin') }}">
                         <i class="fa fa-btn fa-arrow-left"></i> Back
                     </a>
                 </div>

@@ -11,10 +11,16 @@
                     {{ Auth::user()->name }} is logged in as admin
                     <br>
                     <div class="list-group">
-                        <a class="list-group-item" href={{ url('admin/teams') }}>Teams</a>
-                        <a class="list-group-item" href={{ url('admin/bracket') }}>Master Bracket</a>
-                        <a class="list-group-item" href={{ url('admin/users') }}>Users</a>
-                    </ul>
+                        <div class="list-group-item">
+                            <a href={{ url('admin/teams') }}>Teams</a>: view and update teams with their colors, mascot, rank and region
+                        </div>
+                        <div class="list-group-item">
+                            <a href={{ url('admin/brackets') }}>Brackets</a>: view and update user and master brackets
+                        </div>
+                        <div class="list-group-item">
+                            <a href={{ url('admin/users') }}>Users</a>: view and update users 
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
