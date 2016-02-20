@@ -31,6 +31,7 @@ elixir(function(mix) {
     mix.scripts(['pick-a-color.js','tinycolor-min.js'],'public/js/color.js');
     mix.browserify('summernote.js');
     mix.browserify('master_bracket.js');
+    mix.browserify('bracket_select.js');
     mix.browserify('team_list.js');
     mix.browserify('team_create.js');
     mix.version([
@@ -39,6 +40,7 @@ elixir(function(mix) {
             'js/team_create.js',
             'js/summernote.js',
             'js/color.js',
+            'js/bracket_select.js',
             'css/frontend.css',
             'css/pick-a-color.css',
             'css/typeahead-bootstrap.css'

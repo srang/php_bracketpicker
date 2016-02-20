@@ -4,11 +4,11 @@
     <div class="container">
        <div class="panel-body">
             <!-- Display Validation Errors -->
-@include('common.alerts')
 @include('common.errors')
+@include('common.alerts')
             <!-- New Team Form -->
             <form action="{{ url('admin/team') }}" method="POST">
-@include('common.team_form')
+@include('admin.team_form')
                 <!-- Add Team Button -->
                 <div class="pull-left">
                     <a class="btn btn-primary" href="{{ url('/admin') }}">
