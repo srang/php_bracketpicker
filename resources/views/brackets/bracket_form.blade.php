@@ -13,9 +13,12 @@
 @foreach($games as $round=>$round_games)
 {{--*/ $game_num = 1 /*--}}
 @foreach($round_games as $game)
-                <input class="hide" type="hidden" id="{{ 'R'.$round.'G'.$game_num.'T1' }}" value="{{ $teamRepo->byTeamId($game->team_a)->name }}" >
-                <input class="hide" type="hidden" id="{{ 'R'.$round.'G'.$game_num.'T2' }}" value="{{ $teamRepo->byTeamId($game->team_b)->name }}" >
-                <input class="hide" type="hidden" id="{{ 'R'.$round.'G'.$game_num.'W' }}"  value="{{ $teamRepo->byTeamId($game->winner)->name }}" >
+                <input class="hide" type="hidden" id="{{ 'R'.$round.'G'.$game_num.'T1' }}"
+                        name="{{ 'R'.$round.'G'.$game_num.'T1' }}" value="{{ $teamRepo->byTeamId($game->team_a)->name }}" >
+                <input class="hide" type="hidden" id="{{ 'R'.$round.'G'.$game_num.'T2' }}"
+                        name="{{ 'R'.$round.'G'.$game_num.'T2' }}" value="{{ $teamRepo->byTeamId($game->team_b)->name }}" >
+                <input class="hide" type="hidden" id="{{ 'R'.$round.'G'.$game_num.'W'  }}"
+                        name="{{ 'R'.$round.'G'.$game_num.'W'  }}" value="{{ $teamRepo->byTeamId($game->winner)->name }}" >
     {{--*/ $game_num++ /*--}}
 @endforeach
 @endforeach

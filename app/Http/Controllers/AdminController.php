@@ -158,8 +158,9 @@ class AdminController extends Controller
         return redirect()->action('AdminController@showMaster');
     }
 
-    public function setMaster(BracketSetRequest $request)
+    public function setMaster(Request $request)
     {
+        Log::info($request);
         $master = Bracket::where('master',true)->first();
 
         return redirect()->action('AdminController@showMaster');
