@@ -28,7 +28,7 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
     const ROUND_GAME_COUNT = 3;
     const TEAM_EXISTS = 4;
     const TEAM_NOT_TBD = 5;
-    const TEAMS_NOT_SAME = 6
+    const TEAMS_NOT_SAME = 6;
     const LEAVES_MATCH_MASTER = 7;
     const WINNER_IN_NEXT = 8;
     const WINNER_FROM_TEAMS = 9;
