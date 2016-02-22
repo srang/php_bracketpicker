@@ -164,7 +164,7 @@ class UpdateTeamColors extends Migration
             ]);
         DB::table('teams')->where('name',"Arizona")
             ->update([
-                'mascot'=>"MASCOT",
+                'mascot'=>"Huskies",
                 'primary_color'=> "00008f",
                 'accent_color'=> "ff0000"
             ]);
@@ -204,6 +204,7 @@ class UpdateTeamColors extends Migration
                 'primary_color'=> "eb0000",
                 'accent_color'=> "ffffff"
             ]);
+
     }
 
     /**

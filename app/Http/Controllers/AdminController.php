@@ -11,7 +11,11 @@ use App\Game;
 use App\Region;
 use App\Factories\BracketFactory;
 use App\Strategies\CreateMasterBracketStrategy;
+use App\Strategies\CreateBaseBracketStrategy;
 use App\Strategies\ReverseBaseBracketStrategy;
+use App\Strategies\ValidateBaseBracketStrategy;
+use App\Strategies\ValidateUserCreateBracketStrategy;
+use App\Strategies\ValidateMasterUpdateBracketStrategy;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -164,10 +168,9 @@ class AdminController extends Controller
 
     public function setMaster(Request $request)
     {
-        Log::info($request);
-        $master = Bracket::where('master',true)->first();
 
-        return redirect()->action('AdminController@showMaster');
+        $errors = BracketFactory::validateBracket($request,new ValidateMasterUpdateBracketStrategy($this->teamRepo));
+        return redirect()->action('AdminController@showMaster')->withInput()->withErrors($errors);
     }
 
     public function listTeams(Request $request)
@@ -308,14 +311,51 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * validate submitted bracket conforms to rules
+     *
+     */
     public function createBracket(Request $request)
     {
-        Log::info($request);
-        // validation that no teams tbd
-        // creae user bracket
+        $errors = BracketFactory::validateBracket($request,new ValidateUserCreateBracketStrategy($this->teamRepo));
+        if (count($errors) > 0) {
+            return redirect()->action('AdminController@createUserBracket')->withInput()->withErrors($errors);
+        }
+        // create user bracket
+        //DB::beginTransaction();
+
+        //$bracket = BracketFactory::createBracket($request, new CreateBaseBracketStrategy($this->teamRepo));
+
+        //$alert = [
+        //    'message' => 'Save successful',
+        //    'level' => 'success'
+        //];
+        //if (isset($bracket)) {
+        //    //do something
+        //    $bracket->name = $request->name;
+        //    $bracket->user = $request->user_id;
+        //    $bracket->save();
+        //    DB::commit();
+        //    $alert = [
+        //        'message' => 'Save successful. Bracket submission is open',
+        //        'level' => 'success'
+        //    ];
+        //} else {
+        //    DB::rollBack();
+        //    $alert = [
+        //        'message' => 'Save successful but unable to start tournament due to problems with the master bracket as a whole',
+        //        'level' => 'danger'
+        //    ];
+        //}
+
+        //$request->session()->put('alert', $alert);
         return redirect()->action('AdminController@bracketsIndex');
     }
 
+    /**
+     * display form for creating a bracket for a user
+     *
+     */
     public function createUserBracket(Request $request)
     {
         $bracket = Bracket::where('master',true)->first();
@@ -338,6 +378,7 @@ class AdminController extends Controller
 
     public function updateBracket(Request $request, Bracket $bracket)
     {
+        // assert bracket <> master
 
     }
 

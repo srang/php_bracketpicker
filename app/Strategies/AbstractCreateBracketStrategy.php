@@ -24,7 +24,7 @@ abstract class AbstractCreateBracketStrategy implements ICreateBracketStrategy
     protected $teamRepo;
 
     /**
-     * Create a new controller instance.
+     * Create a new strategy
      *
      * @param  TeamRepository  $teams
      * @return void
@@ -86,7 +86,6 @@ abstract class AbstractCreateBracketStrategy implements ICreateBracketStrategy
      */
     protected function attemptBracketize($round, $game_matrix)
     {
-        Log::info("bracketize me captain: ".($game_matrix->get($round)->count()));
         if ($game_matrix->get($round)->count() == 1) {
             $game = $game_matrix->get($round)->shift();
             $game->save();

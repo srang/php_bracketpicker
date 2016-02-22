@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+        <div class="container">
 @include('common.errors')
 @include('common.alerts')
-        <div class="container">
             <!-- Bracket Form -->
             <div class="row">
                 <form action="{{ $bracket_link }}" method="POST">

@@ -27,7 +27,6 @@ class ReverseBaseBracketStrategy implements IReverseBracketStrategy
 
         $game = Game::where('game_id',$bracket->root_game)->first();
         $this->addGame($games, $game);
-        Log::info($games);
         return $games;
     }
 
@@ -46,6 +45,7 @@ class ReverseBaseBracketStrategy implements IReverseBracketStrategy
             $this->addGame($games, $b_game);
         }
 
+        Log::debug('Added game '.$game->game_id.' to games');
         return $games;
     }
 
