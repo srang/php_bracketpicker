@@ -3,9 +3,11 @@
 namespace App\Strategies;
 
 use Log;
+use Auth;
 use App\Game;
 use App\Team;
 use App\Bracket;
+use App\User;
 use App\Strategies\IValidateBracketStrategy;
 use App\Repositories\TeamRepository;
 use App\Factories\BracketFactory;
@@ -67,31 +69,35 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
     {
         $errors = collect([]);
         try {
-            Log::info($req);
             $this->checkAssertion(array($this,'assertValidBracketId'),[$req->bracket_id],false,$errors);
             $this->checkAssertion(array($this,'assertNotMaster'),[$req->bracket_id],false,$errors);
+            $bracket = Bracket::where('bracket_id',$req->bracket_id)->first();
             $master = BracketFactory::reverseBracket(Bracket::where('master',1)->first(), new ReverseBaseBracketStrategy());
+            Log::info($master);
+            Log::info($req->games);
             foreach ($master as $round=>$games) {
                 $this->checkAssertion(array($this,'assertRoundIsSet'),[$req,$round],false,$errors);
                 $this->checkAssertion(array($this,'assertGameCountCorrect'),[$req,$round,$master[$round]->count()],false,$errors);
-                $round_games = $req->games[$round]
-                foreach($i=0;i<count($games); i++) {
+                $round_games = $req->games[$round];
+                for($i=1; $i<=count($games); $i++) {
                     $game= $round_games[$i];
                     $this->checkAssertion(array($this,'assertTeamsExist'),[$game],true,$errors);
                     $this->checkAssertion(array($this,'assertTeamsNotTBD'),[$game],true,$errors);
                     $this->checkAssertion(array($this,'assertTeamsDifferent'),[$game],true,$errors);
                     if ($round == 1) {
-                        $this->checkAssertion(array($this,'assertGamesMatch'),[$game,$master->$round->get($i)],false,$errors);
+                        $this->checkAssertion(array($this,'assertGamesMatch'),[$game,$master->get($round)->get($i-1)],true,$errors);
                     } else {
-                        $child_a = ;
-                        $child_b = ;
+                        $child_a = $req->games[$round-1][$i*2-1];
+                        $child_b = $req->games[$round-1][$i*2];
                         $this->checkAssertion(array($this,'assertTeamsChildWinners'),[$game,$child_a,$child_b],true, $errors);
                     }
                     $this->checkAssertion(array($this,'assertWinnerInTeams'),[$game],true,$errors);
                 }
             }
             $this->checkAssertion(array($this,'assertUserNotNull'),[$req->user_id],true,$errors);
-            $this->checkAssertion(array($this,'assertUserIsOwner'),[$req->user_id],true,$errors);
+            if(isset($bracket)) {
+                $this->checkAssertion(array($this,'assertUserIsOwner'),[$req->user_id,$bracket->user_id],true,$errors);
+            }
             $this->checkAssertion(array($this,'assertBracketNamed'),[$req->name],true,$errors);
         } catch (BracketValidationException $e) {
             Log::warning('bracket did not pass validation');
@@ -113,7 +119,7 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
                 $success = true;
             } else {
                 $errors->push($e->getMessage());
-                // log disallowed exception
+                Log::warning('BracketValidationException caught of type: '.$e->getCode().' and error logged with message: \''.$e->getMessage().'\'.');
             }
         }
         if (!($success || $continue)) {
@@ -130,7 +136,7 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
         if (!isset($b)) {
             throw new BracketValidationException('Bracket not found for id: \''.$bracket_id.'\'.', $this::BRACKET_EXISTS);
         }
-        Log::debug('BracketId set to \''$bracket_id.'\'.');
+        Log::debug('BracketId set to \''.$bracket_id.'\'.');
     }
 
     public function assertNotMaster($args)
@@ -184,10 +190,12 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
 
     public function assertTeamsNotTBD($args)
     {
+        Log::debug('checking if teams tbd');
         $game = $args[0];
         $team_a = $this->teamRepo->byName($game['T1']);
         $team_b = $this->teamRepo->byName($game['T2']);
         $winner = $this->teamRepo->byName($game['W']);
+        Log::debug('Team 1: \''.$team_a->name.'\', Team 2: \''.$team_b->name.'\', Winner: \''.$winner->name.'\'');
         if ($team_a->name == 'TBD') {
             throw new BracketValidationException('Team 1 with id '.$team_a->team_id.' is TBD', $this::TEAM_NOT_TBD);
         } else if ($team_b->name == 'TBD') {
@@ -204,7 +212,7 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
         $team_a = $this->teamRepo->byName($game['T1']);
         $team_b = $this->teamRepo->byName($game['T2']);
         if ($team_a->name == $team_b->name) {
-            throw new BracketValidationException('Team 1 with id '.$team_a->team_id.' has same name as Team 2 with id \''.$team_b->team_id.'\'.', $this::TEAMS_NOT_SAME);
+            throw new BracketValidationException('Team 1 with id \''.$team_a->team_id.'\' has same name as Team 2 with id \''.$team_b->team_id.'\'.', $this::TEAMS_NOT_SAME);
         }
         Log::debug('Team 1: \''.$team_a->team_id.'\', Team 2: \''.$team_b->team_id.'\' have different names');
     }
@@ -215,8 +223,8 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
         $team1_a = $this->teamRepo->byName($game1['T1']);
         $team1_b = $this->teamRepo->byName($game1['T2']);
         $game2 = $args[1];
-        $team2_a = $this->teamRepo->byName($game2['T1']);
-        $team2_b = $this->teamRepo->byName($game2['T2']);
+        $team2_a = $this->teamRepo->byTeamId($game2->team_a);
+        $team2_b = $this->teamRepo->byTeamId($game2->team_b);
         if ($team1_a->team_id != $team2_a->team_id) {
             throw new BracketValidationException('Request Team 1 with name '.$team1_a->name.
                 ' doesn\'t have same name as Master Team 1 with name \''.$team2_a->name.'\'.', $this::LEAVES_MATCH_MASTER);
@@ -224,7 +232,7 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
             throw new BracketValidationException('Request Team 2 with name '.$team1_b->name.
                 ' doesn\'t have same name as Master Team 2 with name \''.$team2_b->name.'\'.', $this::LEAVES_MATCH_MASTER);
         }
-        Log::debug('Team 1: \''.$team_a->team_id.'\', Team 2: \''.$team_b->team_id.'\' match master');
+        Log::debug('Team 1: \''.$team1_a->team_id.'\', Team 2: \''.$team1_b->team_id.'\' match master');
     }
 
     public function assertTeamsChildWinners($args)
@@ -234,12 +242,13 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
         $team_b = $this->teamRepo->byName($game['T2']);
         $child_a = $args[1];
         $winner_a = $this->teamRepo->byName($child_a['W']);
-        $child_b = $args[1];
+        $child_b = $args[2];
         $winner_b = $this->teamRepo->byName($child_b['W']);
-        if ($team_a->name == $winner_a->name) {
-            throw new BracketValidationException('Team 1 with id '.$team_a->team_id.' has same name as Child 1 with id \''.$child_a->team_id.'\'.', $this::WINNER_IN_NEXT);
-        } else if ($team_b->name == $winner_b->name) {
-            throw new BracketValidationException('Team 2 with id '.$team_b->team_id.' has same name as Child 2 with id \''.$child_b->team_id.'\'.', $this::WINNER_IN_NEXT);
+        Log::info('ChildTeamWinners '.$team_a.' '.$team_b.' '.$winner_a.' '.$winner_b);
+        if ($team_a->name != $winner_a->name) {
+            throw new BracketValidationException('Team 1 with id '.$team_a->team_id.' doesn\'t have same name as Child 1 with id \''.$winner_a->team_id.'\'.', $this::WINNER_IN_NEXT);
+        } else if ($team_b->name != $winner_b->name) {
+            throw new BracketValidationException('Team 2 with id '.$team_b->team_id.' doesn\'t have same name as Child 2 with id \''.$winner_b->team_id.'\'.', $this::WINNER_IN_NEXT);
         }
         Log::debug('Team 1: \''.$team_a->team_id.'\', Team 2: \''.$team_b->team_id.'\' Children winners');
 
@@ -258,10 +267,6 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
         Log::debug('Winner: \''.$winner->name.'\' is one of Team 1: \''.$team_a->name.'\', Team 2: \''.$team_b->name.'\'');
     }
 
-        //      assert $req_game->winner  in $req_game->teams
-        //   endforeach
-        // end foreach
-
     public function assertUserNotNull($args)
     {
         $user_id = $args[0];
@@ -278,7 +283,7 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
         $user = User::where('user_id',$user_id)->first();
         $auth = Auth::user();
         $owner = Bracket::where('user_id',$args[1])->first()->user;
-        if ($user->user_id != $auth->user_id ||) {
+        if ($user->user_id != $auth->user_id) {
             throw new BracketValidationException('Form user with id \''.$user->user_id.
                 '\' doesn\'t match authenticated user with id \''.$auth->user_id.'\'.', $this::USER_MATCHES_OWNER);
         } else if ( $user->user_id != $owner->user_id ) {
@@ -295,11 +300,10 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
 
     public function assertBracketNamed($args)
     {
-        $user_id = $args[0];
-        $user = User::where('user_id',$user_id)->first();
-        if (!isset($user)) {
-            throw new BracketValidationException('Winner with name '.$game['W'].' doesn\'t exist', $this::NAME_SET);
+        $name = $args[0];
+        if (!isset($name)) {
+            throw new BracketValidationException('Bracket needs a name', $this::NAME_SET);
         }
-        Log::debug('Round '.$round.' correctly has '.$game_count.' games.');
+        Log::debug('Bracket named \''.$name.'\'.');
     }
 }
