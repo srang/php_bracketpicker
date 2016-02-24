@@ -22,13 +22,16 @@ install:
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-stable; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-lowest --prefer-stable; fi
 
-script: phpunit
-
 services:
   - mysql
 
 before_script:
   - mysql -e 'create database tourney;'
+  - php artisan migrate:install --no-interaction -vvv
+
+script:
+  - php artisan migate --no-interaction -vvv
+  - phpunit
 
 notifications:
     on_success: never
