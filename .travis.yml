@@ -23,7 +23,7 @@ before_script:
 
 script:
   - php artisan migrate --no-interaction -vvv
-  - phpunit
+  - gulp test
 
 notifications:
     on_success: never
