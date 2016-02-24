@@ -24,6 +24,12 @@ install:
 
 script: phpunit
 
+services:
+  - mysql
+
+before_script:
+  - mysql -e 'create database tourney;'
+
 notifications:
     on_success: never
     on_failure: always
