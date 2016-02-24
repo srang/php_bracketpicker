@@ -13,7 +13,7 @@ install:
   - if [[ $setup = 'basic' ]]; then travis_retry composer install --no-interaction --prefer-source; fi
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-stable; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-lowest --prefer-stable; fi
-  - npm install
+  - npm install -g gulp
 
 services:
   - mysql
@@ -24,6 +24,7 @@ before_script:
 
 script:
   - php artisan migrate --no-interaction -vvv
+  - gulp
   - gulp test
 
 notifications:
