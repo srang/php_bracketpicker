@@ -30,7 +30,7 @@ before_script:
   - php artisan migrate:install --no-interaction -vvv
 
 script:
-  - php artisan migate --no-interaction -vvv
+  - php artisan migrate --no-interaction -vvv
   - phpunit
 
 notifications:
