@@ -13,8 +13,8 @@ install:
   - if [[ $setup = 'basic' ]]; then travis_retry composer install --no-interaction --prefer-source; fi
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-stable; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-lowest --prefer-stable; fi
+  - npm install -g npm@'>=2.1.9'
   - npm install -g gulp
-  - travis_retry npm install npm -g
   - travis_retry npm install
   - travis_retry gulp
 
@@ -31,4 +31,4 @@ script:
 
 notifications:
     on_success: never
-    on_failure: always
+    on_failure: never
