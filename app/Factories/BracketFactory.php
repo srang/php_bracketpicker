@@ -7,6 +7,7 @@ use DB;
 use App\Bracket;
 use App\Strategies\ICreateBracketStrategy;
 use App\Strategies\IReverseBracketStrategy;
+use App\Strategies\IValidateBracketStrategy;
 use Illuminate\Http\Request;
 
 
@@ -39,6 +40,18 @@ class BracketFactory
     public static function reverseBracket(Bracket $bracket, IReverseBracketStrategy $strat)
     {
         return $strat->build($bracket);
+    }
+
+    /**
+     * validates bracket update/create request
+     *
+     * @param Request  $req
+     * @param IValidateBracketStrategy  $strat
+     * @return error collection
+     */
+    public static function validateBracket(Request $req, IValidateBracketStrategy $strat)
+    {
+        return $strat->validate($req);
     }
 
 }

@@ -31,23 +31,29 @@ class CreateBaseBracketStrategy extends AbstractCreateBracketStrategy
     public function read(Request $req)
     {
         $games = collect([]);
-        foreach($req->round as $round_id => $round) {
-            foreach($round->game as $game) {
-                $team_a = $teamRepo->byName($game->team_a);
-                $team_b = $teamRepo->byName($game->team_b);
-                $winner;
-                if ($team_a->name === $game->winner) {
-                    $winner = $teamRepo->byName($game->team_a);
-                } else if ($team_b->name === $game->winner) {
-                    $winner = $teamRepo->byName($game->team_b);
+        Log::info($req->games);
+        $req_games = $req->games;
+        $round_count = count($req_games);
+        for($round_id = 1; $round_id <= $round_count; $round_id++) {
+            $round = $req_games[$round_id];
+            Log::info("creating round ".$round_id);
+            $games->put($round_id, collect([]));
+            foreach($round as $game) {
+                $team_a = $this->teamRepo->byName($game['T1']);
+                $team_b = $this->teamRepo->byName($game['T2']);
+                if ($team_a->name === $game['W']) {
+                    $winner = $this->teamRepo->byName($game['T1']);
+                } else if ($team_b->name === $game['W']) {
+                    $winner = $this->teamRepo->byName($game['T2']);
                 } else {
                     Log::error('Winner doesn\'t match either of the teams in the game.');
                     return null;
                 }
-                $this->connectChildren($round, $games, Team $team_a, Team $team_b, Team $winner)
+                Log::info('Found Teams {'.$team_a->name.','.$team_b->name.','.$winner->name.'}');
+                $this->connectChildren($round_id, $games, $team_a, $team_b, $winner);
             }
+            $bracket = $this->attemptBracketize($round_id, $games);
         }
-        $bracket = $this->attemptBracketize($round, $games);
         if (isset($bracket)) {
             return $bracket;
         }

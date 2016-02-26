@@ -11,7 +11,12 @@ use App\Game;
 use App\Region;
 use App\Factories\BracketFactory;
 use App\Strategies\CreateMasterBracketStrategy;
+use App\Strategies\CreateBaseBracketStrategy;
 use App\Strategies\ReverseBaseBracketStrategy;
+use App\Strategies\ValidateBaseBracketStrategy;
+use App\Strategies\ValidateAdminCreateBracketStrategy;
+use App\Strategies\ValidateAdminUpdateBracketStrategy;
+use App\Strategies\ValidateMasterUpdateBracketStrategy;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -71,11 +76,17 @@ class AdminController extends Controller
             ]);
         }
         $games = BracketFactory::reverseBracket($bracket,new ReverseBaseBracketStrategy());
+        $regions = Region::where('region','<>','')->get();
         $rounds = count($games);
-        return view('admin.bracket',[
-            'master' => $bracket,
+        return view('brackets.bracket_display',[
+            'teamRepo' => $this->teamRepo,
+            'bracket' => $bracket,
+            'master' => true,
             'games' => $games,
-            'rounds' => $rounds
+            'regions' => $regions,
+            'game_container' => 'brackets.game_buttons',
+            'bracket_link' => url('admin/brackets/master'),
+            'back_link' => url('admin/brackets')
         ]);
     }
 
@@ -156,11 +167,11 @@ class AdminController extends Controller
         return redirect()->action('AdminController@showMaster');
     }
 
-    public function setMaster(BracketSetRequest $request)
+    public function setMaster(Request $request)
     {
-        $master = Bracket::where('master',true)->first();
 
-        return redirect()->action('AdminController@showMaster');
+        $errors = BracketFactory::validateBracket($request,new ValidateMasterUpdateBracketStrategy($this->teamRepo));
+        return redirect()->action('AdminController@showMaster')->withInput()->withErrors($errors);
     }
 
     public function listTeams(Request $request)
@@ -278,6 +289,139 @@ class AdminController extends Controller
         return view('admin.users',[
             'users' => $users,
         ]);
+    }
+
+    public function viewBracket(Request $request, Bracket $bracket)
+    {
+        // should this show the same bracket form?
+        // pass bracketbutton/bracketlabel based on tournament state?
+        $users = User::all();
+        $games = BracketFactory::reverseBracket($bracket,new ReverseBaseBracketStrategy());
+        $regions = Region::where('region','<>','')->get();
+        $user = $bracket->user;
+        $rounds = count($games);
+        return view('brackets.bracket_display',[
+            'teamRepo' => $this->teamRepo,
+            'bracket' => $bracket,
+            'master' => false,
+            'games' => $games,
+            'regions' => $regions,
+            'user' => $user,
+            'game_container' => 'brackets.game_buttons',
+            'bracket_link' => url('admin/brackets/'.$bracket->bracket_id),
+            'back_link' => url('admin/brackets')
+        ]);
+    }
+
+    /**
+     * validate submitted bracket conforms to rules
+     *
+     */
+    public function createBracket(Request $request)
+    {
+        $errors = BracketFactory::validateBracket($request,new ValidateAdminCreateBracketStrategy($this->teamRepo));
+        if ($errors->count() > 0) {
+            return redirect()->action('AdminController@createUserBracket')->withInput()->withErrors($errors);
+        }
+        // create user bracket
+        DB::beginTransaction();
+
+        $bracket = BracketFactory::createBracket($request, new CreateBaseBracketStrategy($this->teamRepo));
+
+        if (isset($bracket)) {
+            $bracket->name = $request->name;
+            $bracket->user_id = $request->user_id;
+            $bracket->save();
+            DB::commit();
+            $alert = [
+                'message' => 'Save successful.',
+                'level' => 'success'
+            ];
+        } else {
+            DB::rollBack();
+            $alert = [
+                'message' => 'Save successful but unable to start tournament due to problems with the master bracket as a whole',
+                'level' => 'danger'
+            ];
+        }
+
+        $request->session()->put('alert', $alert);
+        return redirect()->action('AdminController@bracketsIndex');
+    }
+
+    /**
+     * display form for creating a bracket for a user
+     *
+     */
+    public function createUserBracket(Request $request)
+    {
+        $bracket = Bracket::where('master',true)->first();
+        $users = User::all();
+        $games = BracketFactory::reverseBracket($bracket,new ReverseBaseBracketStrategy());
+        $regions = Region::where('region','<>','')->get();
+        $rounds = count($games);
+        return view('brackets.bracket_display',[
+            'teamRepo' => $this->teamRepo,
+            'bracket' => $bracket,
+            'master' => false,
+            'games' => $games,
+            'regions' => $regions,
+            'users' => $users,
+            'game_container' => 'brackets.game_buttons',
+            'bracket_link' => url('admin/brackets/new'),
+            'back_link' => url('admin/brackets')
+        ]);
+    }
+
+    public function updateBracket(Request $request, Bracket $bracket)
+    {
+        $errors = BracketFactory::validateBracket($request,new ValidateAdminUpdateBracketStrategy($this->teamRepo));
+        if ($errors->count() > 0) {
+            return redirect()->action('AdminController@createUserBracket')->withInput()->withErrors($errors);
+        }
+        // create user bracket
+        DB::beginTransaction();
+
+        $bracket = BracketFactory::createBracket($request, new CreateBaseBracketStrategy($this->teamRepo));
+
+        if (isset($bracket)) {
+            $bracket->name = $request->name;
+            $bracket->user_id = $request->user_id;
+            $bracket->save();
+            DB::commit();
+            $alert = [
+                'message' => 'Save successful.',
+                'level' => 'success'
+            ];
+        } else {
+            DB::rollBack();
+            $alert = [
+                'message' => 'Save successful but unable to start tournament due to problems with the master bracket as a whole',
+                'level' => 'danger'
+            ];
+        }
+
+        $request->session()->put('alert', $alert);
+        return redirect()->action('AdminController@bracketsIndex');
+
+    }
+
+    public function deleteBracket(Request $request, Bracket $bracket)
+    {
+
+    }
+
+    public function bracketsIndex(Request $request)
+    {
+        $master = Bracket::where('master',1)->first();
+        $brackets = Bracket::where('master',0)->get();
+        $game = $master->root;
+        return view('admin.brackets_home',[
+            'gamer' => $game,
+            'master' => $master,
+            'brackets' => $brackets
+        ]);
+
     }
 
 }

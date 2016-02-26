@@ -1,19 +1,11 @@
 language: php
 
 php:
-  - 5.6
   - 7.0
 
 env:
   global:
     - setup=basic
-
-matrix:
-  include:
-    - php: 5.6
-      env: setup=lowest
-    - php: 5.6
-      env: setup=stable
 
 sudo: false
 
@@ -21,9 +13,22 @@ install:
   - if [[ $setup = 'basic' ]]; then travis_retry composer install --no-interaction --prefer-source; fi
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-stable; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-lowest --prefer-stable; fi
+  - npm install -g npm@'>=2.1.9'
+  - npm install -g gulp
+  - travis_retry npm install
+  - travis_retry gulp
 
-script: phpunit
+services:
+  - mysql
+
+before_script:
+  - mysql -e 'create database tourney;'
+  - php artisan migrate:install --no-interaction -vvv
+
+script:
+  - php artisan migrate --no-interaction -vvv
+  - gulp test
 
 notifications:
     on_success: never
-    on_failure: always
+    on_failure: never
