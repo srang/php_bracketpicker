@@ -34,9 +34,4 @@ class Bracket extends Model
         return $this->belongsTo('App\Game','root_game','game_id');
     }
 
-    public function winner()
-    {
-        return $this->root->winner;
-    }
-
 }

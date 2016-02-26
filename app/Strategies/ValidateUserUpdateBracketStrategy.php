@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
  * Validator for creating new user brackets
  *
  */
-class ValidateUserCreateBracketStrategy extends ValidateBaseBracketStrategy
+class ValidateUserUpdateBracketStrategy extends ValidateBaseBracketStrategy
 {
 
     /**
@@ -41,7 +41,6 @@ class ValidateUserCreateBracketStrategy extends ValidateBaseBracketStrategy
     {
         $this->teamRepo = $teams;
         $this->allowList = collect([
-            $this::BRACKET_EXISTS => 'bracket_id not yet created',
         ]);
     }
 

@@ -65,7 +65,7 @@
         </div>
 
         <!-- User Brackets -->
-@if (count($brackets) > 0)
+@if ($brackets->count() > 0)
         <div class="panel panel-default">
             <div class="panel-heading">
                 Brackets
@@ -94,8 +94,8 @@
                                 <div>{{ $bracket->name }}</div>
                             </td>
                             <td class="table-text" >
-                                <span class="text-center team-name" style="background-color: #{{ $bracket->winner()->primary_color }}; color: #{{ $bracket->winner()->accent_color }};">
-                                    {{ $bracket->winner()->name }}
+                                <span class="text-center team-name" style="background-color: #{{ $bracket->root->wenner->primary_color }}; color: #{{ $bracket->root->wenner->accent_color }};">
+                                    {{ $bracket->root->wenner->name }}
                                 </span>
                             </td>
                             <td>

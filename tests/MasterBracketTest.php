@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class MasterBracketTest extends TestCase
 {
 
+    use DatabaseTransactions;
+
 /*
  * Test that save works with only some fields filled
  * Test that save with duplicates will only save one (should make consistent which one

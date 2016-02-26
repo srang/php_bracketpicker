@@ -7,12 +7,13 @@
                             <input type="text" name="name" placeholder="Bracket Name" id="bracket-name" class="form-control" value="{{ (!empty(old('name'))||!isset($bracket))?old('name'):(($master)?$bracket->name:(Auth::user()->name.'\'s Bracket')) }}">
                         </div>
                     </div>
-@if( Auth::user()->hasRole('admin') && isset($users) )
+@if( Auth::user()->hasRole('admin') && !isset($user) && isset($users) )
     {{-- if admin allow setting of user for user brackets --}}
                     <div class="col-md-6">
                         <div class="form-group @if ($errors->has('user_id')) has-error @endif">
+                            <input type="hidden" class="hide" name="user_id" id="bracket-owner-real" value="{{ (!empty(old('user_id')))?old('user_id'):Auth::user()->user_id }}">
                             <label for="bracket-owner" class="col-sm-3 control-label">Bracket Owner</label>
-                            <input type="text" name="user_id" placeholder="Jake" id="bracket-owner" class="form-control" value="{{ (!empty(old('user_id'))||!isset($user))?old('user_id'):$user->name }}">
+                            <input type="text" placeholder="Jake" id="bracket-owner" class="form-control" >
                         </div>
                     </div>
 @push('styles')
@@ -34,13 +35,15 @@
     </script>
 @endpush
 
+@elseif (isset($user))
+                    <input type="hidden" name="user_id" id="bracket-owner" class="hide" value="{{ $user->user_id }}">
 @else
-                    <input type="hide" name="user_id" id="bracket-owner" class="hide" value="{{ Auth::user()->user_id }}">
+                    <input type="hidden" name="user_id" id="bracket-owner" class="hide" value="{{ Auth::user()->user_id }}">
 @endif
 @if(!Request::is('*/brackets/new'))
-                    <input type="hide" name="bracket_id" id="bracket-id" class="hide" value="{{  $bracket->bracket_id  }}">
+                    <input type="hidden" name="bracket_id" id="bracket-id" class="hide" value="{{  $bracket->bracket_id  }}">
 @else 
-                    <input type="hide" name="bracket_id" id="bracket-id" class="hide" value="">
+                    <input type="hidden" name="bracket_id" id="bracket-id" class="hide" value="">
 @endif
                 </div>
 

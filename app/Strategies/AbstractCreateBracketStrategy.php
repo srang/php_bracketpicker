@@ -53,27 +53,27 @@ abstract class AbstractCreateBracketStrategy implements ICreateBracketStrategy
      * @param isMaster bool
      * @return void
      */
-    protected function connectChildren($round, $game_matrix, Team $team_a, Team $team_b, Team $winner)
+    protected function connectChildren($round_id, $game_matrix, Team $team_a, Team $team_b, Team $winner)
     {
-        Log::debug('Creating game for '.$team_a->name.' vs '.$team_b->name.' in round: '.$round.' in region '.$team_a->region->region);
+        Log::debug('Creating game for '.$team_a->name.' vs '.$team_b->name.' in round: '.$round_id.' in region '.$team_a->region->region);
         $game = new Game([
             'team_a' => $team_a->team_id,
             'team_b' => $team_b->team_id,
             'master' => $this->master,
             'winner' => $winner->team_id,
-            'round_id' => $round
+            'round_id' => $round_id
         ]);
 
         // first round games don't have children
-        if ($round > 1) {
-            $child1 = $game_matrix->get($round-1)->shift();
+        if ($round_id > 1) {
+            $child1 = $game_matrix->get($round_id-1)->shift();
             $child1->save();
-            $child2 = $game_matrix->get($round-1)->shift();
+            $child2 = $game_matrix->get($round_id-1)->shift();
             $child2->save();
             $game->child_game_a = $child1->game_id;
             $game->child_game_b = $child2->game_id;
         }
-        $game_matrix->get($round)->push($game);
+        $game_matrix->get($round_id)->push($game);
         return $game_matrix;
     }
 
@@ -84,10 +84,11 @@ abstract class AbstractCreateBracketStrategy implements ICreateBracketStrategy
      * @param game_matrix Game[][] storing games by round
      * @return Bracket|null
      */
-    protected function attemptBracketize($round, $game_matrix)
+    protected function attemptBracketize($round_id, $game_matrix)
     {
-        if ($game_matrix->get($round)->count() == 1) {
-            $game = $game_matrix->get($round)->shift();
+        Log::info('bracketize '.$round_id);
+        if ($game_matrix->get($round_id)->count() == 1) {
+            $game = $game_matrix->get($round_id)->shift();
             $game->save();
             $bracket = new Bracket([
                 'root_game' => $game->game_id,
@@ -95,7 +96,7 @@ abstract class AbstractCreateBracketStrategy implements ICreateBracketStrategy
             ]);
             return $bracket;
 
-        } else if ($game_matrix->get($round)->count() < 1) {
+        } else if ($game_matrix->get($round_id)->count() < 1) {
             Log::error('game matrix count below 1');
         }
         return null;

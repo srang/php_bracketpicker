@@ -7,19 +7,22 @@ function searchUsers(query, sync_cb) {
 $('#bracket-owner').typeahead({
         minLength: 1,
         highlight: true
-    },
-    {
-        name: 'user-dataset',
-        display: 'name',
-        source: searchUsers,
-        templates: {
-            empty: [
-                '<div class="typeahead-result">',
-                'No Results',
-                '</div>'
+},
+{
+    name: 'user-dataset',
+    display: 'name',
+    source: searchUsers,
+    templates: {
+        empty: [
+            '<div class="typeahead-result">',
+            'No Results',
+            '</div>'
                     ].join('\n'),
-            suggestion : function (val) {
+                    suggestion : function (val) {
                         return '<p class="typeahead-result" data-value="' + val.id + '">' + val.name + '</p>';
                     }
     }
+});
+$('#bracket-owner').bind('typeahead:selected', function(obj, datum, name) {
+    $('#bracket-owner-real').val(datum.id);
 });
