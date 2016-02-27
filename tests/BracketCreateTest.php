@@ -19,6 +19,7 @@ class BracketCreateTest extends TestCase
 
     /**
      * create a bracket as admin
+     * make sure page loads and is different with and without master bracket
      */
 
     /**
