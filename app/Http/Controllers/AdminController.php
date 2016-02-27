@@ -418,10 +418,15 @@ class AdminController extends Controller
     {
         $master = Bracket::where('master',1)->first();
         $brackets = Bracket::where('master',0)->get();
-        $game = $master->root;
+        if (isset($master)) {
+            $game = $master->root;
+            return view('admin.brackets_home',[
+                'gamer' => $game,
+                'master' => $master,
+                'brackets' => $brackets
+            ]);
+        }
         return view('admin.brackets_home',[
-            'gamer' => $game,
-            'master' => $master,
             'brackets' => $brackets
         ]);
 
