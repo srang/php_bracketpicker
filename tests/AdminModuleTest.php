@@ -12,6 +12,12 @@ class AdminModuleTest extends TestCase
     protected $admin;
 
     /**
+     * test that it won't work without master
+     *
+     */
+
+
+    /**
      * Sets up base user and admin for tests
      */
     public function setUp()

@@ -57,11 +57,13 @@
         </div>
         <div class="row">
 @include('common.back_button',[ 'back_link'=>url('admin')])
+@if(isset($master))
             <div class="pull-right">
                 <a class="btn btn-success" href="{{ url('admin/brackets/new') }}">
                     <i class="fa fa-btn fa-plus"></i> Create Bracket
                 </a>
             </div>
+@endif
         </div>
 
         <!-- User Brackets -->
