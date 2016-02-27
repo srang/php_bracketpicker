@@ -382,12 +382,15 @@ class AdminController extends Controller
         // create user bracket
         DB::beginTransaction();
 
-        $bracket = BracketFactory::createBracket($request, new CreateBaseBracketStrategy($this->teamRepo));
+        $bracket_updated = BracketFactory::createBracket($request, new CreateBaseBracketStrategy($this->teamRepo));
 
-        if (isset($bracket)) {
-            $bracket->name = $request->name;
-            $bracket->user_id = $request->user_id;
-            $bracket->save();
+        if (isset($bracket_updated)) {
+            $bracket_updated->name = $request->name;
+            $bracket_updated->user_id = $request->user_id;
+            $bracket_updated->save();
+            // update just creates new and deletes old
+            // consider revisiting this later
+            $bracket->delete();
             DB::commit();
             $alert = [
                 'message' => 'Save successful.',
@@ -422,6 +425,20 @@ class AdminController extends Controller
             'brackets' => $brackets
         ]);
 
+    }
+
+    public function destroyBracket(Request $request, Bracket $bracket)
+    {
+        $name = $bracket->name;
+        $bracket->delete();
+
+        $alert = [
+            'message' => 'Team ('.$name.') deleted',
+            'level' => 'warning'
+        ];
+        $request->session()->put('alert', $alert);
+
+        return redirect()->action('AdminController@bracketsIndex');
     }
 
 }
