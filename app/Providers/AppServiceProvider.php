@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Log;
 use Config;
-use App\Tournament;
+//use App\Tournament;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,10 +16,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $tourney = Tournament::where('active',true)->first();
-        view()->share('tourney_name', $tourney->name);
-        view()->share('tourney_state', $tourney->state);
-        view()->share('tourney', $tourney);
+        // TODO: make datadriven
+        view()->share('tourney_name', 'March Madness');
+        view()->share('tourney_state', { 'name' => 'setup' });
+//        $tourney = Tournament::where('active',true)->first();
+//        view()->share('tourney_name', $tourney->name);
+//        view()->share('tourney_state', $tourney->state);
+//        view()->share('tourney', $tourney);
     }
 
     /**
