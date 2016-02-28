@@ -22,11 +22,12 @@ services:
   - mysql
 
 before_script:
-  - mysql -e 'create database if not exists tourney;'
-  - php artisan migrate:install --no-interaction
+  - mysql -e 'drop database if exists tourney;'
+  - mysql -e 'create database tourney;'
+  - php artisan migrate:install --no-interaction -vvv
 
 script:
-  - php artisan migrate --no-interaction
+  - php artisan migrate --no-interaction -vvv
   - gulp test
 
 notifications:
