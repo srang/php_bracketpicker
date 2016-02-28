@@ -8,6 +8,7 @@ use App\Game;
 use App\Team;
 use App\Bracket;
 use App\User;
+use App\Tournament;
 use App\Strategies\IValidateBracketStrategy;
 use App\Repositories\TeamRepository;
 use App\Factories\BracketFactory;
@@ -37,7 +38,8 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
     const USER_EXISTS = 10;
     const USER_MATCHES_OWNER = 11;
     const NAME_SET = 12;
-    const HALT = 13;
+    const SUBMISSION_CLOSED = 13;
+    const HALT = 14;
 
 
 
@@ -69,6 +71,7 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
     {
         $errors = collect([]);
         try {
+            $this->checkAssertion(array($this,'assertSubmissionOpen'),[],false,$errors);
             $this->checkAssertion(array($this,'assertValidBracketId'),[$req->bracket_id],false,$errors);
             // assert master exists
             $this->checkAssertion(array($this,'assertNotMaster'),[$req->bracket_id],false,$errors);
@@ -302,5 +305,14 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
             throw new BracketValidationException('Bracket needs a name', $this::NAME_SET);
         }
         Log::debug('Bracket named \''.$name.'\'.');
+    }
+
+    public function assertSubmissionOpen($args)
+    {
+        $state = Tournament::where('active',true)->first()->state;
+        if($state->name != 'submission') {
+            throw new BracketValidationException('Bracket Submission not open. In state '.$state->name, $this::SUBMISSION_CLOSED);
+        }
+        Log::debug('Tournament in submission state');
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Role;
 use App\User;
+use App\Status;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -24,6 +25,8 @@ class LayoutRolesTest extends TestCase
         $users->each(function($u)
         {
             $u->roles()->attach(Role::where('role','user')->first()->role_id);
+            $u->status_id = Status::where('status','active')->first()->status_id;
+            $u->save();
         });
         $this->user = $users->pop();
         $this->admin = $users->pop();

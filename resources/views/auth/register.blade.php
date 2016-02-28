@@ -64,6 +64,10 @@
                                     </span>
                                 @endif
                             </div>
+                            <div class="turing">
+                                <label class="control-label" for="t">r08oT s4y5 wUt</label>
+                                <input type="text" class="form-control" name="t" id="t"></input>
+                            </div>
                         </div>
 
                         <div class="form-group">

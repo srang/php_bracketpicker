@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use Log;
+use DB;
+use Mail;
 use App\User;
 use App\UserRole;
 use App\Role;
 use App\Status;
 use Validator;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\VerifyMiddleware;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -67,7 +70,12 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        //TODO make atomic so if user role fails there isn't a half created user
+        if ($data['t']!='') {
+            // robot submitted form
+            Log::info("robot submitted form");
+            return User::roboto();
+        }
+        DB::beginTransaction();
         $user = new User([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -77,6 +85,9 @@ class AuthController extends Controller
         ]);
         $user->save();
         $user->roles()->attach(Role::where('role','user')->first()->role_id);
+        /* TODO change from send to queue */
+        VerifyMiddleware::sendVerification($user);
+        DB::commit();
         Log::info('Created user: '.$user->email.' with roles: '.$user->roles);
         return $user;
     }

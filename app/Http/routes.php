@@ -29,13 +29,18 @@ Route::get('/', function () {
 Route::group(['middleware' => ['web']], function () {
   Route::auth();
   Route::group(['middleware' => ['auth','role:user']], function() {
+      Route::get('/verify/{token}','HomeController@verifyUser');
+      Route::get('/verify','HomeController@showUnverified');
+      Route::get('/disabled', 'HomeController@showDisabled');
+  });
+  Route::group(['middleware' => ['auth','verify','role:user']], function() {
     Route::get('/brackets', 'BracketController@index');
     Route::post('/bracket', 'BracketController@store');
     Route::put('/bracket/{bracket}', 'BracketController@update');
     Route::delete('/bracket/{bracket}','BracketController@destroy');
     Route::get('/home', 'HomeController@index');
   });
-  Route::group(['middleware' => ['auth','role:admin']], function() {
+  Route::group(['middleware' => ['auth','verify','role:admin']], function() {
     Route::get('/admin', 'AdminController@index');
     Route::get('/admin/brackets', 'AdminController@bracketsIndex');
     Route::get('/admin/brackets/master', 'AdminController@showMaster');

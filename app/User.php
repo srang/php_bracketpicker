@@ -4,10 +4,15 @@ namespace App;
 
 use Log;
 use App\Status;
+use App\VerificationToken;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    public static function roboto()
+    {
+        return User::where('email','noreply@google.com')->first();
+    }
     /**
      * Override the default primary key
      *
@@ -75,6 +80,18 @@ class User extends Authenticatable
         $ret = $roles->where('role',$role)->count();
         Log::debug("Does user: ".$this->email." have role: ".$role." : ".(($ret)?"true":"false"));
         return $ret != 0;
+    }
+
+    public function confirmed()
+    {
+        $status = $this->status;
+        $active_status = Status::where('status','active')->first();
+        return $status->status_id == $active_status->status_id;
+    }
+
+    public function verification_token()
+    {
+        return $this->hasOne('App\VerificationToken','user_id','user_id');
     }
 
 }

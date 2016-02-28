@@ -6805,6 +6805,9 @@ button.close {
 body {
   margin-bottom: 20px;
 }
+.turing {
+  display: none;
+}
 .main-content {
   border-bottom: 2px solid #BBB;
 }

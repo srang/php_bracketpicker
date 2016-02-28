@@ -28,7 +28,8 @@ class ValidateUserUpdateBracketStrategy extends ValidateBaseBracketStrategy
      *  USER_EXISTS = 10;
      *  USER_MATCHES_OWNER = 11;
      *  NAME_SET = 12;
-     *  HALT = 13;
+     *  SUBMISSION_CLOSED = 13;
+     *  HALT = 14;
      */
 
     /**

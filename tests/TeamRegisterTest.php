@@ -2,6 +2,7 @@
 
 use App\Role;
 use App\Region;
+use App\Status;
 use App\Team;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -22,6 +23,8 @@ class TeamRegisterTest extends TestCase
         $this->admin = factory(App\User::class)->create();
         $this->admin ->roles()->attach(Role::where('role','user')->first()->role_id);
         $this->admin ->roles()->attach(Role::where('role','admin')->first()->role_id);
+        $this->admin->status_id = Status::where('status','active')->first()->status_id;
+        $this->admin->save();
     }
 
     /**

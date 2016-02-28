@@ -9,6 +9,8 @@ use App\User;
 use App\Bracket;
 use App\Game;
 use App\Region;
+use App\Tournament;
+use App\State;
 use App\Factories\BracketFactory;
 use App\Strategies\CreateMasterBracketStrategy;
 use App\Strategies\CreateBaseBracketStrategy;
@@ -144,7 +146,11 @@ class AdminController extends Controller
             $bracket = BracketFactory::createBracket($request, new CreateMasterBracketStrategy($this->teamRepo));
 
             if (isset($bracket)) {
-                //do something
+                $tournament = Tournament::where('active',true)->first();
+                // TODO just use next
+                // $tournament->state_id = $tournament->state->next->state_id;
+                $tournament->state_id = State::where('name','submission')->first()->state_id;
+                $tournament->save();
                 $bracket->name = 'Master Bracket';
                 $bracket->save();
                 DB::commit();
@@ -444,6 +450,13 @@ class AdminController extends Controller
         $request->session()->put('alert', $alert);
 
         return redirect()->action('AdminController@bracketsIndex');
+    }
+
+    public function closeBracketSubmission(Request $request)
+    {
+        $tournament = Tournament::where('active',true)->first();
+        $tournament->state_id = State::where('name','active')->first()->state_id;
+        $tournament->save();
     }
 
 }
