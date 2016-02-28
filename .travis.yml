@@ -7,7 +7,7 @@ before_script:
   - mysql -e 'drop database if exists tourney;'
   - mysql -e 'create database tourney;'
   - composer self-update
-  - composer install --no-install
+  - composer install --no-interaction
   - php artisan migrate:install --no-interaction -vvv
   - npm install -g npm@'>=2.1.9'
   - npm install
