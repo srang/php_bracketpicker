@@ -88,16 +88,5 @@
 @endsection
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
-    <script>
-    var teams =
-    [
-@foreach($teams as $team)
-        {
-        'name': "{{ $team->name }}",
-        'id': "{{ $team->team_id }}"
-        },
-@endforeach
-    ];
-    </script>
     <script src="{{ elixir('js/master_bracket.js') }}"></script>
 @endpush

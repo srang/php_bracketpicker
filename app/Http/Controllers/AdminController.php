@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Log;
 use DB;
+use JavaScript;
 use App\Team;
 use App\User;
 use App\Bracket;
@@ -70,6 +71,11 @@ class AdminController extends Controller
             //need to set up master bracket
             $teams = Team::where('name','<>','TBD')->get();
             $regions = Region::where('region','<>','')->get();
+            $teamarray = [];
+            JavaScript::put([
+                'teams' => $teams,
+                'blah' => 'blah'
+            ]);
             return view('admin.create_master',[
                 'teamRepo' => $this->teamRepo,
                 'teams' => $teams,

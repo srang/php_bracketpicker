@@ -40,7 +40,7 @@ $('label.master-label').on('click', function() {
                 '</div>'
                     ].join('\n'),
             suggestion : function (val) {
-                        return '<p class="typeahead-result" data-value="' + val.id + '">' + val.name + '</p>';
+                        return '<p class="typeahead-result" data-value="' + val.team_id + '">' + val.name + '</p>';
                     }
         }
     });
