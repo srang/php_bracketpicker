@@ -3,18 +3,17 @@ language: php
 php:
   - 7.0
 
+services:
+  - mysql
+
 before_script:
-  - mysql -e 'drop database if exists tourney;'
   - mysql -e 'create database tourney;'
   - composer self-update
-  - composer update
+  - travis_retry composer install --no-interaction -vvv
   - php artisan migrate:install --no-interaction -vvv
   - npm install -g npm@'>=2.1.9'
   - npm install
   - gulp
-
-services:
-  - mysql
 
 script:
   - php artisan migrate --no-interaction -vvv
