@@ -6,13 +6,32 @@
 @include('common.alerts')
 @include('common.errors')
         <div class="panel-body">
+@if ($tourney_state->name == 'setup')
+            <div class="jumbotron">
+                <h2>You're Early!</h2>
+                <p>
+                    Bracket submission is not open yet, because the master bracket
+                    has not been submitted yet. If you think there may be a problem
+                    please contact the tournament administrator directly or use the
+                    <a href="{{ url('/feedback') }}">Feedback</a> link. Otherwise
+                    just wait it out, we're excited too...
+                </p>
+                <p>
+                    <div class="btn-group">
+@include('common.back_button',[ 'back_link'=>url('/home')])
+                    </div>
+                </p>
+            </div>
+@else
 @if (count($brackets) > 0)
             <div class="row">
+@if ($tourney_state->name != 'submission')
                 <div class="pull-right">
                     <a class="btn btn-success" href="{{ url('/brackets/new') }}">
                         <i class="fa fa-btn fa-plus"></i> Create Bracket
                     </a>
                 </div>
+@endif
 @include('common.back_button',[ 'back_link'=>url('/home')])
             </div>
             <div class="panel panel-default">
@@ -77,6 +96,7 @@
                 </div>
 @include('common.back_button',[ 'back_link'=>url('/home')])
             </div>
+@endif
 @endif
         </div>
     </div>

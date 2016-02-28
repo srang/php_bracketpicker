@@ -15,12 +15,14 @@
                 </p>
                 <p>
                     <div class="btn-group col-md-offset-4">
+@if($tourney_state->name != 'setup')
                         <a class="btn btn-primary btn-lg" href="{{ url('/brackets') }}" role="button">
                             <i class="fa fa-btn fa-sitemap"></i> Brackets
                         </a>
                         <a class="btn btn-primary btn-lg" href="{{ url('/standings') }}" role="button">
                             <i class="fa fa-btn fa-list-ol"></i> Standings
                         </a>
+@endif
                         <a class="btn btn-primary btn-lg" href="{{ url('/posts') }}" role="button">
                             <i class="fa fa-btn fa-commenting"></i> Posts
                         </a>
