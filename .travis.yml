@@ -10,8 +10,6 @@ before_script:
   - mysql -e 'create database tourney;'
   - composer self-update
   - travis_retry composer install --no-interaction -vvv
-  - php artisan migrate:status --no-interaction -vvv
-  - php artisan migrate:refresh --no-interaction -vvv
   - npm install -g npm@'>=2.1.9'
   - npm install
   - gulp
