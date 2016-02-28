@@ -3,23 +3,15 @@ language: php
 php:
   - 7.0
 
-env:
-  global:
-    - setup=basic
-
-sudo: false
-
-install:
+before_script:
   - mysql -e 'drop database if exists tourney;'
   - mysql -e 'create database tourney;'
+  - composer self-update
+  - composer install --no-install
   - php artisan migrate:install --no-interaction -vvv
-  - if [[ $setup = 'basic' ]]; then travis_retry composer install --no-interaction --prefer-source; fi
-  - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-stable; fi
-  - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-lowest --prefer-stable; fi
   - npm install -g npm@'>=2.1.9'
-  - npm install -g gulp
-  - travis_retry npm install
-  - travis_retry gulp
+  - npm install
+  - gulp
 
 services:
   - mysql
