@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Status;
+use App\Bracket;
+
 use Log;
 use Auth;
 use Carbon\Carbon;
-use App\Status;
 use App\VerificationToken;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -29,8 +31,10 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $brackets = Bracket::where('user_id',$user->user_id)->get();
         return view('home',[
-          'user' => $user,
+            'brackets' => $brackets,
+            'user' => $user,
         ]);
     }
 
@@ -69,4 +73,9 @@ class HomeController extends Controller
         ]);
     }
 
+
+    public function showFeedback(Request $request)
+    {
+        return view('feedback');
+    }
 }

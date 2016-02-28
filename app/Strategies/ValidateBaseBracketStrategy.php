@@ -73,8 +73,9 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
         try {
             $this->checkAssertion(array($this,'assertSubmissionOpen'),[],false,$errors);
             $this->checkAssertion(array($this,'assertValidBracketId'),[$req->bracket_id],false,$errors);
-            // assert master exists
-            $this->checkAssertion(array($this,'assertNotMaster'),[$req->bracket_id],false,$errors);
+            if (isset($req->bracket_id)) {
+                $this->checkAssertion(array($this,'assertNotMaster'),[$req->bracket_id],false,$errors);
+            }
             $bracket = Bracket::where('bracket_id',$req->bracket_id)->first();
             $master = BracketFactory::reverseBracket(Bracket::where('master',1)->first(), new ReverseBaseBracketStrategy());
             foreach ($master as $round=>$games) {

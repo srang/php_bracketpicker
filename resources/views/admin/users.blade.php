@@ -6,7 +6,7 @@
 @if (count($users) > 0)
         <div class="panel panel-default">
             <div class="panel-heading">
-                Teams
+                Users
             </div>
 
             <div class="panel-body">
@@ -59,11 +59,7 @@
         </div>
 @endif
         <div class="row">
-            <div class="pull-left">
-                <a class="btn btn-primary" href="{{ url('/admin') }}">
-                    <i class="fa fa-btn fa-arrow-left"></i> Back
-                </a>
-            </div>
+@include('common.back_button',[ 'back_link'=>url('admin')])
         </div>
     </div>
 

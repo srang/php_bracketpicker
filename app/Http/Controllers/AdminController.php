@@ -299,9 +299,7 @@ class AdminController extends Controller
 
     public function viewBracket(Request $request, Bracket $bracket)
     {
-        // should this show the same bracket form?
         // pass bracketbutton/bracketlabel based on tournament state?
-        $users = User::all();
         $games = BracketFactory::reverseBracket($bracket,new ReverseBaseBracketStrategy());
         $regions = Region::where('region','<>','')->get();
         $user = $bracket->user;
@@ -346,7 +344,7 @@ class AdminController extends Controller
         } else {
             DB::rollBack();
             $alert = [
-                'message' => 'Save successful but unable to start tournament due to problems with the master bracket as a whole',
+                'message' => 'Save unsuccessful',
                 'level' => 'danger'
             ];
         }
@@ -383,7 +381,7 @@ class AdminController extends Controller
     {
         $errors = BracketFactory::validateBracket($request,new ValidateAdminUpdateBracketStrategy($this->teamRepo));
         if ($errors->count() > 0) {
-            return redirect()->action('AdminController@createUserBracket')->withInput()->withErrors($errors);
+            return redirect('admin/brackets/'.$bracktet->bracket_id)->withInput()->withErrors($errors);
         }
         // create user bracket
         DB::beginTransaction();
@@ -405,18 +403,13 @@ class AdminController extends Controller
         } else {
             DB::rollBack();
             $alert = [
-                'message' => 'Save successful but unable to start tournament due to problems with the master bracket as a whole',
+                'message' => 'Save unsuccessful',
                 'level' => 'danger'
             ];
         }
 
         $request->session()->put('alert', $alert);
-        return redirect()->action('AdminController@bracketsIndex');
-
-    }
-
-    public function deleteBracket(Request $request, Bracket $bracket)
-    {
+        return redirect('admin/brackets');
 
     }
 

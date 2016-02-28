@@ -23,6 +23,7 @@
                     </div>
                 </div>
             </div>
+@include('common.back_button',[ 'back_link'=>url('/home')])
         </div>
     </div>
 </div>

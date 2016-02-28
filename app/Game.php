@@ -35,7 +35,7 @@ class Game extends Model
         return collect([$team_a, $team_b]);
     }
 
-    public function wenner()
+    public function victor()
     {
         return $this->belongsTo('App\Team','winner','team_id');
     }

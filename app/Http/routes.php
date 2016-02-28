@@ -31,14 +31,19 @@ Route::group(['middleware' => ['web']], function () {
   Route::group(['middleware' => ['auth','role:user']], function() {
       Route::get('/verify/{token}','HomeController@verifyUser');
       Route::get('/verify','HomeController@showUnverified');
+      Route::get('/feedback','HomeController@showFeedback');
       Route::get('/disabled', 'HomeController@showDisabled');
   });
   Route::group(['middleware' => ['auth','verify','role:user']], function() {
     Route::get('/brackets', 'BracketController@index');
-    Route::post('/bracket', 'BracketController@store');
-    Route::put('/bracket/{bracket}', 'BracketController@update');
-    Route::delete('/bracket/{bracket}','BracketController@destroy');
+    Route::get('/brackets/new', 'BracketController@showCreateBracket');
+    Route::get('/brackets/{bracket}', 'BracketController@viewBracket');
+    Route::put('/brackets/new','BracketController@createBracket');
+    Route::put('/brackets/{bracket}', 'BracketController@updateBracket');
+    Route::delete('/brackets/{bracket}','BracketController@destroyBracket');
     Route::get('/home', 'HomeController@index');
+    Route::get('/standings', 'ScoreController@index');
+    Route::get('/posts','PostController@index');
   });
   Route::group(['middleware' => ['auth','verify','role:admin']], function() {
     Route::get('/admin', 'AdminController@index');

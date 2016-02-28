@@ -40,7 +40,7 @@
 @else
                     <input type="hidden" name="user_id" id="bracket-owner" class="hide" value="{{ Auth::user()->user_id }}">
 @endif
-@if(!Request::is('*/brackets/new'))
+@if(!Request::is('*brackets/new'))
                     <input type="hidden" name="bracket_id" id="bracket-id" class="hide" value="{{  $bracket->bracket_id  }}">
 @else 
                     <input type="hidden" name="bracket_id" id="bracket-id" class="hide" value="">

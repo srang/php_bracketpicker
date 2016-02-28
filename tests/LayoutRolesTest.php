@@ -144,7 +144,7 @@ class LayoutRolesTest extends TestCase
             ->dontSee('Register')
             ->dontSee('Login')
             ->see($this->user->name)
-            ->see('Add Bracket') //page content
+            ->see('Create Bracket') //page content
             ->see('Brackets') //navigation
             ->see('Home') //navigation
             ->dontSee('Admin');
@@ -225,11 +225,10 @@ class LayoutRolesTest extends TestCase
     public function testAdminBrackets()
     {
         $this->actingAs($this->admin)
-            ->visit('/brackets')
+            ->visit('/admin/brackets')
             ->dontSee('Register')
             ->dontSee('Login')
-            ->see($this->admin->name)
-            ->see('Add Bracket') //page content
+            ->see('Master Bracket') //page content
             ->see('Brackets') //navigation
             ->see('Home') //navigation
             ->see('Admin');
