@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // TODO: make datadriven
         view()->share('tourney_name', 'March Madness');
-        view()->share('tourney_state', { 'name' => 'setup' });
+        view()->share('tourney_state', collect([ 'name' => 'setup' ]));
 //        $tourney = Tournament::where('active',true)->first();
 //        view()->share('tourney_name', $tourney->name);
 //        view()->share('tourney_state', $tourney->state);
