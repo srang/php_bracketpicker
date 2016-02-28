@@ -444,7 +444,7 @@ class AdminController extends Controller
         $bracket->delete();
 
         $alert = [
-            'message' => 'Team ('.$name.') deleted',
+            'message' => 'Bracket ('.$name.') deleted',
             'level' => 'warning'
         ];
         $request->session()->put('alert', $alert);

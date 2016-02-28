@@ -53,6 +53,9 @@ class HomeController extends Controller
     public function showUnverified(Request $request)
     {
         $user = Auth::user();
+        if ($user->confirmed()) {
+            return redirect('/home');
+        }
         return view('unverified',[
             'user' => $user
         ]);

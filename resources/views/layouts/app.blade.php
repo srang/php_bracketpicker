@@ -34,7 +34,7 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-@if (Auth::check())
+@if (Auth::check() && Auth::user()->confirmed())
 @if (Auth::user()->hasRole('user'))
                     <li><a href="{{ url('/home') }}">Home</a></li>
                     <li><a href="{{ url('/brackets') }}">Brackets</a></li>
