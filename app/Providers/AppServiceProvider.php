@@ -18,8 +18,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // TODO: make datadriven
-        if (Shema::hasTable('tournaments') {
-        $tourney = Tournament::where('active',true)->first();
+        if (Schema::hasTable('tournaments')) {
+            $tourney = Tournament::where('active',true)->first();
             view()->share('tourney_name', $tourney->name);
             view()->share('tourney_state', $tourney->state);
             view()->share('tourney', $tourney);
