@@ -3,6 +3,8 @@
 use App\Role;
 use App\User;
 use App\Status;
+use App\Tournament;
+
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -14,6 +16,7 @@ class LayoutRolesTest extends TestCase
 
     protected $user;
     protected $admin;
+    protected $state;
 
     /**
      * Sets up base user and admin for tests
@@ -21,6 +24,7 @@ class LayoutRolesTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        $state = Tournament::where('active',1)->first()->state->name;
         $users = factory(App\User::class,2)->create();
         $users->each(function($u)
         {
@@ -139,15 +143,17 @@ class LayoutRolesTest extends TestCase
      */
     public function testUserBrackets()
     {
-        $this->actingAs($this->user)
-            ->visit('/brackets')
-            ->dontSee('Register')
-            ->dontSee('Login')
-            ->see($this->user->name)
-            ->see('Create Bracket') //page content
-            ->see('Brackets') //navigation
-            ->see('Home') //navigation
-            ->dontSee('Admin');
+        if($this->state === 'submission') {
+            $this->actingAs($this->user)
+                ->visit('/brackets')
+                ->dontSee('Register')
+                ->dontSee('Login')
+                ->see($this->user->name)
+                ->see('Create Bracket') //page content
+                ->see('Brackets') //navigation
+                ->see('Home') //navigation
+                ->dontSee('Admin');
+        }
     }
 
     /**

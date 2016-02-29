@@ -142,7 +142,7 @@ class AdminController extends Controller
         }
 
         $alert = [
-            'message' => 'Save successful',
+            'message' => 'Save Successful',
             'level' => 'success'
         ];
 
@@ -161,7 +161,7 @@ class AdminController extends Controller
                 $bracket->save();
                 DB::commit();
                 $alert = [
-                    'message' => 'Save successful. Bracket submission is open',
+                    'message' => 'Save Successful. Bracket submission is open',
                     'level' => 'success'
                 ];
             } else {
@@ -217,7 +217,7 @@ class AdminController extends Controller
             'rank' => $request->rank,
         ]);
         $alert = [
-            'message' => 'Save successful',
+            'message' => 'Save Successful',
             'level' => 'success'
         ];
         $request->session()->put('alert', $alert);
@@ -272,7 +272,7 @@ class AdminController extends Controller
         $team->save();
 
         $alert = [
-            'message' => 'Save successful',
+            'message' => 'Save Successful',
             'level' => 'success'
         ];
         $request->session()->put('alert', $alert);
@@ -344,7 +344,7 @@ class AdminController extends Controller
             $bracket->save();
             DB::commit();
             $alert = [
-                'message' => 'Save successful.',
+                'message' => 'Save Successful.',
                 'level' => 'success'
             ];
         } else {
@@ -403,7 +403,7 @@ class AdminController extends Controller
             $bracket->delete();
             DB::commit();
             $alert = [
-                'message' => 'Save successful.',
+                'message' => 'Save Successful.',
                 'level' => 'success'
             ];
         } else {

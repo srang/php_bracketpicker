@@ -11,6 +11,7 @@ class AdminModuleTest extends TestCase
 {
     use DatabaseTransactions;
     protected $admin;
+    protected $user;
 
     /**
      * test that it won't work without master
@@ -24,11 +25,16 @@ class AdminModuleTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->admin = factory(App\User::class)->create();
-        $this->admin->roles()->attach(Role::where('role','user')->first()->role_id);
+        $users = factory(App\User::class,2)->create();
+        $users->each(function($u)
+        {
+            $u->roles()->attach(Role::where('role','user')->first()->role_id);
+            $u->status_id = Status::where('status','active')->first()->status_id;
+            $u->save();
+        });
+        $this->user = $users->pop();
+        $this->admin = $users->pop();
         $this->admin->roles()->attach(Role::where('role','admin')->first()->role_id);
-        $this->admin->status_id = Status::where('status','active')->first()->status_id;
-        $this->admin->save();
     }
 
     /**
@@ -43,7 +49,36 @@ class AdminModuleTest extends TestCase
             ->click('Admin')
             ->seePageIs('/admin')
             ->see('Teams')
-            ->see('Master Bracket');
+            ->see('Bracket')
+            ->see('Users')
+            ->click('Teams')
+            ->seePageIs('/admin/teams')
+            ->click('Back')
+            ->seePageIs('/admin');
+        $this->actingAs($this->admin)
+            ->visit('/')
+            ->click('Admin')
+            ->seePageIs('/admin')
+            ->see('Teams')
+            ->see('Bracket')
+            ->see('Users')
+            ->click('Users')
+            ->seePageIs('/admin/users')
+            ->click('Back')
+            ->seePageIs('/admin');
+        $this->actingAs($this->admin)
+            ->visit('/admin/brackets')
+            ->click('Back')
+            ->seePageIs('/admin');
+    }
+
+    public function testUsersList()
+    {
+        $this->actingAs($this->admin)
+            ->visit('/admin/users')
+            ->see($this->admin->email)
+            ->see($this->user->email)
+            ->see('Mr Roboto');
     }
 
 }

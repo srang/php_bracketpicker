@@ -10,6 +10,18 @@ class TeamTest extends TestCase
 {
     use DatabaseTransactions;
 
+    protected $test_team;
+
+    /**
+     * create test team
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->test_team = factory(App\Team::class)->create();
+    }
+
+
     /**
      * team can be created
      *
@@ -49,7 +61,7 @@ class TeamTest extends TestCase
      *
      * @return void
      */
-    public function testUserSave()
+    public function testTeamSave()
     {
         $name = 'Duke';
         $mascot = 'Blue Devils';
@@ -73,5 +85,31 @@ class TeamTest extends TestCase
             'mascot' =>$mascot
         ]);
         $this->assertEquals($team->region->region, $region->region);
+    }
+
+
+    /**
+     * Test team region function
+     *
+     * @return void
+     */
+    public function testTeamRegion()
+    {
+        $region = Region::where('region_id',$this->test_team->region_id)->first();
+        $this->assertEquals($this->test_team->region->region_id, $region->region_id);
+    }
+
+    /**
+     * Test team setRegionRank function
+     *
+     * @return void
+     */
+    public function testTeamSetRegionRank()
+    {
+        $rank = 12;
+        $region = Region::where('region','<>','')->first();
+        $this->test_team->setRegionRank($region->region,$rank);
+        $this->assertEquals($this->test_team->region_id, $region->region_id);
+        $this->assertEquals($this->test_team->rank, $rank);
     }
 }

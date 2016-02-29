@@ -24,10 +24,11 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Team::class, function (Faker\Generator $faker) {
+    $region_ids = Region::where('region','<>','')->get()->modelKeys();
     return [
         'name' => $faker->name,
         'rank' => $faker->numberBetween($min=1, $max=16),
-        'region_id' => Region::where('region','<>','')->first()->region_id,
+        'region_id' => $faker->randomElement($array=$region_ids),
         'mascot' => $faker->firstName,
         'icon_path' => $faker->url,
         'primary_color' => $faker->hexcolor,
@@ -42,7 +43,7 @@ $factory->define(App\Game::class, function (Faker\Generator $faker) {
         'team_a' => $team_a->team_id,
         'team_b' => $team_b->team_id,
         'master' => 0,
-        'round_id' => 1,
+        'round_id' => $faker->numberBetween($min=1,$max=6),
     ];
 });
 
@@ -56,3 +57,4 @@ $factory->define(App\Bracket::class, function (Faker\Generator $faker) {
         'root_game' => $root->game_id,
     ];
 });
+

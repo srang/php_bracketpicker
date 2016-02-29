@@ -3,6 +3,7 @@
 use App\Role;
 use App\Status;
 use App\User;
+
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -118,5 +119,31 @@ class RegisterTest extends TestCase
             ->visit('/')
             ->see($this->unverified->name)
             ->seePageIs('/verify');
+    }
+
+    /**
+     * test robot login
+     *
+     * @return void
+     */
+    public function testBotRegister()
+    {
+        $name = 'Bob';
+        $email = 'bob@bob.com';
+        $password = 'password';
+        $bot = 'adfasdf';
+        $this->call('POST','/register',[
+                'name' => $name,
+                'email' => $email,
+                'password' => $password,
+                'password_confirmation' => $password,
+                't' => $bot
+            ]);
+        $this->assertResponseStatus(302);
+        $this->assertRedirectedTo('/home');
+        $this->call('GET','/home');
+        $this->assertResponseStatus(403);
+        $u = User::where('email',$email)->first();
+        $this->assertNull($u);
     }
 }

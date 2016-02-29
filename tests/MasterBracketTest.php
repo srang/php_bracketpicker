@@ -1,5 +1,13 @@
 <?php
 
+use App\Tournament;
+use App\State;
+use App\Status;
+use App\Region;
+use App\Bracket;
+use App\Role;
+use App\User;
+
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -8,6 +16,23 @@ class MasterBracketTest extends TestCase
 {
 
     use DatabaseTransactions;
+
+    protected $admin;
+    protected $tournament;
+
+    /**
+     * Sets up base user and admin for tests
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->tournament = Tournament::where('active',1)->first();
+        $this->admin = factory(App\User::class)->create();
+        $this->admin->roles()->attach(Role::where('role','user')->first()->role_id);
+        $this->admin->roles()->attach(Role::where('role','admin')->first()->role_id);
+        $this->admin->status_id = Status::where('status','active')->first()->status_id;
+        $this->admin->save();
+    }
 
 /*
  * Test that save works with only some fields filled
@@ -19,12 +44,78 @@ class MasterBracketTest extends TestCase
  */
 
     /**
-     * A basic test example.
+     *  test bracket home page when master not created yet
      *
      * @return void
      */
-    public function testExample()
+    public function testMasterNotCreated()
     {
-        $this->assertTrue(true);
+        $this->tournament->state_id = State::where('name','setup')->first()->state_id;
+        $this->tournament->save();
+        Bracket::where('master',1)->delete();
+        $this->actingAs($this->admin)
+            ->visit('/admin/brackets')
+            ->see('Master Bracket Setup Required')
+            ->see('Not Created Yet')
+            ->see('Create')
+            ->dontSee('Bracket Submission Open')
+            ->dontSee('Created At')
+            ->dontSee('Edit')
+            ->dontSee('Start Tournament')
+            ->dontSee('Create Bracket');
     }
+
+    /**
+     *  Test creation of master bracket
+     *
+     * @return void
+     */
+    public function testMasterCreate()
+    {
+        $this->tournament->state_id = State::where('name','setup')->first()->state_id;
+        $this->tournament->save();
+        Bracket::where('master',1)->delete();
+        $this->actingAs($this->admin)
+            ->visit('/admin/brackets')
+            ->see('Master Bracket Setup Required')
+            ->see('Not Created Yet')
+            ->see('Create')
+            ->click('Create')
+            ->seePageIs('/admin/brackets/master')
+            ->see('Start')
+            ->see('Save')
+            ->see('Back')
+            ->click('Back')
+            ->seePageIs('/admin/brackets');
+
+        $regions = Region::where('region','<>','')->get();
+        foreach ($regions as $region) {
+            $this->actingAs($this->admin)
+                ->visit('/admin/brackets/master')
+                ->see($region->region);
+        }
+        $teams = factory(App\Team::class, 64)->create();
+        $region_ids = $regions->modelKeys();
+        for($i=1; $i < 64; $i++) {
+            $team = $teams->shift();
+            $team->setRegionRank($regions->where('region_id',$region_ids[floor($i/16)])->first()->region,($i%16+1));
+            $teams->push($team);
+        }
+        foreach ($teams as $team) {
+            $this->actingAs($this->admin)
+                ->visit('/admin/brackets/master')
+                ->see($team->name);
+        }
+        $this->actingAs($this->admin)
+            ->visit('/admin/brackets/master')
+            ->press('Save')
+            ->see('Save Successful')
+            ->type('true','start_madness')
+            ->press('Save')
+            ->see('Save Successful. Bracket submission is open')
+            ->seeInDatabase('brackets',['name'=>'Master Bracket','master' => 1]);
+        $state = $this->tournament->state->name;
+        $this->assertEquals($state,'submission');
+    }
+
 }
