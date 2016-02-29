@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Status;
+use App\Bracket;
+
+use Log;
 use Auth;
+use Carbon\Carbon;
+use App\VerificationToken;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
@@ -25,8 +31,51 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $brackets = Bracket::where('user_id',$user->user_id)->get();
         return view('home',[
-          'user' => $user,
+            'brackets' => $brackets,
+            'user' => $user,
         ]);
+    }
+
+    public function verifyUser(Request $request, $token)
+    {
+        $verification = VerificationToken::where('token',$token)->first();
+        if(isset($verification) && !$verification->expired() && $verification->user_id == Auth::user()->user_id) {
+            $user = Auth::user();
+            Log::info($user->name.' has verified their email. Deleting token');
+            // delete token
+            $verification->delete();
+            // set user status active
+            $user->status_id = Status::where('status','active')->first()->status_id;
+            $user->save();
+            return redirect('/home');
+        }
+        return redirect()->guest('/verify');
+    }
+
+    public function showUnverified(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->confirmed()) {
+            return redirect('/home');
+        }
+        return view('unverified',[
+            'user' => $user
+        ]);
+    }
+
+    public function showDisabled(Request $request)
+    {
+        $user = Auth::user();
+        return view('disabled',[
+            'user' => $user
+        ]);
+    }
+
+
+    public function showFeedback(Request $request)
+    {
+        return view('feedback');
     }
 }

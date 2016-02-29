@@ -57,7 +57,7 @@ class CreateBaseBracketStrategy extends AbstractCreateBracketStrategy
         if (isset($bracket)) {
             return $bracket;
         }
-        Log::error('Something went wrong with master bracket creation');
+        Log::error('Something went wrong with user bracket creation');
         return null;
     }
 

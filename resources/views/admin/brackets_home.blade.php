@@ -10,13 +10,13 @@
         <!-- Master Bracket -->
         <div class="row">
             <div class="panel panel-default">
-@if (isset($master))
+@if ($tourney_state->name === 'submission')
                 <div class="panel-heading">
                     <h4>{{ $master->name }}</h4>
                 </div>
                 <div class="panel-body">
                     <div class="col-md-4">
-                        <p>isTournamentStarted</p>
+                        <p>Bracket Submission Open</p>
                     </div>
                     <div class="col-md-4">
                         <p>Created At: {{ date('F d   g:i', strtotime($master->created_at)) }}</p>
@@ -33,16 +33,38 @@
                     </div>
                 </div>
 
-@else
+@elseif ($tourney_state->name === 'active')
                 <div class="panel-heading">
                     Master Bracket
                 </div>
                 <div class="panel-body">
                     <div class="col-md-4">
-                        <h4>isTournamentStarted</h4>
+                        <h4>Tournament Has Begun</h4>
                     </div>
                     <div class="col-md-4">
-                        <h4>not created yet</h4>
+                        <p>Started At: {{ date('F d   g:i', strtotime($tourney->updated_at)) }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="btn-group pull-right">
+                            <a class="btn btn-info" href="{{ url('admin/brackets/master') }}">
+                                <i class="fa fa-btn fa-arrow-right"></i> Edit
+                            </a>
+                            <a class="btn btn-warning" href="#">
+                                <i class="fa fa-btn fa-warning"></i> Start Tournament
+                            </a>
+                        </div>
+                    </div>
+                </div>
+@elseif ($tourney_state->name === 'setup')
+                <div class="panel-heading">
+                    Master Bracket
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-4">
+                        <h4>Master Bracket Setup Required</h4>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Not Created Yet</h4>
                     </div>
                     <div class="col-md-4">
                         <div class="btn-group pull-right">
@@ -57,7 +79,7 @@
         </div>
         <div class="row">
 @include('common.back_button',[ 'back_link'=>url('admin')])
-@if(isset($master))
+@if($tourney_state->name === 'submission')
             <div class="pull-right">
                 <a class="btn btn-success" href="{{ url('admin/brackets/new') }}">
                     <i class="fa fa-btn fa-plus"></i> Create Bracket
@@ -96,8 +118,8 @@
                                 <div>{{ $bracket->name }}</div>
                             </td>
                             <td class="table-text" >
-                                <span class="text-center team-name" style="background-color: #{{ $bracket->root->wenner->primary_color }}; color: #{{ $bracket->root->wenner->accent_color }};">
-                                    {{ $bracket->root->wenner->name }}
+                                <span class="text-center team-name" style="background-color: #{{ $bracket->root->victor->primary_color }}; color: #{{ $bracket->root->victor->accent_color }};">
+                                    {{ $bracket->root->victor->name }}
                                 </span>
                             </td>
                             <td>

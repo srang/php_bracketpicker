@@ -2,6 +2,9 @@
 
 use App\Role;
 use App\User;
+use App\Status;
+use App\Tournament;
+
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -13,6 +16,7 @@ class LayoutRolesTest extends TestCase
 
     protected $user;
     protected $admin;
+    protected $state;
 
     /**
      * Sets up base user and admin for tests
@@ -20,10 +24,13 @@ class LayoutRolesTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+        $state = Tournament::where('active',1)->first()->state->name;
         $users = factory(App\User::class,2)->create();
         $users->each(function($u)
         {
             $u->roles()->attach(Role::where('role','user')->first()->role_id);
+            $u->status_id = Status::where('status','active')->first()->status_id;
+            $u->save();
         });
         $this->user = $users->pop();
         $this->admin = $users->pop();
@@ -136,15 +143,17 @@ class LayoutRolesTest extends TestCase
      */
     public function testUserBrackets()
     {
-        $this->actingAs($this->user)
-            ->visit('/brackets')
-            ->dontSee('Register')
-            ->dontSee('Login')
-            ->see($this->user->name)
-            ->see('Add Bracket') //page content
-            ->see('Brackets') //navigation
-            ->see('Home') //navigation
-            ->dontSee('Admin');
+        if($this->state === 'submission') {
+            $this->actingAs($this->user)
+                ->visit('/brackets')
+                ->dontSee('Register')
+                ->dontSee('Login')
+                ->see($this->user->name)
+                ->see('Create Bracket') //page content
+                ->see('Brackets') //navigation
+                ->see('Home') //navigation
+                ->dontSee('Admin');
+        }
     }
 
     /**
@@ -222,11 +231,10 @@ class LayoutRolesTest extends TestCase
     public function testAdminBrackets()
     {
         $this->actingAs($this->admin)
-            ->visit('/brackets')
+            ->visit('/admin/brackets')
             ->dontSee('Register')
             ->dontSee('Login')
-            ->see($this->admin->name)
-            ->see('Add Bracket') //page content
+            ->see('Master Bracket') //page content
             ->see('Brackets') //navigation
             ->see('Home') //navigation
             ->see('Admin');

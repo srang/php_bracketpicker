@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>March Madness</title>
+    <title>{{ $tourney_name }}</title>
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -27,14 +27,14 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    March Madness
+                    {{ $tourney_name }}
                 </a>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-@if (Auth::check())
+@if (Auth::check() && Auth::user()->confirmed())
 @if (Auth::user()->hasRole('user'))
                     <li><a href="{{ url('/home') }}">Home</a></li>
                     <li><a href="{{ url('/brackets') }}">Brackets</a></li>
