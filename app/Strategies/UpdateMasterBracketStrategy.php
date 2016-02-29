@@ -13,12 +13,12 @@ use Illuminate\Http\Request;
  * normal users and their brackets
  *
  */
-class CreateBaseBracketStrategy extends AbstractCreateBracketStrategy
+class UpdateMasterBracketStrategy extends AbstractCreateBracketStrategy
 {
     /**
      * flag for master bracket
      */
-    protected $master = 0;
+    protected $master = 1;
 
     protected $teamRepo;
 
@@ -41,14 +41,7 @@ class CreateBaseBracketStrategy extends AbstractCreateBracketStrategy
             foreach($round as $game) {
                 $team_a = $this->teamRepo->byName($game['T1']);
                 $team_b = $this->teamRepo->byName($game['T2']);
-                if ($team_a->name === $game['W']) {
-                    $winner = $this->teamRepo->byName($game['T1']);
-                } else if ($team_b->name === $game['W']) {
-                    $winner = $this->teamRepo->byName($game['T2']);
-                } else {
-                    Log::error('Winner doesn\'t match either of the teams in the game.');
-                    return null;
-                }
+                $winner = $this->teamRepo->byName($game['W']);
                 Log::info('Found Teams {'.$team_a->name.','.$team_b->name.','.$winner->name.'}');
                 $this->connectChildren($round_id, $games, $team_a, $team_b, $winner);
             }
@@ -57,7 +50,7 @@ class CreateBaseBracketStrategy extends AbstractCreateBracketStrategy
         if (isset($bracket)) {
             return $bracket;
         }
-        Log::error('Something went wrong with user bracket creation');
+        Log::error('Something went wrong with master bracket creation');
         return null;
     }
 

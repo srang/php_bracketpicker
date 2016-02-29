@@ -15,6 +15,7 @@ use App\State;
 use App\Factories\BracketFactory;
 use App\Strategies\CreateMasterBracketStrategy;
 use App\Strategies\CreateBaseBracketStrategy;
+use App\Strategies\UpdateMasterBracketStrategy;
 use App\Strategies\ReverseBaseBracketStrategy;
 use App\Strategies\ValidateBaseBracketStrategy;
 use App\Strategies\ValidateAdminCreateBracketStrategy;
@@ -69,12 +70,10 @@ class AdminController extends Controller
         $bracket = Bracket::where('master',true)->first();
         if(empty($bracket)) {
             //need to set up master bracket
-            $teams = Team::where('name','<>','TBD')->get();
+            $teams = Team::where('name','<>','TBD')->select('name','team_id')->get();
             $regions = Region::where('region','<>','')->get();
-            $teamarray = [];
             JavaScript::put([
                 'teams' => $teams,
-                'blah' => 'blah'
             ]);
             return view('admin.create_master',[
                 'teamRepo' => $this->teamRepo,
@@ -181,9 +180,36 @@ class AdminController extends Controller
 
     public function setMaster(Request $request)
     {
-
         $errors = BracketFactory::validateBracket($request,new ValidateMasterUpdateBracketStrategy($this->teamRepo));
-        return redirect()->action('AdminController@showMaster')->withInput()->withErrors($errors);
+        if ($errors->count() > 0) {
+            return redirect('admin/brackets/master')->withInput()->withErrors($errors);
+        }
+        // create user bracket
+        DB::beginTransaction();
+
+        $master = Bracket::where('master',1)->first();
+        $bracket_updated = BracketFactory::createBracket($request, new UpdateMasterBracketStrategy($this->teamRepo));
+
+        if (isset($bracket_updated)) {
+            $bracket_updated->name = $request->name;
+            $bracket_updated->save();
+            $master->delete();
+            DB::commit();
+            $alert = [
+                'message' => 'Save Successful.',
+                'level' => 'success'
+            ];
+        } else {
+            DB::rollBack();
+            $alert = [
+                'message' => 'Save unsuccessful',
+                'level' => 'danger'
+            ];
+        }
+
+        $request->session()->put('alert', $alert);
+
+        return redirect('admin/brackets/master');
     }
 
     public function listTeams(Request $request)

@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
  * Validator for creating new user brackets
  *
  */
-class ValidateUserCreateBracketStrategy extends ValidateBaseBracketStrategy
+class ValidateMasterUpdateBracketStrategy extends ValidateBaseBracketStrategy
 {
 
     /**
@@ -44,6 +44,7 @@ class ValidateUserCreateBracketStrategy extends ValidateBaseBracketStrategy
         $this->allowList = collect([
             $this::NOT_MASTER => 'bracket_id not yet created',
             $this::TEAM_NOT_TBD => 'bracket_id not yet created',
+            $this::TEAMS_NOT_SAME => 'master bracket will have same teams',
             $this::WINNER_FROM_TEAMS => 'bracket_id not yet created',
             $this::USER_EXISTS => 'bracket_id not yet created',
             $this::USER_MATCHES_OWNER => 'bracket_id not yet created',

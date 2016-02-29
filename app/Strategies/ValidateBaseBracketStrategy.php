@@ -284,7 +284,9 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
         $user = User::where('user_id',$user_id)->first();
         $auth = Auth::user();
         $owner = Bracket::where('user_id',$args[1])->first()->user;
-        if ($user->user_id != $auth->user_id) {
+        if (empty($owner) || empty($user)) {
+            throw new BracketValidationException('Form doesn\'t specify users', $this::USER_MATCHES_OWNER);
+        }else if ($user->user_id != $auth->user_id) {
             throw new BracketValidationException('Form user with id \''.$user->user_id.
                 '\' doesn\'t match authenticated user with id \''.$auth->user_id.'\'.', $this::USER_MATCHES_OWNER);
         } else if ( $user->user_id != $owner->user_id ) {
