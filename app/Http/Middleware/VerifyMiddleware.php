@@ -69,7 +69,7 @@ class VerifyMiddleware
             'user_id' => $user->user_id,
             'expires' => Carbon::now()->addDays(3)
         ]);
-        $link = url('/verify/'.$token);
+        $link = url('/verify/'.$token->token);
         Mail::send('mail.verify', ['link' => $link, 'name' => $user->name], function($message) use ($user){
             $message->to($user->email, $user->name)
                 ->subject('Activate your account');
