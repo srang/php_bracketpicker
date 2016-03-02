@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Status;
 use App\Bracket;
 
+use DB;
 use Log;
 use Auth;
 use Carbon\Carbon;
 use App\VerificationToken;
+use App\Http\Middleware\VerifyMiddleware;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
@@ -36,6 +38,24 @@ class HomeController extends Controller
             'brackets' => $brackets,
             'user' => $user,
         ]);
+    }
+
+    public function reverify(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user->confirmed())
+        {
+            if($user->status->status != 'unverified') {
+                abort(403, 'Inactive account');
+            }
+
+            VerificationToken::where('user_id',$user->user_id)->delete();
+            VerifyMiddleware::sendVerification($user);
+            Log::warning('Resent verification to '.$user->email);
+        }
+        return redirect('/home');
+
     }
 
     public function verifyUser(Request $request, $token)
