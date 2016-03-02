@@ -31,6 +31,7 @@ Route::group(['middleware' => ['web']], function () {
   Route::group(['middleware' => ['auth','role:user']], function() {
       Route::get('/verify/{token}','HomeController@verifyUser');
       Route::get('/verify','HomeController@showUnverified');
+      Route::get('/reverify','HomeController@reverify');
       Route::get('/feedback','HomeController@showFeedback');
       Route::get('/disabled', 'HomeController@showDisabled');
   });
