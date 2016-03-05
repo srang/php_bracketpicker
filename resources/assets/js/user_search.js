@@ -19,7 +19,7 @@ $('#bracket-owner').typeahead({
             '</div>'
                     ].join('\n'),
                     suggestion : function (val) {
-                        return '<p class="typeahead-result" data-value="' + val.id + '">' + val.name + '</p>';
+                        return '<p class="typeahead-result" data-value="' + val.user_id + '">' + val.name + '</p>';
                     }
     }
 });

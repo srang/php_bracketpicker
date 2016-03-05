@@ -22,17 +22,6 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
     <script src="{{ elixir('js/user_search.js') }}"></script>
-    <script>
-    var users =
-    [
-@foreach($users as $user)
-        {
-            'name': "{{ $user->name }}",
-            'id': "{{ $user->user_id }}"
-        },
-@endforeach
-    ];
-    </script>
 @endpush
 
 @elseif (isset($user))

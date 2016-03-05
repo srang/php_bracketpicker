@@ -52,17 +52,17 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/brackets/master', 'AdminController@showMaster');
     Route::post('/admin/brackets/master', 'AdminController@createMaster');
     Route::put('/admin/brackets/master', 'AdminController@setMaster');
-    Route::get('/admin/brackets/new', 'AdminController@createUserBracket');
-    Route::get('/admin/brackets/{bracket}', 'AdminController@viewBracket');
-    Route::put('/admin/brackets/new','AdminController@createBracket');
-    Route::put('/admin/brackets/{bracket}', 'AdminController@updateBracket');
-    Route::delete('/admin/brackets/{bracket}','AdminController@destroyBracket');
-    Route::get('/admin/teams', 'AdminController@listTeams');
-    Route::get('/admin/users', 'AdminController@listUsers');
-    Route::post('/admin/team', 'AdminController@createTeam');
-    Route::get('/admin/team/{team}', 'AdminController@viewTeam');
-    Route::put('/admin/team/{team}', 'AdminController@updateTeam');
-    Route::delete('/admin/team/{team}','AdminController@destroyTeam');
+    Route::get('/admin/brackets/new', 'BracketController@createUserBracket');
+    Route::get('/admin/brackets/{bracket}', 'BracketController@viewBracket');
+    Route::put('/admin/brackets/new','BracketController@createBracketAdmin');
+    Route::put('/admin/brackets/{bracket}', 'BracketController@updateBracketAdmin');
+    Route::delete('/admin/brackets/{bracket}','BracketController@destroyBracketAdmin');
+    Route::get('/admin/users', 'UserController@listUsers');
+    Route::get('/admin/teams', 'TeamController@listTeams');
+    Route::post('/admin/team', 'TeamController@createTeam');
+    Route::get('/admin/team/{team}', 'TeamController@viewTeam');
+    Route::put('/admin/team/{team}', 'TeamController@updateTeam');
+    Route::delete('/admin/team/{team}','TeamController@destroyTeam');
   });
 
 });

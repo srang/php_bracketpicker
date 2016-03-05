@@ -22,10 +22,9 @@
                     </div>
                 </p>
             </div>
-@else
-@if (count($brackets) > 0)
+@else {{-- tourney state != 'setup' --}}
             <div class="row">
-@if ($tourney_state->name != 'submission')
+@if ($tourney_state->name == 'submission')
                 <div class="pull-right">
                     <a class="btn btn-success" href="{{ url('/brackets/new') }}">
                         <i class="fa fa-btn fa-plus"></i> Create Bracket
@@ -34,6 +33,7 @@
 @endif
 @include('common.back_button',[ 'back_link'=>url('/home')])
             </div>
+@if (count($brackets) > 0)
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Your Brackets</h4>
@@ -87,14 +87,6 @@
                 <div class="panel-heading">
                     <h4>You Have No Saved Brackets</h4>
                 </div>
-            </div>
-            <div class="row">
-                <div class="pull-right">
-                    <a class="btn btn-success" href="{{ url('/brackets/new') }}">
-                        <i class="fa fa-btn fa-plus"></i> Create Bracket
-                    </a>
-                </div>
-@include('common.back_button',[ 'back_link'=>url('/home')])
             </div>
 @endif
 @endif
