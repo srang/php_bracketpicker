@@ -440,7 +440,7 @@ class AdminController extends Controller
         #    ];
         #}
 
-        $request->session()->put('alert', $alert);
+        #$request->session()->put('alert', $alert);
         return redirect('admin/brackets');
 
     }
