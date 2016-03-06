@@ -18,6 +18,6 @@ interface ICreateBracketStrategy
      * @param Request  $req
      * @return Bracket|null
      */
-    public function read(Request $req);
+    public function read($req);
 
 }

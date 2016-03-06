@@ -2,8 +2,6 @@
 
 namespace App\Strategies;
 
-use Illuminate\Http\Request;
-
 /**
  * Interface for bracket validation
  *
@@ -16,7 +14,7 @@ interface IValidateBracketStrategy
      * @param  request
      * @return error collection
      */
-    public function validate(Request $req);
+    public function validate($req);
 
 }
 

@@ -3,8 +3,11 @@
 namespace App\Jobs;
 
 use App\Strategies\IValidateBracketStrategy;
+use App\Strategies\ICreateBracketStrategy;
+use App\Factories\BracketFactory;
 
 use Log;
+use DB;
 use App\Jobs\Job;
 use Illuminate\Http\Request;
 use Illuminate\Queue\SerializesModels;
@@ -15,7 +18,8 @@ class ValidateBracket extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 
-    protected $strategy;
+    protected $validateStrategy;
+    protected $createStrategy;
     protected $request;
 
     /**
@@ -23,10 +27,12 @@ class ValidateBracket extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Request $req, IValidateBracketStrategy $strat)
+    public function __construct($req, IValidateBracketStrategy $validate, ICreateBracketStrategy $create)
     {
-        $this->request = $req;
-        $this->strategy = $strat;
+        Log::info("Creating new Bracket Job");
+        $this->request = collect($req->all());
+        $this->createStrategy = $create;
+        $this->validateStrategy = $validate;
     }
 
     /**
@@ -36,9 +42,34 @@ class ValidateBracket extends Job implements ShouldQueue
      */
     public function handle()
     {
-        $errors = BracketFactory::validateBracket($this->$request,$this->strategy);
+        Log::debug("Running Bracket Job");
+        $errors = BracketFactory::validateBracket($this->request, $this->validateStrategy);
         if ($errors->count() > 0) {
             Log::info($errors);
+        } else {
+
+            DB::beginTransaction();
+
+            $bracket = BracketFactory::createBracket($this->request, $this->createStrategy);
+
+            if (isset($bracket)) {
+                $bracket->name = $this->request->get('name');
+                $bracket->user_id = $this->request->get('user_id');
+                $bracket->save();
+                DB::commit();
+                $alert = [
+                    'message' => 'Save successful',
+                    'level' => 'success'
+                ];
+            } else {
+                DB::rollBack();
+                $alert = [
+                    'message' => 'Save unsuccessful',
+                    'level' => 'danger'
+                ];
+            }
+            Log::info($alert);
+
         }
     }
 }

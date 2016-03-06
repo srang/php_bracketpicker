@@ -24,7 +24,7 @@ class BracketFactory
      * @param ICreateBracketStrategy  $strat
      * @return Bracket|null
      */
-    public static function createBracket(Request $req, ICreateBracketStrategy $strat)
+    public static function createBracket($req, ICreateBracketStrategy $strat)
     {
         return $strat->read($req);
     }
@@ -49,7 +49,7 @@ class BracketFactory
      * @param IValidateBracketStrategy  $strat
      * @return error collection
      */
-    public static function validateBracket(Request $req, IValidateBracketStrategy $strat)
+    public static function validateBracket($req, IValidateBracketStrategy $strat)
     {
         return $strat->validate($req);
     }
