@@ -83,7 +83,7 @@ class TeamController extends Controller
         ];
         $request->session()->put('alert', $alert);
 
-        return redirect()->action('AdminController@listTeams');
+        return redirect('/admin/teams');
     }
 
     /**
@@ -150,7 +150,7 @@ class TeamController extends Controller
         ];
         $request->session()->put('alert', $alert);
 
-        return redirect()->action('AdminController@listTeams');
+        return redirect('/admin/teams');
     }
 
     /**
@@ -170,7 +170,7 @@ class TeamController extends Controller
         ];
         $request->session()->put('alert', $alert);
 
-        return redirect()->action('AdminController@listTeams');
+        return redirect('/admin/teams');
     }
 
 }

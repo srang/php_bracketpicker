@@ -10,8 +10,10 @@ use App\Factories\BracketFactory;
 use App\Strategies\CreateBaseBracketStrategy;
 use App\Strategies\ReverseBaseBracketStrategy;
 use App\Strategies\ValidateBaseBracketStrategy;
+use App\Strategies\ValidateQuickBracketStrategy;
 use App\Strategies\ValidateUserUpdateBracketStrategy;
 use App\Strategies\ValidateUserCreateBracketStrategy;
+use App\Jobs\ValidateBracket;
 
 use Log;
 use Auth;
@@ -101,13 +103,15 @@ class BracketController extends Controller
 
     public function createBracket(Request $request)
     {
-        $errors = BracketFactory::validateBracket($request,new ValidateUserCreateBracketStrategy($this->teamRepo));
+
+        $errors = BracketFactory::validateBracket($request,new ValidateQuickBracketStrategy($this->teamRepo));
         if ($errors->count() > 0) {
-            return redirect('/brackets/new')->withInput()->withErrors($errors);
+            return redirect()->action('BracketController@showCreateBracket')->withInput()->withErrors($errors);
         }
 
-        $alert = $this->commitBracket($request);
+        $alert = $this->commitNewBracket($request);
 
+        //$this->dispatch(new ValidateBracket($request,new ValidateUserCreateBracketStrategy($this->teamRepo)));
         $request->session()->put('alert', $alert);
         return redirect('/brackets');
     }
@@ -182,13 +186,13 @@ class BracketController extends Controller
     {
         $errors = BracketFactory::validateBracket($request,new ValidateAdminUpdateBracketStrategy($this->teamRepo));
         if ($errors->count() > 0) {
-            return redirect('admin/brackets/'.$bracktet->bracket_id)->withInput()->withErrors($errors);
+            return redirect('/admin/brackets/'.$bracktet->bracket_id)->withInput()->withErrors($errors);
         }
 
         $alert = $this->commitUpdatedBracket($request,$bracket);
 
         $request->session()->put('alert', $alert);
-        return redirect('admin/brackets');
+        return redirect('/admin/brackets');
     }
 
     public function destroyBracketAdmin(Request $request, Bracket $bracket)
