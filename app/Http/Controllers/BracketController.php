@@ -120,8 +120,13 @@ class BracketController extends Controller
     public function updateBracket(Request $request, Bracket $bracket)
     {
         $this->dispatch(new ValidateBracket($request,
-            new ValidateUserCreateBracketStrategy($this->teamRepo),
+            new ValidateUserUpdateBracketStrategy($this->teamRepo),
             new CreateBaseBracketStrategy($this->teamRepo)));
+
+        $alert = [
+            'message' => 'Bracket Update Processing',
+            'level' => 'warning'
+        ];
 
         // callback delete old bracket
         $request->session()->put('alert', $alert);
@@ -176,8 +181,8 @@ class BracketController extends Controller
 
 
         $alert = [
-            'message' => 'Save successful',
-            'level' => 'success'
+            'message' => 'Bracket Processing',
+            'level' => 'warning'
         ];
 
         $request->session()->put('alert', $alert);
@@ -186,12 +191,15 @@ class BracketController extends Controller
 
     public function updateBracketAdmin(Request $request, Bracket $bracket)
     {
-        $errors = BracketFactory::validateBracket($request,new ValidateAdminUpdateBracketStrategy($this->teamRepo));
-        if ($errors->count() > 0) {
-            return redirect('/admin/brackets/'.$bracktet->bracket_id)->withInput()->withErrors($errors);
-        }
+        $this->dispatch(new ValidateBracket($request,
+            new ValidateAdminUpdateBracketStrategy($this->teamRepo),
+            new CreateBaseBracketStrategy($this->teamRepo)));
 
-        $alert = $this->commitUpdatedBracket($request,$bracket);
+
+        $alert = [
+            'message' => 'Bracket Update Processing',
+            'level' => 'warning'
+        ];
 
         $request->session()->put('alert', $alert);
         return redirect('/admin/brackets');
@@ -208,41 +216,6 @@ class BracketController extends Controller
     /**
      * BRACKET HELPER FUNCTIONS
      */
-
-    private function commitNewBracket(Request $request)
-    {
-        DB::beginTransaction();
-
-        $bracket = BracketFactory::createBracket($request, new CreateBaseBracketStrategy($this->teamRepo));
-
-        if (isset($bracket)) {
-            $bracket->name = $request->name;
-            $bracket->user_id = $request->user_id;
-            $bracket->save();
-            DB::commit();
-            $alert = [
-                'message' => 'Save successful',
-                'level' => 'success'
-            ];
-        } else {
-            DB::rollBack();
-            $alert = [
-                'message' => 'Save unsuccessful',
-                'level' => 'danger'
-            ];
-        }
-        return $alert;
-    }
-
-    private function commitUpdatedBracket(Request $request, Bracket $bracket)
-    {
-        $alert = $this->commitNewBracket($request);
-        if($alert['message'] == 'Save successful') {
-            $bracket->delete();
-        }
-        return $alert;
-    }
-
     private function commitDeleteBracket(Bracket $bracket)
     {
         $name = $bracket->name;

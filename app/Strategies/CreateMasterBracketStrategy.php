@@ -31,7 +31,7 @@ class CreateMasterBracketStrategy extends AbstractCreateBracketStrategy
      * @param Request  $req
      * @return Bracket|null
      */
-    public function read(Request $req)
+    public function read($req)
     {
         $games = collect([]);
         // don't count region arrays as an additional game
