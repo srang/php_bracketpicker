@@ -106,7 +106,7 @@ class BracketController extends Controller
             return redirect('/brackets/new')->withInput()->withErrors($errors);
         }
 
-        $alert = commitBracket($request);
+        $alert = $this->commitBracket($request);
 
         $request->session()->put('alert', $alert);
         return redirect('/brackets');
@@ -119,7 +119,7 @@ class BracketController extends Controller
             return redirect('/brackets/'.$bracktet->bracket_id)->withInput()->withErrors($errors);
         }
 
-        $alert = commitUpdatedBracket($request,$bracket);
+        $alert = $this->commitUpdatedBracket($request,$bracket);
 
         $request->session()->put('alert', $alert);
         return redirect('/brackets');
@@ -134,7 +134,7 @@ class BracketController extends Controller
                 'level' => 'danger'
             ];
         } else {
-            $alert = commitDeleteBracket($bracket);
+            $alert = $this->commitDeleteBracket($bracket);
         }
         $request->session()->put('alert', $alert);
 
@@ -155,7 +155,7 @@ class BracketController extends Controller
         JavaScript::put([
             'users' => $users,
         ]);
-        return showCreateBracket($request);
+        return $this->showCreateBracket($request);
     }
 
     /**
@@ -172,7 +172,7 @@ class BracketController extends Controller
             return redirect()->action('BracketController@showCreateBracketAdmin')->withInput()->withErrors($errors);
         }
 
-        $alert = commitBracket($request);
+        $alert = $this->commitBracket($request);
 
         $request->session()->put('alert', $alert);
         return redirect()->action('AdminController@bracketsIndex');
@@ -185,7 +185,7 @@ class BracketController extends Controller
             return redirect('admin/brackets/'.$bracktet->bracket_id)->withInput()->withErrors($errors);
         }
 
-        $alert = commitUpdatedBracket($request,$bracket);
+        $alert = $this->commitUpdatedBracket($request,$bracket);
 
         $request->session()->put('alert', $alert);
         return redirect('admin/brackets');
@@ -193,7 +193,7 @@ class BracketController extends Controller
 
     public function destroyBracketAdmin(Request $request, Bracket $bracket)
     {
-        $alert = commitDeleteBracket($bracket);
+        $alert = $this->commitDeleteBracket($bracket);
         $request->session()->put('alert', $alert);
 
         return redirect()->action('AdminController@bracketsIndex');
@@ -230,7 +230,7 @@ class BracketController extends Controller
 
     private function commitUpdatedBracket(Request $request, Bracket $bracket)
     {
-        $alert = commitNewBracket($request);
+        $alert = $this->commitNewBracket($request);
         if($alert['message'] == 'Save successful') {
             $bracket->delete();
         }
