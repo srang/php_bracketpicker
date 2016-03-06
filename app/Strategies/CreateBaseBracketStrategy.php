@@ -28,15 +28,15 @@ class CreateBaseBracketStrategy extends AbstractCreateBracketStrategy
      * @param Request  $req
      * @return Bracket|null
      */
-    public function read(Request $req)
+    public function read($req)
     {
+        Log::info("Creating bracket");
         $games = collect([]);
-        Log::info($req->games);
-        $req_games = $req->games;
+        $req_games = $req->get('games');
         $round_count = count($req_games);
         for($round_id = 1; $round_id <= $round_count; $round_id++) {
             $round = $req_games[$round_id];
-            Log::info("creating round ".$round_id);
+            Log::debug("creating round ".$round_id);
             $games->put($round_id, collect([]));
             foreach($round as $game) {
                 $team_a = $this->teamRepo->byName($game['T1']);

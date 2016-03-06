@@ -40,7 +40,7 @@ abstract class AbstractCreateBracketStrategy implements ICreateBracketStrategy
      * @param Request  $req
      * @return Bracket|null
      */
-    abstract public function read(Request $req);
+    abstract public function read($req);
 
     /**
      * connect parent to children and store for later
@@ -86,7 +86,7 @@ abstract class AbstractCreateBracketStrategy implements ICreateBracketStrategy
      */
     protected function attemptBracketize($round_id, $game_matrix)
     {
-        Log::info('bracketize '.$round_id);
+        Log::debug('Attempting bracketize '.$round_id);
         if ($game_matrix->get($round_id)->count() == 1) {
             $game = $game_matrix->get($round_id)->shift();
             $game->save();

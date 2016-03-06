@@ -12,7 +12,6 @@ use App\Tournament;
 use App\Strategies\IValidateBracketStrategy;
 use App\Repositories\TeamRepository;
 use App\Factories\BracketFactory;
-use Illuminate\Http\Request;
 use App\Exceptions\BracketValidationException;
 
 /**
@@ -67,22 +66,24 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
      * @param Request  $req
      * @return error collection
      */
-    public function validate(Request $req)
+    public function validate($req)
     {
         $errors = collect([]);
         try {
             $this->checkAssertion(array($this,'assertSubmissionOpen'),[],false,$errors);
-            $this->checkAssertion(array($this,'assertValidBracketId'),[$req->bracket_id],false,$errors);
-            if (isset($req->bracket_id)) {
-                $this->checkAssertion(array($this,'assertNotMaster'),[$req->bracket_id],false,$errors);
+            $bracket_id = $req->get('bracket_id');
+            $this->checkAssertion(array($this,'assertValidBracketId'),[$bracket_id],false,$errors);
+            if (isset($bracket_id)) {
+                $this->checkAssertion(array($this,'assertNotMaster'),[$bracket_id],false,$errors);
             }
-            $bracket = Bracket::where('bracket_id',$req->bracket_id)->first();
+            $bracket = Bracket::where('bracket_id',$bracket_id)->first();
             $master = BracketFactory::reverseBracket(Bracket::where('master',1)->first(), new ReverseBaseBracketStrategy());
-            foreach ($master as $round=>$games) {
-                $this->checkAssertion(array($this,'assertRoundIsSet'),[$req,$round],false,$errors);
-                $this->checkAssertion(array($this,'assertGameCountCorrect'),[$req,$round,$master[$round]->count()],false,$errors);
-                $round_games = $req->games[$round];
-                for($i=1; $i<=count($games); $i++) {
+            $games = $req->get('games');
+            foreach ($master as $round=>$mastergames) {
+                $this->checkAssertion(array($this,'assertRoundIsSet'),[$games,$round],false,$errors);
+                $this->checkAssertion(array($this,'assertGameCountCorrect'),[$games,$round,$mastergames->count()],false,$errors);
+                $round_games = $games[$round];
+                for($i=1; $i<=count($mastergames); $i++) {
                     $game= $round_games[$i];
                     $this->checkAssertion(array($this,'assertTeamsExist'),[$game],true,$errors);
                     $this->checkAssertion(array($this,'assertTeamsNotTBD'),[$game],true,$errors);
@@ -90,18 +91,18 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
                     if ($round == 1) {
                         $this->checkAssertion(array($this,'assertGamesMatch'),[$game,$master->get($round)->get($i-1)],true,$errors);
                     } else {
-                        $child_a = $req->games[$round-1][$i*2-1];
-                        $child_b = $req->games[$round-1][$i*2];
+                        $child_a = $games[$round-1][$i*2-1];
+                        $child_b = $games[$round-1][$i*2];
                         $this->checkAssertion(array($this,'assertTeamsChildWinners'),[$game,$child_a,$child_b],true, $errors);
                     }
                     $this->checkAssertion(array($this,'assertWinnerInTeams'),[$game],true,$errors);
                 }
             }
-            $this->checkAssertion(array($this,'assertUserNotNull'),[$req->user_id],true,$errors);
+            $this->checkAssertion(array($this,'assertUserNotNull'),[$req->get('user_id')],true,$errors);
             if(isset($bracket)) {
-                $this->checkAssertion(array($this,'assertUserIsOwner'),[$req->user_id,$bracket->user_id],true,$errors);
+                $this->checkAssertion(array($this,'assertUserIsOwner'),[$req->get('user_id'),$bracket->user_id],true,$errors);
             }
-            $this->checkAssertion(array($this,'assertBracketNamed'),[$req->name],true,$errors);
+            $this->checkAssertion(array($this,'assertBracketNamed'),[$req->get('name')],true,$errors);
         } catch (BracketValidationException $e) {
             Log::warning('bracket did not pass validation');
             Log::warning($e->getMessage());
@@ -154,10 +155,13 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
 
     public function assertRoundIsSet($args)
     {
-        $req = $args[0];
+        $games = $args[0];
         $round = $args[1];
-        $games = $req->games[$round];
         if(!isset($games)) {
+            throw new BracketValidationException('No games found',$this::ROUND_EXISTS);
+        }
+        $roundgames = $games[$round];
+        if(!isset($roundgames)) {
             throw new BracketValidationException('Round '.$round.' not found',$this::ROUND_EXISTS);
         }
         Log::debug('Request contains round '.$round.'.');
@@ -165,12 +169,12 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
 
     public function assertGameCountCorrect($args)
     {
-        $req = $args[0];
+        $games = $args[0];
         $round = $args[1];
         $game_count = $args[2];
-        $games = $req->games[$round];
-        if(count($games) != $game_count) {
-            throw new BracketValidationException('Round '.$round.' should have '.$game_count.' games, found '.count($games).'.',$this::ROUND_GAME_COUNT);
+        $roundgames = $games[$round];
+        if(count($roundgames) != $game_count) {
+            throw new BracketValidationException('Round '.$round.' should have '.$game_count.' games, found '.count($roundgames).'.',$this::ROUND_GAME_COUNT);
         }
         Log::debug('Round '.$round.' correctly has '.$game_count.' games.');
     }

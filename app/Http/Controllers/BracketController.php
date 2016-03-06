@@ -104,27 +104,26 @@ class BracketController extends Controller
     public function createBracket(Request $request)
     {
 
-        $errors = BracketFactory::validateBracket($request,new ValidateQuickBracketStrategy($this->teamRepo));
-        if ($errors->count() > 0) {
-            return redirect()->action('BracketController@showCreateBracket')->withInput()->withErrors($errors);
-        }
+        $this->dispatch(new ValidateBracket($request,
+            new ValidateUserCreateBracketStrategy($this->teamRepo),
+            new CreateBaseBracketStrategy($this->teamRepo)));
 
-        $alert = $this->commitNewBracket($request);
+        $alert = [
+            'message' => 'Bracket Processing',
+            'level' => 'warning'
+        ];
 
-        //$this->dispatch(new ValidateBracket($request,new ValidateUserCreateBracketStrategy($this->teamRepo)));
         $request->session()->put('alert', $alert);
         return redirect('/brackets');
     }
 
     public function updateBracket(Request $request, Bracket $bracket)
     {
-        $errors = BracketFactory::validateBracket($request,new ValidateUserUpdateBracketStrategy($this->teamRepo));
-        if ($errors->count() > 0) {
-            return redirect('/brackets/'.$bracktet->bracket_id)->withInput()->withErrors($errors);
-        }
+        $this->dispatch(new ValidateBracket($request,
+            new ValidateUserCreateBracketStrategy($this->teamRepo),
+            new CreateBaseBracketStrategy($this->teamRepo)));
 
-        $alert = $this->commitUpdatedBracket($request,$bracket);
-
+        // callback delete old bracket
         $request->session()->put('alert', $alert);
         return redirect('/brackets');
 
@@ -171,12 +170,15 @@ class BracketController extends Controller
      */
     public function createBracketAdmin(Request $request)
     {
-        $errors = BracketFactory::validateBracket($request,new ValidateAdminCreateBracketStrategy($this->teamRepo));
-        if ($errors->count() > 0) {
-            return redirect()->action('BracketController@showCreateBracketAdmin')->withInput()->withErrors($errors);
-        }
+        $this->dispatch(new ValidateBracket($request,
+            new ValidateAdminCreateBracketStrategy($this->teamRepo),
+            new CreateBaseBracketStrategy($this->teamRepo)));
 
-        $alert = $this->commitBracket($request);
+
+        $alert = [
+            'message' => 'Save successful',
+            'level' => 'success'
+        ];
 
         $request->session()->put('alert', $alert);
         return redirect()->action('AdminController@bracketsIndex');
