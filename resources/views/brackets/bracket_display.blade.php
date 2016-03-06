@@ -20,8 +20,7 @@
                     </div>
                 </form>
             </div>
-@include('brackets.bracket_body')
         </div>
-    </div>
+@include('brackets.bracket_body')
 
 @endsection

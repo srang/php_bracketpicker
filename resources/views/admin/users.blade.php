@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container">
-            
 @if (count($users) > 0)
         <div class="panel panel-default">
             <div class="panel-heading">

@@ -1,6 +1,6 @@
-<div class="bracket-body">
+<div class="bracket-body container-fluid">
     <!-- Top Half -->
-    <div class="row bracket-row">
+    <div class="bracket-row">
         <div class="col-md-2 bracket-round">
             <h4 class="bracket-round-title">Round 1 {{ $region=$regions->shift()->region }}</h4>
 @for($i=1; $i <= 8; $i++)
@@ -14,12 +14,14 @@
         <br>
 @endfor
         </div>
-        <div class="col-md-3 bracket-round">
+        <div class="col-md-2 bracket-round">
             <h4 class="bracket-round-title">Round 3 {{ $region }}</h4>
 @for($i=1; $i <= 2; $i++)
 @include($game_container,[ 'game' => $games->get('3')->shift(), 'game_num' => $i ])
 @endfor
         <br>
+        <div class="col-md-2 bracket-round">
+        </div>
         <br>
             <h4 class="bracket-round-title">Round 3 {{ $region=$regions->shift()->region }}</h4>
 @for($i=3; $i <= 4; $i++)
@@ -42,7 +44,7 @@
     </div>
 
     <!-- Middle -->
-    <div class="row bracket-row">
+    <div class="bracket-row">
         <div class="col-md-2 bracket-round">
 @for($i=1; $i <= 2; $i++)
 @include($game_container,[ 'game' => $games->get('4')->shift(), 'game_num' => $i ])
@@ -51,7 +53,7 @@
         <div class="col-md-2 bracket-round">
 @include($game_container,[ 'game' => $games->get('5')->shift(), 'game_num' => 1 ])
         </div>
-        <div class="col-md-3 bracket-round">
+        <div class="col-md-1 bracket-round">
 @include($game_container,[ 'game' => $games->get('6')->shift(), 'game_num' => 1 ])
         </div>
         <div class="col-md-2 bracket-round">
@@ -65,7 +67,7 @@
     </div>
 
     <!-- Bottom Half -->
-    <div class="row bracket-row">
+    <div class="bracket-row">
         <div class="col-md-2 bracket-round">
             <h4 class="bracket-round-title">Round 1 {{ $region=$regions->shift()->region }}</h4>
 @for($i=17; $i <= 24; $i++)
@@ -106,4 +108,3 @@
         </div>
     </div>
 </div>
-
