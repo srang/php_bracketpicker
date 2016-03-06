@@ -106,7 +106,8 @@ class BracketController extends Controller
 
         $this->dispatch(new ValidateBracket($request,
             new ValidateUserCreateBracketStrategy($this->teamRepo),
-            new CreateBaseBracketStrategy($this->teamRepo)));
+            new CreateBaseBracketStrategy($this->teamRepo)),
+            null);
 
         $alert = [
             'message' => 'Bracket Processing',
@@ -121,7 +122,8 @@ class BracketController extends Controller
     {
         $this->dispatch(new ValidateBracket($request,
             new ValidateUserUpdateBracketStrategy($this->teamRepo),
-            new CreateBaseBracketStrategy($this->teamRepo)));
+            new CreateBaseBracketStrategy($this->teamRepo)),
+            $bracket);
 
         $alert = [
             'message' => 'Bracket Update Processing',
@@ -177,7 +179,8 @@ class BracketController extends Controller
     {
         $this->dispatch(new ValidateBracket($request,
             new ValidateAdminCreateBracketStrategy($this->teamRepo),
-            new CreateBaseBracketStrategy($this->teamRepo)));
+            new CreateBaseBracketStrategy($this->teamRepo)),
+            null);
 
 
         $alert = [
@@ -193,8 +196,8 @@ class BracketController extends Controller
     {
         $this->dispatch(new ValidateBracket($request,
             new ValidateAdminUpdateBracketStrategy($this->teamRepo),
-            new CreateBaseBracketStrategy($this->teamRepo)));
-
+            new CreateBaseBracketStrategy($this->teamRepo)),
+            $bracket);
 
         $alert = [
             'message' => 'Bracket Update Processing',
