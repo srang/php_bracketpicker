@@ -20,6 +20,7 @@ class ValidateBracket extends Job implements ShouldQueue
 
     protected $validateStrategy;
     protected $createStrategy;
+    protected $existingBracket;
     protected $request;
 
     /**
@@ -27,12 +28,13 @@ class ValidateBracket extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($req, IValidateBracketStrategy $validate, ICreateBracketStrategy $create)
+    public function __construct($req, IValidateBracketStrategy $validate, ICreateBracketStrategy $create, $bracket)
     {
         Log::info("Creating new Bracket Job");
         $this->request = collect($req->all());
         $this->createStrategy = $create;
         $this->validateStrategy = $validate;
+        $this->existingBracket = $bracket;
     }
 
     /**
@@ -56,6 +58,9 @@ class ValidateBracket extends Job implements ShouldQueue
                 $bracket->name = $this->request->get('name');
                 $bracket->user_id = $this->request->get('user_id');
                 $bracket->save();
+                if(isset($this->existingBracket)) {
+                    $this->existingBracket->delete();
+                }
                 DB::commit();
                 $alert = [
                     'message' => 'Save successful',
