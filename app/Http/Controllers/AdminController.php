@@ -411,36 +411,36 @@ class AdminController extends Controller
 
     public function updateBracket(Request $request, Bracket $bracket)
     {
-        $errors = BracketFactory::validateBracket($request,new ValidateAdminUpdateBracketStrategy($this->teamRepo));
-        if ($errors->count() > 0) {
-            return redirect('admin/brackets/'.$bracktet->bracket_id)->withInput()->withErrors($errors);
-        }
-        // create user bracket
-        #DB::beginTransaction();
-
-        #$bracket_updated = BracketFactory::createBracket($request, new CreateBaseBracketStrategy($this->teamRepo));
-
-        #if (isset($bracket_updated)) {
-        #    $bracket_updated->name = $request->name;
-        #    $bracket_updated->user_id = $request->user_id;
-        #    $bracket_updated->save();
-        #    // update just creates new and deletes old
-        #    // consider revisiting this later
-        #    $bracket->delete();
-        #    DB::commit();
-        #    $alert = [
-        #        'message' => 'Save Successful.',
-        #        'level' => 'success'
-        #    ];
-        #} else {
-        #    DB::rollBack();
-        #    $alert = [
-        #        'message' => 'Save unsuccessful',
-        #        'level' => 'danger'
-        #    ];
+        #$errors = BracketFactory::validateBracket($request,new ValidateAdminUpdateBracketStrategy($this->teamRepo));
+        #if ($errors->count() > 0) {
+        #    return redirect('admin/brackets/'.$bracktet->bracket_id)->withInput()->withErrors($errors);
         #}
+        // create user bracket
+        DB::beginTransaction();
 
-        #$request->session()->put('alert', $alert);
+        $bracket_updated = BracketFactory::createBracket($request, new CreateBaseBracketStrategy($this->teamRepo));
+
+        if (isset($bracket_updated)) {
+            $bracket_updated->name = $request->name;
+            $bracket_updated->user_id = $request->user_id;
+            $bracket_updated->save();
+            // update just creates new and deletes old
+            // consider revisiting this later
+            $bracket->delete();
+            DB::commit();
+            $alert = [
+                'message' => 'Save Successful.',
+                'level' => 'success'
+            ];
+        } else {
+            DB::rollBack();
+            $alert = [
+                'message' => 'Save unsuccessful',
+                'level' => 'danger'
+            ];
+        }
+
+        $request->session()->put('alert', $alert);
         return redirect('admin/brackets');
 
     }
