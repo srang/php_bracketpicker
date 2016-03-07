@@ -40,4 +40,14 @@ class Game extends Model
         return $this->belongsTo('App\Team','winner','team_id');
     }
 
+    public function child_a()
+    {
+        return $this->belongsTo('App\Game','child_game_a','game_id');
+    }
+
+    public function child_b()
+    {
+        return $this->belongsTo('App\Game','child_game_b','game_id');
+    }
+
 }

@@ -71,8 +71,9 @@ abstract class AbstractCreateBracketStrategy implements ICreateBracketStrategy
             //$child1->save();
             $child2 = $game_matrix->get($round_id-1)->shift();
             //$child2->save();
-            $game->child_game_a = $child1->game_id;
-            $game->child_game_b = $child2->game_id;
+            $game->child_a()->associate($child1);
+            $game->child_b()->associate($child2);
+            //$game->save();
         }
         $game_matrix->get($round_id)->push($game);
         return $game_matrix;
@@ -91,6 +92,8 @@ abstract class AbstractCreateBracketStrategy implements ICreateBracketStrategy
         if ($game_matrix->get($round_id)->count() == 1) {
             $game = $game_matrix->get($round_id)->shift();
 
+            Log::info("AAA");
+            Log::info($game);
             $game->save();
             $bracket = new Bracket([
                 'root_game' => $game->game_id,
