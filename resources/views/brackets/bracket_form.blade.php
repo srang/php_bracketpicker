@@ -4,7 +4,8 @@
                     <div class="col-sm-6">
                         <div class="form-group @if ($errors->has('name')) has-error @endif">
                             <label for="bracket-name" class="col-sm-3 control-label">Bracket Name</label>
-                            <input type="text" name="name" placeholder="Bracket Name" id="bracket-name" class="form-control" value="{{ (!empty(old('name'))||!isset($bracket))?old('name'):(($master)?$bracket->name:(Auth::user()->name.'\'s Bracket')) }}">
+                            <input type="text" name="name" placeholder="Bracket Name" id="bracket-name" class="form-control"
+                            value="{{ (!empty(old('name'))||!isset($bracket))?old('name'):(($master)?$bracket->name:(Auth::user()->name.'\'s Bracket')) }}">
                         </div>
                     </div>
 @if( Auth::user()->hasRole('admin') && !isset($user) && isset($users) )

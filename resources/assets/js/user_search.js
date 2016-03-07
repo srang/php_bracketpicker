@@ -23,6 +23,7 @@ $('#bracket-owner').typeahead({
                     }
     }
 });
-$('#bracket-owner').bind('typeahead:selected', function(obj, datum, name) {
-    $('#bracket-owner-real').val(datum.id);
+$('#bracket-owner').on('typeahead:select', function(event, selection) {
+    $('#bracket-owner-real').val(selection.user_id);
+    $('#bracket-name').val(selection.name+'\'s Bracket');
 });

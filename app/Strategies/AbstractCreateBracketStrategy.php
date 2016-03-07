@@ -3,6 +3,7 @@
 namespace App\Strategies;
 
 use Log;
+use DB;
 use App\Game;
 use App\Team;
 use App\Bracket;
@@ -100,6 +101,46 @@ abstract class AbstractCreateBracketStrategy implements ICreateBracketStrategy
             Log::error('game matrix count below 1');
         }
         return null;
+    }
+
+    protected function readHelper($req)
+    {
+        Log::info("Creating bracket");
+        $games = collect([]);
+        $req_games = $req->get('games');
+        $round_count = count($req_games);
+        for($round_id = 1; $round_id <= $round_count; $round_id++) {
+            $round = $req_games[$round_id];
+            Log::debug("creating round ".$round_id);
+            $games->put($round_id, collect([]));
+            foreach($round as $game) {
+                $team_a = $this->teamRepo->byName($game['T1']);
+                $team_b = $this->teamRepo->byName($game['T2']);
+                $winner = $this->teamRepo->byName($game['W']);
+                Log::debug('Found Teams {'.$team_a->name.','.$team_b->name.','.$winner->name.'}');
+                $this->connectChildren($round_id, $games, $team_a, $team_b, $winner);
+            }
+            $bracket = $this->attemptBracketize($round_id, $games);
+        }
+        return $bracket;
+    }
+
+
+    protected function save($bracket,$name,$user_id)
+    {
+        if (isset($bracket)) {
+            $bracket->name = $name;
+            if(isset($user_id)) {
+                $bracket->user_id = $user_id;
+            }
+            $bracket->save();
+            DB::commit();
+            return true;
+        } else {
+            DB::rollBack();
+            Log::error('Something went wrong with user bracket creation');
+            return false;
+        }
     }
 
 }

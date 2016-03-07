@@ -2,11 +2,10 @@
 
 namespace App\Strategies;
 
-use App\Bracket;
-use App\Strategies\AbstractCreateBracketStrategy;
+use App\Strategies\UpdateBaseBracketStrategy;
 
-use Log;
 use DB;
+use Log;
 use Illuminate\Http\Request;
 
 
@@ -15,7 +14,7 @@ use Illuminate\Http\Request;
  * normal users and their brackets
  *
  */
-class CreateBaseBracketStrategy extends AbstractCreateBracketStrategy
+class UpdateBaseBracketStrategy extends AbstractUpdateBracketStrategy
 {
     /**
      * flag for master bracket
@@ -33,22 +32,24 @@ class CreateBaseBracketStrategy extends AbstractCreateBracketStrategy
     public function read($req)
     {
         DB::beginTransaction();
-        Log::info('Creating base bracket using CreateBaseBracketStrategy');
+        Log::info('Updating bracket '.$this->existingBracket->name.' using UpdateBaseBracketStrategy');
         $bracket = $this->readHelper($req);
         if ($this->save($bracket,$req->get('name'),$req->get('user_id'))) {
+            Log::info('Update to bracket '.$bracket->name.' was successful');
             // alert user
             $alert = [
-                'message' => 'Save successful',
+                'message' => 'Update successful',
                 'level' => 'success'
             ];
         } else {
             Log::error('Something went wrong with user bracket creation');
             // alert user
             $alert = [
-                'message' => 'Save unsuccessful',
+                'message' => 'Update unsuccessful',
                 'level' => 'danger'
             ];
         }
         return $alert;
     }
+
 }

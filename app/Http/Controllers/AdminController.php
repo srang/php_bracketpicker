@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Log;
-use DB;
-use JavaScript;
 use App\Team;
 use App\User;
 use App\Bracket;
@@ -14,18 +11,18 @@ use App\Tournament;
 use App\State;
 use App\Factories\BracketFactory;
 use App\Strategies\CreateMasterBracketStrategy;
-use App\Strategies\CreateBaseBracketStrategy;
 use App\Strategies\UpdateMasterBracketStrategy;
 use App\Strategies\ReverseBaseBracketStrategy;
-use App\Strategies\ValidateBaseBracketStrategy;
-use App\Strategies\ValidateAdminCreateBracketStrategy;
-use App\Strategies\ValidateAdminUpdateBracketStrategy;
 use App\Strategies\ValidateMasterUpdateBracketStrategy;
-use Illuminate\Http\Request;
+use App\Jobs\ValidateBracket;
+use App\Repositories\TeamRepository;
 
+use Log;
+use DB;
+use JavaScript;
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Repositories\TeamRepository;
 
 class AdminController extends Controller
 {
@@ -124,58 +121,24 @@ class AdminController extends Controller
             ]);
         }
 
-        $team_names = collect([]);
-        foreach ($request->team as $region => $teams) {
-            foreach ($teams as $rank => $team) {
-                if(!empty($team) && !$team_names->contains($team)) {
-                    Log::debug('Team: '.$team.' found in form with region: '.$region.' and rank: '.$rank);
-                    $team_actual = $this->teamRepo->byName($team);
-                    // check if update
-                    if($team_actual->region->region != $region || $team_actual->rank != $rank) {
-                        Log::debug('Updating team: '.$team.' from rank: '.$team_actual->rank.' to '.$rank.' and region: '.$team_actual->region->region.' to '.$region);
-                        $team_names->push($team);
-                        $team_actual->setRegionRank($region,$rank);
-                    }
-                }
-            }
-        }
-
-        $alert = [
-            'message' => 'Save Successful',
-            'level' => 'success'
-        ];
+        $alert = $this->saveTeams($request);
 
         if ($request->start_madness==='true') {
-            DB::beginTransaction();
 
-            $bracket = BracketFactory::createBracket($request, new CreateMasterBracketStrategy($this->teamRepo));
-
-            if (isset($bracket)) {
-                $tournament = Tournament::where('active',true)->first();
-                // TODO just use next
-                // $tournament->state_id = $tournament->state->next->state_id;
-                $tournament->state_id = State::where('name','submission')->first()->state_id;
-                $tournament->save();
-                $bracket->name = 'Master Bracket';
-                $bracket->save();
-                DB::commit();
-                $alert = [
-                    'message' => 'Save Successful. Bracket submission is open',
-                    'level' => 'success'
-                ];
-            } else {
-                DB::rollBack();
-                $alert = [
-                    'message' => 'Save successful but unable to start tournament due to problems with the master bracket as a whole',
-                    'level' => 'danger'
-                ];
-            }
-
+            // if needs to be async
+            //$this->dispatch(new ValidateBracket($request,
+            //    new <master create validator>($this->teamRepo),
+            //    new CreateMasterBracketStrategy($this->teamRepo)));
+            //$alert = [
+            //    'message' => 'Master Bracket Processing',
+            //    'level' => 'warning'
+            //];
+            $alert = BracketFactory::createBracket($request, new CreateMasterBracketStrategy($this->teamRepo));
 
         }
         $request->session()->put('alert', $alert);
 
-        return redirect()->action('AdminController@showMaster');
+        return redirect('/admin/brackets');
     }
 
     /**
@@ -186,36 +149,18 @@ class AdminController extends Controller
      */
     public function setMaster(Request $request)
     {
-        $errors = BracketFactory::validateBracket($request,new ValidateMasterUpdateBracketStrategy($this->teamRepo));
-        if ($errors->count() > 0) {
-            return redirect('admin/brackets/master')->withInput()->withErrors($errors);
-        }
-        // create user bracket
-        DB::beginTransaction();
-
         $master = Bracket::where('master',1)->first();
-        $bracket_updated = BracketFactory::createBracket($request, new UpdateMasterBracketStrategy($this->teamRepo));
-
-        if (isset($bracket_updated)) {
-            $bracket_updated->name = $request->name;
-            $bracket_updated->save();
-            $master->delete();
-            DB::commit();
-            $alert = [
-                'message' => 'Save Successful.',
-                'level' => 'success'
-            ];
-        } else {
-            DB::rollBack();
-            $alert = [
-                'message' => 'Save unsuccessful',
-                'level' => 'danger'
-            ];
-        }
+        $this->dispatch(new ValidateBracket($request,
+            new ValidateMasterUpdateBracketStrategy($this->teamRepo),
+            new UpdateMasterBracketStrategy($this->teamRepo, $master)));
+        $alert = [
+            'message' => 'Master Bracket Update Processing',
+            'level' => 'warning'
+        ];
 
         $request->session()->put('alert', $alert);
 
-        return redirect('admin/brackets/master');
+        return redirect('/admin/brackets');
     }
 
     public function bracketsIndex(Request $request)
@@ -240,6 +185,29 @@ class AdminController extends Controller
         $tournament = Tournament::where('active',true)->first();
         $tournament->state_id = State::where('name','active')->first()->state_id;
         $tournament->save();
+    }
+
+    private function saveTeams($request)
+    {
+        $team_names = collect([]);
+        foreach ($request->team as $region => $teams) {
+            foreach ($teams as $rank => $team) {
+                if(!empty($team) && !$team_names->contains($team)) {
+                    $team_actual = $this->teamRepo->byName($team);
+                    if($team_actual->region->region != $region || $team_actual->rank != $rank) {
+                        Log::debug('Updating team: '.$team.' from rank: '.$team_actual->rank.
+                            ' to '.$rank.' and region: '.$team_actual->region->region.' to '.$region);
+                        $team_names->push($team);
+                        $team_actual->setRegionRank($region,$rank);
+                    }
+                }
+            }
+        }
+
+        return [
+            'message' => 'Save Successful',
+            'level' => 'success'
+        ];
     }
 
 }
