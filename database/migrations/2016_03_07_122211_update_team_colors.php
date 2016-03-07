@@ -1,6 +1,7 @@
 <?php
 
 use App\Team;
+use App\Region;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -24,6 +25,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Belmont')->update([
                     'mascot'        => 'Bruins',
+                    'icon_path'     => '/path/to/icon',
                     'primary_color' => '0000ff',
                     'accent_color'  => 'ff0000'
             ]);
@@ -40,6 +42,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Bucknell')->update([
                     'mascot'        => 'Bison',
                     'primary_color' => '0000ff',
+                    'primary_color' => '0000ff',
                     'accent_color'  => 'ff6600'
             ]);
         }
@@ -54,6 +57,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Hampton')->update([
                     'mascot'        => 'Pirates',
+                    'primary_color' => '0000ff',
                     'primary_color' => '0000ff',
                     'accent_color'  => 'ffffff'
             ]);
@@ -70,6 +74,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Hawaii')->update([
                     'mascot'        => 'Rainbow Warriors',
                     'primary_color' => '004d00',
+                    'primary_color' => '004d00',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -84,6 +89,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','New Mexico State')->update([
                     'mascot'        => 'Aggies',
+                    'primary_color' => '000000',
                     'primary_color' => '000000',
                     'accent_color'  => 'ffffff'
             ]);
@@ -100,6 +106,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','North Florida')->update([
                     'mascot'        => 'Ospreys',
                     'primary_color' => '6161ff',
+                    'primary_color' => '6161ff',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -114,6 +121,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Stephen F. Austin')->update([
                     'mascot'        => 'Lumberjacks',
+                    'primary_color' => '800080',
                     'primary_color' => '800080',
                     'accent_color'  => 'ffffff'
             ]);
@@ -130,6 +138,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Texas Southern')->update([
                     'mascot'        => 'Tigers',
                     'primary_color' => 'b3b3b3',
+                    'primary_color' => 'b3b3b3',
                     'accent_color'  => 'ff0000'
             ]);
         }
@@ -144,6 +153,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','UAB')->update([
                     'mascot'        => 'Blazers',
+                    'primary_color' => '008000',
                     'primary_color' => '008000',
                     'accent_color'  => 'ff0000'
             ]);
@@ -160,6 +170,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Wagner')->update([
                     'mascot'        => 'Seahawks',
                     'primary_color' => '008000',
+                    'primary_color' => '008000',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -174,6 +185,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Weber State')->update([
                     'mascot'        => 'Wildcats',
+                    'primary_color' => '800080',
                     'primary_color' => '800080',
                     'accent_color'  => 'c4c4c4'
             ]);
@@ -190,6 +202,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Winthrop ')->update([
                     'mascot'        => 'Eagles',
                     'primary_color' => 'cc5200',
+                    'primary_color' => 'cc5200',
                     'accent_color'  => 'ffff00'
             ]);
         }
@@ -204,6 +217,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Akron')->update([
                     'mascot'        => 'Zipa',
+                    'primary_color' => '757500',
                     'primary_color' => '757500',
                     'accent_color'  => '0000a3'
             ]);
@@ -220,6 +234,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Alabama')->update([
                     'mascot'        => 'Crimson Tide',
                     'primary_color' => 'a30000',
+                    'primary_color' => 'a30000',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -234,6 +249,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Arizona State')->update([
                     'mascot'        => 'Sun Devils',
+                    'primary_color' => '9e3f00',
                     'primary_color' => '9e3f00',
                     'accent_color'  => '949400'
             ]);
@@ -250,6 +266,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Arizona')->update([
                     'mascot'        => 'Wildcats',
                     'primary_color' => '00008f',
+                    'primary_color' => '00008f',
                     'accent_color'  => 'ff0000'
             ]);
         }
@@ -264,6 +281,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Arkansas-Little Rock')->update([
                     'mascot'        => 'Trojans',
+                    'primary_color' => '610000',
                     'primary_color' => '610000',
                     'accent_color'  => 'ffffff'
             ]);
@@ -280,6 +298,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Baylor')->update([
                     'mascot'        => 'Bears',
                     'primary_color' => '006600',
+                    'primary_color' => '006600',
                     'accent_color'  => 'ffff00'
             ]);
         }
@@ -294,6 +313,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Butler')->update([
                     'mascot'        => 'Bulldogs',
+                    'primary_color' => '000000',
                     'primary_color' => '000000',
                     'accent_color'  => '5c5cff'
             ]);
@@ -310,6 +330,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','California')->update([
                     'mascot'        => 'Bears',
                     'primary_color' => 'ffff00',
+                    'primary_color' => 'ffff00',
                     'accent_color'  => '0000d1'
             ]);
         }
@@ -324,6 +345,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Chattanooga')->update([
                     'mascot'        => 'Mocs',
+                    'primary_color' => 'ffff00',
                     'primary_color' => 'ffff00',
                     'accent_color'  => '0000ff'
             ]);
@@ -340,6 +362,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Cincinnati')->update([
                     'mascot'        => 'Bearcats',
                     'primary_color' => '000000',
+                    'primary_color' => '000000',
                     'accent_color'  => 'a30000'
             ]);
         }
@@ -354,6 +377,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Colorado')->update([
                     'mascot'        => 'Buffalos',
+                    'primary_color' => '000000',
                     'primary_color' => '000000',
                     'accent_color'  => '9e9e00'
             ]);
@@ -370,6 +394,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Connecticut')->update([
                     'mascot'        => 'Huskies',
                     'primary_color' => '00008a',
+                    'primary_color' => '00008a',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -384,6 +409,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Davidson')->update([
                     'mascot'        => 'Wildcats',
+                    'primary_color' => 'ff0000',
                     'primary_color' => 'ff0000',
                     'accent_color'  => 'ffffff'
             ]);
@@ -400,6 +426,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Dayton')->update([
                     'mascot'        => 'Flyers',
                     'primary_color' => '0000f5',
+                    'primary_color' => '0000f5',
                     'accent_color'  => 'ff0000'
             ]);
         }
@@ -414,6 +441,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Duke')->update([
                     'mascot'        => 'Blue Devils',
+                    'primary_color' => '0000cc',
                     'primary_color' => '0000cc',
                     'accent_color'  => 'ffffff'
             ]);
@@ -430,6 +458,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Florida State')->update([
                     'mascot'        => 'Seminoles',
                     'primary_color' => 'a80000',
+                    'primary_color' => 'a80000',
                     'accent_color'  => '8f8f00'
             ]);
         }
@@ -444,6 +473,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Florida')->update([
                     'mascot'        => 'Gators',
+                    'primary_color' => '0000d6',
                     'primary_color' => '0000d6',
                     'accent_color'  => 'ff6600'
             ]);
@@ -460,6 +490,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','George Washington')->update([
                     'mascot'        => 'Colonials',
                     'primary_color' => 'ffff00',
+                    'primary_color' => 'ffff00',
                     'accent_color'  => '0000ff'
             ]);
         }
@@ -474,6 +505,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Georgetown')->update([
                     'mascot'        => 'Hoyas',
+                    'primary_color' => 'a1a1a1',
                     'primary_color' => 'a1a1a1',
                     'accent_color'  => '000085'
             ]);
@@ -490,6 +522,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Georgia Tech')->update([
                     'mascot'        => 'Yellow Jackets',
                     'primary_color' => '000000',
+                    'primary_color' => '000000',
                     'accent_color'  => 'a8a800'
             ]);
         }
@@ -504,6 +537,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Georgia')->update([
                     'mascot'        => 'Bulldogs',
+                    'primary_color' => '000000',
                     'primary_color' => '000000',
                     'accent_color'  => 'ff0000'
             ]);
@@ -520,6 +554,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Gonzaga')->update([
                     'mascot'        => 'Bulldogs',
                     'primary_color' => '0000ff',
+                    'primary_color' => '0000ff',
                     'accent_color'  => 'bdbdbd'
             ]);
         }
@@ -534,6 +569,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Hofstra')->update([
                     'mascot'        => 'Pride',
+                    'primary_color' => '7575ff',
                     'primary_color' => '7575ff',
                     'accent_color'  => 'ffffff'
             ]);
@@ -550,6 +586,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Indiana')->update([
                     'mascot'        => 'Hoosiers',
                     'primary_color' => 'a30000',
+                    'primary_color' => 'a30000',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -564,6 +601,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Iowa State')->update([
                     'mascot'        => 'Cyclones',
+                    'primary_color' => 'ff0000',
                     'primary_color' => 'ff0000',
                     'accent_color'  => 'ffff00'
             ]);
@@ -580,6 +618,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Iowa')->update([
                     'mascot'        => 'Hawkeyes',
                     'primary_color' => '000000',
+                    'primary_color' => '000000',
                     'accent_color'  => 'ffff00'
             ]);
         }
@@ -594,6 +633,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Kansas State')->update([
                     'mascot'        => 'Wildcats',
+                    'primary_color' => '800080',
                     'primary_color' => '800080',
                     'accent_color'  => 'ffffff'
             ]);
@@ -610,6 +650,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Kansas')->update([
                     'mascot'        => 'Jayhawks',
                     'primary_color' => '0000ff',
+                    'primary_color' => '0000ff',
                     'accent_color'  => 'ff0000'
             ]);
         }
@@ -624,6 +665,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Kentucky')->update([
                     'mascot'        => 'Wildcats',
+                    'primary_color' => '0000ff',
                     'primary_color' => '0000ff',
                     'accent_color'  => 'ffffff'
             ]);
@@ -640,6 +682,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','LSU')->update([
                     'mascot'        => 'Tigers',
                     'primary_color' => '9e9e00',
+                    'primary_color' => '9e9e00',
                     'accent_color'  => '0000ff'
             ]);
         }
@@ -654,6 +697,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Louisville')->update([
                     'mascot'        => 'Cardinals',
+                    'primary_color' => 'ff0000',
                     'primary_color' => 'ff0000',
                     'accent_color'  => '000000'
             ]);
@@ -670,6 +714,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Maryland')->update([
                     'mascot'        => 'Terrapins',
                     'primary_color' => 'f50000',
+                    'primary_color' => 'f50000',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -684,6 +729,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Miami (FL)')->update([
                     'mascot'        => 'Hurricanes',
+                    'primary_color' => '008000',
                     'primary_color' => '008000',
                     'accent_color'  => 'ff6600'
             ]);
@@ -700,6 +746,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Michigan State')->update([
                     'mascot'        => 'Spartans',
                     'primary_color' => '006100',
+                    'primary_color' => '006100',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -714,6 +761,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Michigan')->update([
                     'mascot'        => 'Wolverines',
+                    'primary_color' => '0000c7',
                     'primary_color' => '0000c7',
                     'accent_color'  => 'e0e000'
             ]);
@@ -730,6 +778,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Middle Tennessee')->update([
                     'mascot'        => 'Blue Raiders',
                     'primary_color' => '4d4dff',
+                    'primary_color' => '4d4dff',
                     'accent_color'  => 'b8b8b8'
             ]);
         }
@@ -744,6 +793,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Monmouth')->update([
                     'mascot'        => 'Hawks',
+                    'primary_color' => '7a7aff',
                     'primary_color' => '7a7aff',
                     'accent_color'  => 'ffffff'
             ]);
@@ -760,6 +810,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','North Carolina')->update([
                     'mascot'        => 'Tarheels',
                     'primary_color' => '7a7aff',
+                    'primary_color' => '7a7aff',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -774,6 +825,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Notre Dame')->update([
                     'mascot'        => 'Fighting Irish',
+                    'primary_color' => '0000a8',
                     'primary_color' => '0000a8',
                     'accent_color'  => 'dbdb00'
             ]);
@@ -790,6 +842,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Ohio State')->update([
                     'mascot'        => 'Buckeyes',
                     'primary_color' => 'a1a1a1',
+                    'primary_color' => 'a1a1a1',
                     'accent_color'  => 'ff0000'
             ]);
         }
@@ -804,6 +857,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Oklahoma')->update([
                     'mascot'        => 'Sooners',
+                    'primary_color' => 'ad0000',
                     'primary_color' => 'ad0000',
                     'accent_color'  => 'ffffff'
             ]);
@@ -820,6 +874,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Oregon State')->update([
                     'mascot'        => 'Beavers',
                     'primary_color' => 'ff6600',
+                    'primary_color' => 'ff6600',
                     'accent_color'  => '000000'
             ]);
         }
@@ -834,6 +889,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Oregon')->update([
                     'mascot'        => 'Ducks',
+                    'primary_color' => '008000',
                     'primary_color' => '008000',
                     'accent_color'  => 'ffff00'
             ]);
@@ -850,6 +906,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Pittsburgh')->update([
                     'mascot'        => 'Panthers',
                     'primary_color' => 'ffff00',
+                    'primary_color' => 'ffff00',
                     'accent_color'  => '0000a8'
             ]);
         }
@@ -864,6 +921,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Princeton')->update([
                     'mascot'        => 'Tigers',
+                    'primary_color' => '000000',
                     'primary_color' => '000000',
                     'accent_color'  => 'ff6600'
             ]);
@@ -880,6 +938,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Providence')->update([
                     'mascot'        => 'Friars',
                     'primary_color' => '000000',
+                    'primary_color' => '000000',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -894,6 +953,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Purdue')->update([
                     'mascot'        => 'Boilermakers',
+                    'primary_color' => '000000',
                     'primary_color' => '000000',
                     'accent_color'  => 'ffff00'
             ]);
@@ -910,6 +970,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','SMU')->update([
                     'mascot'        => 'Mustangs',
                     'primary_color' => 'e00000',
+                    'primary_color' => 'e00000',
                     'accent_color'  => '0000ff'
             ]);
         }
@@ -924,6 +985,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Saint Joseph\'s')->update([
                     'mascot'        => 'Hawks',
+                    'primary_color' => 'b80000',
                     'primary_color' => 'b80000',
                     'accent_color'  => 'ffffff'
             ]);
@@ -940,6 +1002,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Saint Mary\'s')->update([
                     'mascot'        => 'Gaels',
                     'primary_color' => '0000ff',
+                    'primary_color' => '0000ff',
                     'accent_color'  => 'ff0000'
             ]);
         }
@@ -954,6 +1017,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','San Diego State')->update([
                     'mascot'        => 'Aztecs',
+                    'primary_color' => '000000',
                     'primary_color' => '000000',
                     'accent_color'  => 'ff0000'
             ]);
@@ -970,6 +1034,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Seton Hall')->update([
                     'mascot'        => 'Pirates',
                     'primary_color' => '0000ff',
+                    'primary_color' => '0000ff',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -984,6 +1049,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','South Carolina')->update([
                     'mascot'        => 'Gamecocks',
+                    'primary_color' => 'b80000',
                     'primary_color' => 'b80000',
                     'accent_color'  => 'ffffff'
             ]);
@@ -1000,6 +1066,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','South Dakota State')->update([
                     'mascot'        => 'Jackrabbits',
                     'primary_color' => 'ffff00',
+                    'primary_color' => 'ffff00',
                     'accent_color'  => '0000ff'
             ]);
         }
@@ -1014,6 +1081,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','St Bonaventure')->update([
                     'mascot'        => 'Bonnies',
+                    'primary_color' => '421b00',
                     'primary_color' => '421b00',
                     'accent_color'  => '999999'
             ]);
@@ -1030,6 +1098,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Stanford')->update([
                     'mascot'        => 'Cardinal',
                     'primary_color' => 'ad0000',
+                    'primary_color' => 'ad0000',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -1044,6 +1113,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Stony Brook')->update([
                     'mascot'        => 'Seawolves',
+                    'primary_color' => 'ff0000',
                     'primary_color' => 'ff0000',
                     'accent_color'  => 'ffffff'
             ]);
@@ -1060,6 +1130,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Syracuse')->update([
                     'mascot'        => 'Orangemen',
                     'primary_color' => 'ff6600',
+                    'primary_color' => 'ff6600',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -1074,6 +1145,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Temple')->update([
                     'mascot'        => 'Owls',
+                    'primary_color' => '9e0000',
                     'primary_color' => '9e0000',
                     'accent_color'  => 'ffffff'
             ]);
@@ -1090,6 +1162,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Texas A&M')->update([
                     'mascot'        => 'Aggies',
                     'primary_color' => 'ad0000',
+                    'primary_color' => 'ad0000',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -1104,6 +1177,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Texas Tech')->update([
                     'mascot'        => 'Red Raiders',
+                    'primary_color' => 'ff0000',
                     'primary_color' => 'ff0000',
                     'accent_color'  => '000000'
             ]);
@@ -1120,6 +1194,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Texas')->update([
                     'mascot'        => 'Longhorns',
                     'primary_color' => 'bd4b00',
+                    'primary_color' => 'bd4b00',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -1134,6 +1209,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Tulsa')->update([
                     'mascot'        => 'Golden Hurricanes',
+                    'primary_color' => '0000ff',
                     'primary_color' => '0000ff',
                     'accent_color'  => 'ff0000'
             ]);
@@ -1150,6 +1226,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','UC Irvine')->update([
                     'mascot'        => 'Anteaters',
                     'primary_color' => 'ffff00',
+                    'primary_color' => 'ffff00',
                     'accent_color'  => '0000ff'
             ]);
         }
@@ -1164,6 +1241,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','UCLA')->update([
                     'mascot'        => 'Bruins',
+                    'primary_color' => '0000ff',
                     'primary_color' => '0000ff',
                     'accent_color'  => 'ffff00'
             ]);
@@ -1180,6 +1258,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','UNC Wilmington')->update([
                     'mascot'        => 'Seahawks',
                     'primary_color' => '0000ff',
+                    'primary_color' => '0000ff',
                     'accent_color'  => 'ffff00'
             ]);
         }
@@ -1194,6 +1273,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','USC')->update([
                     'mascot'        => 'Trojans',
+                    'primary_color' => 'd60000',
                     'primary_color' => 'd60000',
                     'accent_color'  => 'ffff00'
             ]);
@@ -1210,6 +1290,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Utah')->update([
                     'mascot'        => 'Utes',
                     'primary_color' => 'ff0000',
+                    'primary_color' => 'ff0000',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -1224,6 +1305,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','VCU')->update([
                     'mascot'        => 'Rams',
+                    'primary_color' => 'ffff00',
                     'primary_color' => 'ffff00',
                     'accent_color'  => '000000'
             ]);
@@ -1240,6 +1322,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Valparaiso')->update([
                     'mascot'        => 'Crusaders',
                     'primary_color' => 'ffff00',
+                    'primary_color' => 'ffff00',
                     'accent_color'  => '612700'
             ]);
         }
@@ -1254,6 +1337,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Vanderbilt')->update([
                     'mascot'        => 'Commodores',
+                    'primary_color' => '000000',
                     'primary_color' => '000000',
                     'accent_color'  => 'b2b300'
             ]);
@@ -1270,6 +1354,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Villanova')->update([
                     'mascot'        => 'Wildcats',
                     'primary_color' => '000085',
+                    'primary_color' => '000085',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -1284,6 +1369,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Virginia')->update([
                     'mascot'        => 'Cavaliers',
+                    'primary_color' => '0000b3',
                     'primary_color' => '0000b3',
                     'accent_color'  => 'ff6600'
             ]);
@@ -1300,6 +1386,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Washington')->update([
                     'mascot'        => 'Huskies',
                     'primary_color' => '800080',
+                    'primary_color' => '800080',
                     'accent_color'  => '999900'
             ]);
         }
@@ -1314,6 +1401,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','West Virginia')->update([
                     'mascot'        => 'Mountaineers',
+                    'primary_color' => '0000d1',
                     'primary_color' => '0000d1',
                     'accent_color'  => 'ffff00'
             ]);
@@ -1330,6 +1418,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Wichita St')->update([
                     'mascot'        => 'Shockers',
                     'primary_color' => '000000',
+                    'primary_color' => '000000',
                     'accent_color'  => 'ffff00'
             ]);
         }
@@ -1344,6 +1433,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','William & Mary')->update([
                     'mascot'        => 'Tribe',
+                    'primary_color' => 'ffff00',
                     'primary_color' => 'ffff00',
                     'accent_color'  => '008000'
             ]);
@@ -1360,6 +1450,7 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Wisconsin')->update([
                     'mascot'        => 'Badgers',
                     'primary_color' => 'eb0000',
+                    'primary_color' => 'eb0000',
                     'accent_color'  => 'ffffff'
             ]);
         }
@@ -1374,6 +1465,7 @@ class UpdateTeamColors extends Migration
         } else {
             DB::table('teams')->where('name','Xavier')->update([
                     'mascot'        => 'Musketeers',
+                    'primary_color' => '0000a3',
                     'primary_color' => '0000a3',
                     'accent_color'  => 'ffffff'
             ]);
@@ -1390,12 +1482,17 @@ class UpdateTeamColors extends Migration
             DB::table('teams')->where('name','Yale')->update([
                     'mascot'        => 'Eli',
                     'primary_color' => '0000c2',
+                    'primary_color' => '0000c2',
                     'accent_color'  => 'ffffff'
             ]);
         }
         DB::table('teams')->where('name','TBD')->update([
                 'primary_color' => 'AAA',
                 'accent_color'  => '000'
+        ]);
+        $null_region = Region::where('region','')->first();
+        DB::table('teams')->where('region_id',null)->update([
+            'region_id' => $null_region
         ]);
     }
 

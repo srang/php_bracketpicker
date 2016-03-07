@@ -3,9 +3,8 @@
 namespace App\Strategies;
 
 use Log;
+use DB;
 use App\Bracket;
-use App\Strategies\AbstractCreateBracketStrategy;
-use Illuminate\Http\Request;
 
 
 /**
@@ -13,13 +12,12 @@ use Illuminate\Http\Request;
  * normal users and their brackets
  *
  */
-class UpdateMasterBracketStrategy extends AbstractCreateBracketStrategy
+class UpdateMasterBracketStrategy extends AbstractUpdateBracketStrategy
 {
     /**
      * flag for master bracket
      */
     protected $master = 1;
-
     protected $teamRepo;
 
     /**
@@ -28,30 +26,23 @@ class UpdateMasterBracketStrategy extends AbstractCreateBracketStrategy
      * @param Request  $req
      * @return Bracket|null
      */
-    public function read(Request $req)
+    public function read($req)
     {
-        $games = collect([]);
-        Log::info($req->games);
-        $req_games = $req->games;
-        $round_count = count($req_games);
-        for($round_id = 1; $round_id <= $round_count; $round_id++) {
-            $round = $req_games[$round_id];
-            Log::info("creating round ".$round_id);
-            $games->put($round_id, collect([]));
-            foreach($round as $game) {
-                $team_a = $this->teamRepo->byName($game['T1']);
-                $team_b = $this->teamRepo->byName($game['T2']);
-                $winner = $this->teamRepo->byName($game['W']);
-                Log::info('Found Teams {'.$team_a->name.','.$team_b->name.','.$winner->name.'}');
-                $this->connectChildren($round_id, $games, $team_a, $team_b, $winner);
-            }
-            $bracket = $this->attemptBracketize($round_id, $games);
+        DB::beginTransaction();
+        Log::info('Updating master bracket using UpdateMasterBracketStrategy');
+        $bracket = $this->readHelper($req);
+        if ($this->save($bracket,$req->get('name'),$req->get('user_id'))) {
+            // score brackets
+            $alert = [
+                'message' => 'Master Bracket Updated.',
+                'level' => 'success'
+            ];
+        } else {
+            // notify admin
+            $alert = [
+                'message' => 'Save unsuccessful',
+                'level' => 'danger'
+            ];
         }
-        if (isset($bracket)) {
-            return $bracket;
-        }
-        Log::error('Something went wrong with master bracket creation');
-        return null;
     }
-
 }

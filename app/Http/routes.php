@@ -52,8 +52,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/brackets/master', 'AdminController@showMaster');
     Route::post('/admin/brackets/master', 'AdminController@createMaster');
     Route::put('/admin/brackets/master', 'AdminController@setMaster');
-    Route::get('/admin/brackets/new', 'BracketController@createUserBracket');
-    Route::get('/admin/brackets/{bracket}', 'BracketController@viewBracket');
+    Route::get('/admin/brackets/new', 'BracketController@showCreateBracketAdmin');
+    Route::get('/admin/brackets/{bracket}', 'BracketController@viewBracketAdmin');
     Route::put('/admin/brackets/new','BracketController@createBracketAdmin');
     Route::put('/admin/brackets/{bracket}', 'BracketController@updateBracketAdmin');
     Route::delete('/admin/brackets/{bracket}','BracketController@destroyBracketAdmin');

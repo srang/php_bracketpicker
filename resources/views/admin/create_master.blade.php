@@ -20,6 +20,7 @@
                             <i class="fa fa-btn fa-warning"></i> Start
                         </p>
                         <input type="hidden" name="start_madness" value="false" id="madness-flag" >
+                        <input type="hidden" name="name" value="Master Bracket" >
                         <button type="submit" class="btn btn-success" id="save-button" data-toggle="tooltip" data-placement="bottom" title="Save Master Bracket">
                             <i class="fa fa-btn fa-save"></i> Save
                         </button>

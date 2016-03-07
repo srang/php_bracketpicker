@@ -34,10 +34,10 @@ class MasterBracketTest extends TestCase
         $this->admin->roles()->attach(Role::where('role','admin')->first()->role_id);
         $this->admin->status_id = Status::where('status','active')->first()->status_id;
         $this->admin->save();
-        Bracket::where('master',1)->delete();
-        DB::table('games')->delete();
-        DB::table('tournaments')->update(['state_id'=>1]);
-        Team::where('name','<>','TBD')->delete();
+        #Bracket::where('master',1)->delete();
+        #DB::table('games')->delete();
+        #DB::table('tournaments')->update(['state_id'=>1]);
+        #Team::where('name','<>','TBD')->delete();
     }
 
 /*

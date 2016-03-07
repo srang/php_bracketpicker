@@ -3,7 +3,6 @@
 namespace App\Strategies;
 
 use Log;
-use Auth;
 use App\Game;
 use App\Team;
 use App\Bracket;
@@ -100,7 +99,7 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
             }
             $this->checkAssertion(array($this,'assertUserNotNull'),[$req->get('user_id')],true,$errors);
             if(isset($bracket)) {
-                $this->checkAssertion(array($this,'assertUserIsOwner'),[$req->get('user_id'),$bracket->user_id],true,$errors);
+                $this->checkAssertion(array($this,'assertUserIsOwner'),[$req->get('user_id'),$bracket->user_id, $req->get('auth_user')],true,$errors);
             }
             $this->checkAssertion(array($this,'assertBracketNamed'),[$req->get('name')],true,$errors);
         } catch (BracketValidationException $e) {
@@ -286,8 +285,8 @@ class ValidateBaseBracketStrategy implements IValidateBracketStrategy
     {
         $user_id = $args[0];
         $user = User::where('user_id',$user_id)->first();
-        $auth = Auth::user();
         $owner = Bracket::where('user_id',$args[1])->first()->user;
+        $auth = $args[2];
         if (empty($owner) || empty($user)) {
             throw new BracketValidationException('Form doesn\'t specify users', $this::USER_MATCHES_OWNER);
         }else if ($user->user_id != $auth->user_id) {

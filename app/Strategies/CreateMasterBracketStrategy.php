@@ -2,11 +2,15 @@
 
 namespace App\Strategies;
 
-use Log;
 use App\Bracket;
+use App\Tournament;
+use App\State;
 use App\Team;
 use App\Region;
 use App\Strategies\AbstractCreateBracketStrategy;
+
+use DB;
+use Log;
 use Illuminate\Http\Request;
 
 
@@ -33,9 +37,10 @@ class CreateMasterBracketStrategy extends AbstractCreateBracketStrategy
      */
     public function read($req)
     {
+        DB::beginTransaction();
         $games = collect([]);
         // don't count region arrays as an additional game
-        $team_count = (sizeof($req->team,1)-count($req->team));
+        $team_count = (sizeof($req->get('team'),1)-count($req->get('team')));
         $round_count = intval(log($team_count,2));
         $game_count = $team_count/2;
 
@@ -44,7 +49,7 @@ class CreateMasterBracketStrategy extends AbstractCreateBracketStrategy
             // for master bracket creation only care about round 1
             // the rest is TBD
             if ($round == 1) {
-                foreach ($req->team as $region => $teams) {
+                foreach ($req->get('team') as $region => $teams) {
                     $region_size = sizeof($teams);
                     $region_actual = Region::where('region',$region)->first();
                     $tbd = Team::where('name','TBD')->where('region_id',$region_actual->region_id)->first();
@@ -66,12 +71,31 @@ class CreateMasterBracketStrategy extends AbstractCreateBracketStrategy
             }
             $bracket = $this->attemptBracketize($round, $games);
             if (isset($bracket)) {
-                return $bracket;
+               break;
             }
             $game_count = $game_count/2;
         }
-        Log::error('Something went wrong with master bracket creation');
-        return null;
+        if ($this->save($bracket,$req->get('name'),NULL)) {
+            $tournament = Tournament::where('active',true)->first();
+            // TODO just use next
+            // $tournament->state_id = $tournament->state->next->state_id;
+            $tournament->state_id = State::where('name','submission')->first()->state_id;
+            $tournament->save();
+            Log::info("Tournament moved into submission state");
+            // notify admin
+            $alert = [
+                'message' => 'Save Successful. Bracket submission is open',
+                'level' => 'success'
+            ];
+        } else {
+            Log::error('Something went wrong with master bracket creation');
+            // notify admin
+            $alert = [
+                'message' => 'Save successful but unable to start tournament due to problems with the master bracket as a whole',
+                'level' => 'danger'
+            ];
+        }
+        return $alert;
     }
 
 

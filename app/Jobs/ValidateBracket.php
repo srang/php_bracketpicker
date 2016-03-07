@@ -8,6 +8,7 @@ use App\Factories\BracketFactory;
 
 use Log;
 use DB;
+use Auth;
 use App\Jobs\Job;
 use Illuminate\Http\Request;
 use Illuminate\Queue\SerializesModels;
@@ -28,10 +29,11 @@ class ValidateBracket extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($req, IValidateBracketStrategy $validate, ICreateBracketStrategy $create, $bracket)
+    public function __construct($req, IValidateBracketStrategy $validate, ICreateBracketStrategy $create, $bracket=NULL)
     {
         Log::info("Creating new Bracket Job");
         $this->request = collect($req->all());
+        $this->request->put('auth_user',Auth::user());
         $this->createStrategy = $create;
         $this->validateStrategy = $validate;
         $this->existingBracket = $bracket;
@@ -49,32 +51,25 @@ class ValidateBracket extends Job implements ShouldQueue
         if ($errors->count() > 0) {
             Log::info($errors);
         } else {
+            $alert = BracketFactory::createBracket($this->request, $this->createStrategy);
+            Log::info($alert['message']);
+        }
+    }
 
-            DB::beginTransaction();
 
-            $bracket = BracketFactory::createBracket($this->request, $this->createStrategy);
-
-            if (isset($bracket)) {
-                $bracket->name = $this->request->get('name');
-                $bracket->user_id = $this->request->get('user_id');
-                $bracket->save();
-                if(isset($this->existingBracket)) {
-                    $this->existingBracket->delete();
-                }
-                DB::commit();
-                $alert = [
-                    'message' => 'Save successful',
-                    'level' => 'success'
-                ];
-            } else {
-                DB::rollBack();
-                $alert = [
-                    'message' => 'Save unsuccessful',
-                    'level' => 'danger'
-                ];
-            }
-            Log::info($alert);
-
+    /**
+     * Handle a job failure.
+     *
+     * @return void
+     */
+    public function failed()
+    {
+        $user_id = $this->request->get('user_id');
+        $user = User::where('user_id',$user_id);
+        if (!isset($user)) {
+            //mail admin
+        } else {
+            //mail user and/or admin
         }
     }
 }

@@ -6932,8 +6932,8 @@ body {
   background-color: #ffffff;
 }
 .bracket-body {
-  width: 85%;
-  max-width: 1670px;
+  width: 80%;
+  max-width: 1600px;
 }
 .bracket-body .bracket-game {
   display: block;
