@@ -15,6 +15,7 @@ use App\Strategies\IReverseBracketStrategy;
 class ReverseBaseBracketStrategy implements IReverseBracketStrategy
 {
 
+    protected $all_games;
     /**
      * Create a new bracket from request
      *
@@ -23,9 +24,10 @@ class ReverseBaseBracketStrategy implements IReverseBracketStrategy
      */
     public function build(Bracket $bracket)
     {
+        $this->all_games = Game::all();
         $games = collect([]);
 
-        $game = Game::where('game_id',$bracket->root_game)->first();
+        $game = $this->all_games->where('game_id',$bracket->root_game)->first();
         $this->addGame($games, $game);
         return $games;
     }
@@ -37,11 +39,11 @@ class ReverseBaseBracketStrategy implements IReverseBracketStrategy
         }
         $games->get($game->round_id)->push($game);
         if (isset($game->child_game_a)) {
-            $a_game = Game::where('game_id',$game->child_game_a)->first();
+            $a_game = $this->all_games->where('game_id',$game->child_game_a)->first();
             $this->addGame($games, $a_game);
         }
         if (isset($game->child_game_b)) {
-            $b_game = Game::where('game_id',$game->child_game_b)->first();
+            $b_game = $this->all_games->where('game_id',$game->child_game_b)->first();
             $this->addGame($games, $b_game);
         }
 
