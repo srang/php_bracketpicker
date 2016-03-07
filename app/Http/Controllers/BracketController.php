@@ -11,6 +11,7 @@ use App\Factories\BracketFactory;
 use App\Strategies\CreateBaseBracketStrategy;
 use App\Strategies\UpdateBaseBracketStrategy;
 use App\Strategies\ReverseBaseBracketStrategy;
+use App\Strategies\ValidateQuickBracketStrategy;
 use App\Strategies\ValidateBaseBracketStrategy;
 use App\Strategies\ValidateUserUpdateBracketStrategy;
 use App\Strategies\ValidateUserCreateBracketStrategy;
@@ -97,6 +98,11 @@ class BracketController extends Controller
     public function createBracket(Request $request)
     {
 
+        $errors = BracketFactory::validateBracket($request, new ValidateQuickBracketStrategy());
+        if($errors->count() > 0) {
+            return redirect('/brackets/new')->withErrors($errors);
+        }
+
         $this->dispatch(new ValidateBracket($request,
             new ValidateUserCreateBracketStrategy($this->teamRepo),
             new CreateBaseBracketStrategy($this->teamRepo)));
@@ -112,6 +118,12 @@ class BracketController extends Controller
 
     public function updateBracket(Request $request, Bracket $bracket)
     {
+
+        $errors = BracketFactory::validateBracket($request, new ValidateQuickBracketStrategy());
+        if($errors->count() > 0) {
+            return redirect('/brackets/'.$bracket->bracket_id)->withErrors($errors);
+        }
+
         $this->dispatch(new ValidateBracket($request,
             new ValidateUserUpdateBracketStrategy($this->teamRepo),
             new UpdateBaseBracketStrategy($this->teamRepo, $bracket)));
@@ -185,6 +197,11 @@ class BracketController extends Controller
      */
     public function createBracketAdmin(Request $request)
     {
+        $errors = BracketFactory::validateBracket($request, new ValidateQuickBracketStrategy());
+        if($errors->count() > 0) {
+            return redirect('/admin/brackets/new')->withErrors($errors);
+        }
+
         $this->dispatch(new ValidateBracket($request,
             new ValidateAdminCreateBracketStrategy($this->teamRepo),
             new CreateBaseBracketStrategy($this->teamRepo)));
@@ -201,6 +218,11 @@ class BracketController extends Controller
 
     public function updateBracketAdmin(Request $request, Bracket $bracket)
     {
+        $errors = BracketFactory::validateBracket($request, new ValidateQuickBracketStrategy());
+        if($errors->count() > 0) {
+            return redirect('/admin/brackets/'.$bracket->bracket_id)->withErrors($errors);
+        }
+
         $this->dispatch(new ValidateBracket($request,
             new ValidateAdminUpdateBracketStrategy($this->teamRepo),
             new UpdateBaseBracketStrategy($this->teamRepo,$bracket)));

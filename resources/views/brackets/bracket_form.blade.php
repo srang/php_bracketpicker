@@ -30,10 +30,10 @@
 @else
                     <input type="hidden" name="user_id" id="bracket-owner" class="hide" value="{{ Auth::user()->user_id }}">
 @endif
-@if(!Request::is('*brackets/new'))
-                    <input type="hidden" name="bracket_id" id="bracket-id" class="hide" value="{{  $bracket->bracket_id  }}">
-@else 
+@if(Request::is('*brackets/new'))
                     <input type="hidden" name="bracket_id" id="bracket-id" class="hide" value="">
+@else 
+                    <input type="hidden" name="bracket_id" id="bracket-id" class="hide" value="{{  $bracket->bracket_id  }}">
 @endif
                 </div>
 
@@ -42,11 +42,11 @@
 {{--*/ $game_num = 1 /*--}}
 @foreach($round_games as $game)
                 <input class="hide" type="hidden" id="{{ 'R'.$round.'G'.$game_num.'T1' }}"
-                        name="{{ 'games['.$round.']['.$game_num.'][T1]' }}" value="{{ $teamRepo->byTeamId($game->team_a)->name }}" >
+                        name="{{ 'games['.$round.']['.$game_num.'][T1]' }}" value="{{ $teamRepo->byTeamId($game->team_a)->name }}">
                 <input class="hide" type="hidden" id="{{ 'R'.$round.'G'.$game_num.'T2' }}"
-                        name="{{ 'games['.$round.']['.$game_num.'][T2]' }}" value="{{ $teamRepo->byTeamId($game->team_b)->name }}" >
+                        name="{{ 'games['.$round.']['.$game_num.'][T2]' }}" value="{{ $teamRepo->byTeamId($game->team_b)->name }}">
                 <input class="hide" type="hidden" id="{{ 'R'.$round.'G'.$game_num.'W'  }}"
-                        name="{{ 'games['.$round.']['.$game_num.'][W]'  }}" value="{{ $teamRepo->byTeamId($game->winner)->name }}" >
+                        name="{{ 'games['.$round.']['.$game_num.'][W]'  }}" value="{{ $teamRepo->byTeamId($game->winner)->name }}">
     {{--*/ $game_num++ /*--}}
 @endforeach
 @endforeach
