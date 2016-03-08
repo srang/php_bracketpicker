@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Strategies\IValidateBracketStrategy;
 use App\Strategies\ICreateBracketStrategy;
 use App\Factories\BracketFactory;
+use App\Task;
 
 use Log;
 use DB;
@@ -23,6 +24,7 @@ class ValidateBracket extends Job implements ShouldQueue
     protected $createStrategy;
     protected $existingBracket;
     protected $request;
+    protected $task;
 
     /**
      * Create a new job instance.
@@ -37,6 +39,16 @@ class ValidateBracket extends Job implements ShouldQueue
         $this->createStrategy = $create;
         $this->validateStrategy = $validate;
         $this->existingBracket = $bracket;
+        if(!empty($req->user_id)) {
+            $t = new Task([
+                'name' => $req->name,
+                'user_id' => $req->user_id,
+            ]);
+            if(!empty($req->bracket_id)) {
+                $t->bracket_id = $req->bracket_id;
+            }
+            $this->task = $t->save();
+        }
     }
 
     /**
@@ -53,6 +65,9 @@ class ValidateBracket extends Job implements ShouldQueue
         } else {
             $alert = BracketFactory::createBracket($this->request, $this->createStrategy);
             Log::info($alert['message']);
+        }
+        if(isset($this->task)) {
+            $this->task->delete();
         }
     }
 

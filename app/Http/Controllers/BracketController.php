@@ -6,6 +6,7 @@ use App\Bracket;
 use App\Region;
 use App\Team;
 use App\User;
+use App\Task;
 use App\Repositories\TeamRepository;
 use App\Factories\BracketFactory;
 use App\Strategies\CreateBaseBracketStrategy;
@@ -63,9 +64,11 @@ class BracketController extends Controller
     {
         $user = Auth::user();
         $brackets = Bracket::where('user_id',$user->user_id)->get();
+        $tasks = Task::where('user_id',$user->user_id)->get();
         return view('brackets.index',[
             'brackets' => $brackets,
             'user' => $user,
+            'tasks' => $tasks,
         ]);
     }
 

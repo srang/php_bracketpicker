@@ -143,6 +143,51 @@
             </div>
         </div>
 @endif
+@if ($tasks->count() > 0)
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Brackets
+            </div>
+                <table class="table table-striped">
+
+                    <!-- Table Headings -->
+                    <thead>
+                        <th>Pending Brackets</th>
+                        <th>User</th>
+                        <th>Creation Date</th>
+                        <th>&nbsp;</th>
+                    </thead>
+
+                    <!-- Table Body -->
+                    <tbody>
+@foreach ($tasks as $task)
+                        <tr>
+                            <!-- task Info -->
+                            <td class="table-text">
+                                <div>{{ $task->name }}</div>
+                            </td>
+                            <td class="table-text">
+                                <div>{{ $task->user->name }}</div>
+                            </td>
+                            <td class="table-text" >
+                                <span class="text-center" >
+                                    {{ $task->start }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-danger">
+                                        <i class="fa fa-btn fa-trash"></i> Does NOTHING
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+@endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+@endif
     </div>
 
 @endsection

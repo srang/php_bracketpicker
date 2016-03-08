@@ -9,6 +9,7 @@ use App\Game;
 use App\Region;
 use App\Tournament;
 use App\State;
+use App\Task;
 use App\Factories\BracketFactory;
 use App\Strategies\CreateMasterBracketStrategy;
 use App\Strategies\UpdateMasterBracketStrategy;
@@ -179,10 +180,12 @@ class AdminController extends Controller
         $master = Bracket::where('master',1)->first();
         $brackets = Bracket::where('master',0)->get();
         if (isset($master)) {
+            $tasks = Task::all();
             $game = $master->root;
             return view('admin.brackets_home',[
                 'gamer' => $game,
                 'master' => $master,
+                'tasks' => $tasks,
                 'brackets' => $brackets
             ]);
         }
@@ -208,8 +211,9 @@ class AdminController extends Controller
             'region_id' => $null_region,
             'rank' => NULL
         ]);
-        Bracket::where('master',0)->delete();
-        Bracket::where('master',1)->delete();
+        DB::table('tasks')->delete();
+        DB::table('jobs')->delete();
+        DB::table('brackets')->delete();
         $tournament->state_id = State::where('name','setup')->first()->state_id;
         $tournament->save();
         return redirect('/admin');
