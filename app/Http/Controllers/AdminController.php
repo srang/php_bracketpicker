@@ -14,6 +14,7 @@ use App\Strategies\CreateMasterBracketStrategy;
 use App\Strategies\UpdateMasterBracketStrategy;
 use App\Strategies\ReverseBaseBracketStrategy;
 use App\Strategies\ValidateMasterUpdateBracketStrategy;
+use App\Strategies\ValidateMasterCreateBracketStrategy;
 use App\Jobs\ValidateBracket;
 use App\Repositories\TeamRepository;
 
@@ -128,14 +129,15 @@ class AdminController extends Controller
         if ($request->start_madness==='true') {
 
             // if needs to be async
-            //$this->dispatch(new ValidateBracket($request,
-            //    new <master create validator>($this->teamRepo),
-            //    new CreateMasterBracketStrategy($this->teamRepo)));
-            //$alert = [
-            //    'message' => 'Master Bracket Processing',
-            //    'level' => 'warning'
-            //];
-            $alert = BracketFactory::createBracket($request, new CreateMasterBracketStrategy($this->teamRepo));
+            $this->dispatch(new ValidateBracket($request,
+                new ValidateMasterCreateBracketStrategy($this->teamRepo),
+                new CreateMasterBracketStrategy($this->teamRepo)));
+            $alert = [
+                'message' => 'Master Bracket Processing',
+                'level' => 'warning'
+            ];
+            $request->session()->put('alert', $alert);
+            //$alert = BracketFactory::createBracket($request, new CreateMasterBracketStrategy($this->teamRepo));
             return redirect('/admin/brackets');
 
         }
@@ -166,6 +168,12 @@ class AdminController extends Controller
         return redirect('/admin/brackets');
     }
 
+    /**
+     * View list of brackets created for/by users
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function bracketsIndex(Request $request)
     {
         $master = Bracket::where('master',1)->first();
@@ -182,6 +190,10 @@ class AdminController extends Controller
             'brackets' => $brackets
         ]);
     }
+
+    /**
+     * SUPER USER
+     */
 
     public function superIndex(Request $request)
     {
@@ -299,7 +311,7 @@ class AdminController extends Controller
         $tbd->region()->associate(Region::where('region','Midwest')->first())->save();
         $tbd = Team::where('name','TBD')->where('region_id',$null_region)->first();
         $tbd->region()->associate(Region::where('region','South')->first())->save();
-        BracketFactory::createBracket($req, new CreateMasterBracketStrategy($this->teamRepo));
+        //BracketFactory::createBracket($req, new CreateMasterBracketStrategy($this->teamRepo));
         return redirect('/admin/brackets');
     }
 

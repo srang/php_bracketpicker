@@ -13,10 +13,10 @@ use App\Strategies\IReverseBracketStrategy;
  * Concrete implementation of IReverseBracketStrategy
  *
  */
-class ReverseBaseBracketStrategy implements IReverseBracketStrategy
+class ReverseMasterBracketStrategy implements IReverseBracketStrategy
 {
 
-    protected $all_games;
+    protected $master_games;
     /**
      * Create a new bracket from request
      *
@@ -25,10 +25,8 @@ class ReverseBaseBracketStrategy implements IReverseBracketStrategy
      */
     public function build(Bracket $bracket)
     {
-        Log::info('Fetching bracket_'.$bracket->bracket_id);
-        $ret = Cache::remember('bracket_'.$bracket->bracket_id, 90, function() use ($bracket) {
-            Log::debug('Refreshing cache for bracket_'.$bracket->bracket_id);
-            $this->all_games = Game::all();
+        $ret = Cache::remember('master_games', 180, function() {
+            $this->master_games = Game::where('master',1);
             $games = collect([]);
 
             $game = $this->all_games->where('game_id',$bracket->root_game)->first();

@@ -2,12 +2,14 @@
 
 namespace App\Strategies;
 
-use Log;
 use App\Game;
 use App\Team;
 use App\Bracket;
 use App\Strategies\AbstractCreateBracketStrategy;
 use App\Repositories\TeamRepository;
+
+use Cache;
+use Log;
 use Illuminate\Http\Request;
 
 /**
@@ -39,8 +41,10 @@ abstract class AbstractUpdateBracketStrategy extends AbstractCreateBracketStrate
     protected function save($bracket,$name,$user_id)
     {
         if(parent::save($bracket,$name,$user_id)) {
+            // clear old cache entry
+            Cache::forget('bracket_'.$this->existingBracket->bracket_id);
+            Log::info('Deleting old bracket '.$this->existingBracket->bracket_id);
             $this->existingBracket->delete();
-            Log::info('Deleting old bracket');
             return true;
         } else {
              return false;

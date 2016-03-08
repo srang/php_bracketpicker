@@ -33,10 +33,6 @@ class ValidateQuickBracketStrategy implements IValidateBracketStrategy
                 if(empty($game['W']) || $game['W'] == 'TBD') {
                     $errors->push('Round '.$round.' Game '.$game_id.' Winner is invalid, cannot be TBD or empty');
                 }
-                Log::info('AAA');
-                Log::info($game['T1']);
-                Log::info($game['T2']);
-                Log::info($game['W']);
             }
         }
         return $errors;

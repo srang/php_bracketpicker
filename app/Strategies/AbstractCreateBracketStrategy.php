@@ -2,13 +2,16 @@
 
 namespace App\Strategies;
 
-use Log;
-use DB;
 use App\Game;
 use App\Team;
 use App\Bracket;
 use App\Strategies\ICreateBracketStrategy;
+use App\Strategies\ReverseBaseBracketStrategy;
+use App\Factories\BracketFactory;
 use App\Repositories\TeamRepository;
+
+use Log;
+use DB;
 use Illuminate\Http\Request;
 
 /**
@@ -88,6 +91,7 @@ abstract class AbstractCreateBracketStrategy implements ICreateBracketStrategy
     protected function attemptBracketize($round_id, $game_matrix)
     {
         Log::debug('Attempting bracketize '.$round_id);
+        Log::info($game_matrix);
         if ($game_matrix->get($round_id)->count() == 1) {
             $game = $game_matrix->get($round_id)->shift();
 
