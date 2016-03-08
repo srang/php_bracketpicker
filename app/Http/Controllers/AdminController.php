@@ -69,10 +69,12 @@ class AdminController extends Controller
             //need to set up master bracket
             $teams = Team::where('name','<>','TBD')->select('name','team_id')->get();
             $regions = Region::where('region','<>','')->get();
+            $game_nums = $this->generateMatchups();
             JavaScript::put([
                 'teams' => $teams,
             ]);
             return view('admin.create_master',[
+                'matchups' => $game_nums,
                 'teamRepo' => $this->teamRepo,
                 'teams' => $teams,
                 'regions' => $regions,
@@ -134,11 +136,12 @@ class AdminController extends Controller
             //    'level' => 'warning'
             //];
             $alert = BracketFactory::createBracket($request, new CreateMasterBracketStrategy($this->teamRepo));
+            return redirect('/admin/brackets');
 
         }
         $request->session()->put('alert', $alert);
 
-        return redirect('/admin/brackets');
+        return redirect('/admin/brackets/master');
     }
 
     /**
@@ -208,6 +211,26 @@ class AdminController extends Controller
             'message' => 'Save Successful',
             'level' => 'success'
         ];
+    }
+
+    private function generateMatchups()
+    {
+        $first_teams = collect(range(1,8));
+        $ret = collect([]);
+        while (($c=$first_teams->count()) > 1) {
+            if (($c + 1) % 2) {
+                $hold = $first_teams->shift();
+                $ret->prepend($first_teams->shift());
+                $first_teams->prepend($hold);
+            } else {
+                $hold = $first_teams->pop();
+                $ret->prepend($first_teams->pop());
+                $first_teams->push($hold);
+            }
+        }
+        $r = $first_teams->pop();
+        $ret->prepend($r);
+        return $ret;
     }
 
 }

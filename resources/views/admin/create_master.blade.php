@@ -30,56 +30,56 @@
 @foreach ($regions as $region)
                     <div class="col-md-3">
                         <h3 class="region-header">{{ $region->region }}</h3>
-@for ($team_rank = 1; $team_rank <= $region_size/2; $team_rank++)
-        {{--*/ $firstid='region-'.$region->region.'-rank-'.$team_rank /*--}}
-        {{--*/ $firstname='team['.$region->region.']['.$team_rank.']' /*--}}
-        {{--*/ $secondid='region-'.$region->region.'-rank-'.($region_size+1-$team_rank) /*--}}
-        {{--*/ $secondname='team['.$region->region.']['.($region_size+1-$team_rank).']' /*--}}
+@foreach ($matchups as $first)
+        {{--*/ $firstid='region-'.$region->region.'-rank-'.$first /*--}}
+        {{--*/ $firstname='team['.$region->region.']['.$first.']' /*--}}
+        {{--*/ $secondid='region-'.$region->region.'-rank-'.($region_size+1-$first) /*--}}
+        {{--*/ $secondname='team['.$region->region.']['.($region_size+1-$first).']' /*--}}
                         <div class="form-group">
                             <div class="row">
-                                <span class="rank-info text-right col-md-3">#{{ $team_rank}} </span>
+                                <span class="rank-info text-right col-md-3">#{{ $first}} </span>
                                 <div class="text-left col-md-9">
                                     <label for="{{ $firstid }}" class="control-label master-label @if ($errors->has($firstname)) has-error @endif">
 @if (!empty($old_val=old($firstname)))
                                         {{ $old_val }}
                                     </label>
                                     <input type="text" name="{{ $firstname }}" id="{{ $firstid }}" class="form-control master-input hide" value="{{ $old_val }}">
-@elseif (!empty($team=$teamRepo->byRankRegion($team_rank,$region->region)))
+@elseif (!empty($team=$teamRepo->byRankRegion($first,$region->region)))
                                         <span class="team-name" style="background-color: #{{ $team->primary_color }}; color: #{{ $team->accent_color }};">
                                             {{ $team->name }}
                                         </span>
                                     </label>
                                     <input type="text" name="{{ $firstname }}" id="{{ $firstid }}" class="form-control master-input hide" value="{{ $team->name }}">
 @else
-                                        <span class="placeholder">{{ 'Team '.$team_rank }}</span>
+                                        <span class="placeholder">{{ 'Team '.$first }}</span>
                                     </label>
                                     <input type="text" name="{{ $firstname }}" id="{{ $firstid }}" class="form-control master-input hide" >
 @endif
                                 </div>
                             </div>
                             <div class="row">
-                                <span class="rank-info text-right col-md-3">#{{ $region_size+1-$team_rank }} </span>
+                                <span class="rank-info text-right col-md-3">#{{ $region_size+1-$first }} </span>
                                 <div class="text-left col-md-9">
                                     <label for="{{ $secondid }}" class="control-label master-label @if ($errors->has($secondname)) has-error @endif">
 @if (!empty($old_val=old($secondname)))
                                         {{$old_val}}
                                     </label>
                                     <input type="text" name="{{ $secondname }}" id="{{ $secondid }}" class="form-control master-input hide" value="{{ $old_val }}">
-@elseif (!empty($team=$teamRepo->byRankRegion(($region_size+1-$team_rank),$region->region)))
+@elseif (!empty($team=$teamRepo->byRankRegion(($region_size+1-$first),$region->region)))
                                         <span class="team-name" style="background-color: #{{ $team->primary_color }}; color: #{{ $team->accent_color }};">
                                             {{ $team->name }}
                                         </span>
                                     </label>
                                     <input type="text" name="{{ $secondname }}" id="{{ $secondid }}" class="form-control master-input hide" value="{{ $team->name }}">
 @else
-                                        <span class="placeholder">{{'Team '.($region_size+1-$team_rank)}}</span>
+                                        <span class="placeholder">{{'Team '.($region_size+1-$first)}}</span>
                                     </label>
                                     <input type="text" name="{{ $secondname }}" id="{{ $secondid }}" class="form-control master-input hide" value="">
 @endif
                                 </div>
                             </div>
                         </div>
-@endfor {{-- rows --}}
+@endforeach {{-- rows --}}
                     </div>
 @endforeach {{-- columns --}}
                 </div>

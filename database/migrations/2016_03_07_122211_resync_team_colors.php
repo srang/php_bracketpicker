@@ -5,7 +5,7 @@ use App\Region;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateTeamColors extends Migration
+class ResyncTeamColors extends Migration
 {
     /**
      * Run the migrations.
@@ -1490,7 +1490,7 @@ class UpdateTeamColors extends Migration
                 'primary_color' => 'AAA',
                 'accent_color'  => '000'
         ]);
-        $null_region = Region::where('region','')->first();
+        $null_region = Region::where('region','')->first()->region_id;
         DB::table('teams')->where('region_id',null)->update([
             'region_id' => $null_region
         ]);
