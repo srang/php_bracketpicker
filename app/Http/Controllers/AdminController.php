@@ -69,7 +69,7 @@ class AdminController extends Controller
             //need to set up master bracket
             $teams = Team::where('name','<>','TBD')->select('name','team_id')->get();
             $regions = Region::where('region','<>','')->get();
-            $game_nums = $this->generateMatchups();
+            $game_nums = BracketFactory::generateMatchups();
             JavaScript::put([
                 'teams' => $teams,
             ]);
@@ -183,17 +183,139 @@ class AdminController extends Controller
         ]);
     }
 
+    public function superIndex(Request $request)
+    {
+        return view('admin.super_index');
+    }
+
+    public function revertToSetup(Request $request)
+    {
+        $tournament = Tournament::where('active',true)->first();
+        $null_region = Region::where('region','')->first()->region_id;
+        DB::table('teams')->update([
+            'region_id' => $null_region,
+            'rank' => NULL
+        ]);
+        Bracket::where('master',0)->delete();
+        Bracket::where('master',1)->delete();
+        $tournament->state_id = State::where('name','setup')->first()->state_id;
+        $tournament->save();
+        return redirect('/admin');
+    }
+
+    public function addDefaultRanks(Request $request)
+    {
+        $null_region = Region::where('region','')->first()->region_id;
+        DB::table('teams')->update([
+            'region_id' => $null_region,
+            'rank' => NULL
+        ]);
+
+        $req = collect(array(
+            'start_madness' => 'true',
+            'name' => 'Master Bracket',
+            'team' => array (
+                'East' => array (
+                    1 => 'Villanova',
+                    16 => 'Bucknell',
+                    8 => 'Pittsburgh',
+                    9 => 'USC',
+                    5 => 'Texas A&M',
+                    12 => 'Temple',
+                    4 => 'Maryland',
+                    13 => 'Yale',
+                    6 => 'Arizona',
+                    11 => 'Monmouth',
+                    3 => 'West Virginia',
+                    14 => 'Hofstra',
+                    7 => 'Seton Hall',
+                    10 => 'VCU',
+                    2 => 'Miami (FL)',
+                    15 => 'Weber State',
+                ),
+                'West' => array (
+                    1 => 'North Carolina',
+                    16 => 'Hampton',
+                    8 => 'Texas Tech',
+                    9 => 'Vanderbilt',
+                    5 => 'Purdue',
+                    12 => 'Valparaiso',
+                    4 => 'Kentucky',
+                    13 => 'Stony Brook',
+                    6 => 'Baylor',
+                    11 => 'Michigan',
+                    3 => 'Oregon',
+                    14 => 'Belmont',
+                    7 => 'Wisconsin',
+                    10 => 'Providence',
+                    2 => 'Oklahoma',
+                    15 => 'New Mexico State',
+                ),
+                'South' => array (
+                    1 => 'Virginia',
+                    16 => 'North Florida',
+                    8 => 'Saint Joseph\'s',
+                    9 => 'South Carolina',
+                    5 => 'California',
+                    12 => 'Arkansas-Little Rock',
+                    4 => 'Iowa State',
+                    13 => 'Hawaii',
+                    6 => 'Texas',
+                    11 => 'Saint Mary\'s',
+                    3 => 'Utah',
+                    14 => 'Stephen F. Austin',
+                    7 => 'Dayton',
+                    10 => 'Cincinnati',
+                    2 => 'Michigan State',
+                    15 => 'UAB',
+                ),
+                'Midwest' => array (
+                    1 => 'Kansas State',
+                    16 => 'Kansas',
+                    8 => 'Colorado',
+                    9 => 'Syracuse',
+                    5 => 'Iowa',
+                    12 => 'San Diego State',
+                    4 => 'Duke',
+                    13 => 'Akron',
+                    6 => 'Notre Dame',
+                    11 => 'Oregon State',
+                    3 => 'Indiana',
+                    14 => 'Chattanooga',
+                    7 => 'Wichita St',
+                    10 => 'Connecticut',
+                    2 => 'Xavier',
+                    15 => 'Texas Southern',
+                ),
+            ),
+        ));
+
+        $this->saveTeams($req);
+        $tbd = Team::where('name','TBD')->where('region_id',$null_region)->first();
+        $tbd->region()->associate(Region::where('region','East')->first())->save();
+        $tbd = Team::where('name','TBD')->where('region_id',$null_region)->first();
+        $tbd->region()->associate(Region::where('region','West')->first())->save();
+        $tbd = Team::where('name','TBD')->where('region_id',$null_region)->first();
+        $tbd->region()->associate(Region::where('region','Midwest')->first())->save();
+        $tbd = Team::where('name','TBD')->where('region_id',$null_region)->first();
+        $tbd->region()->associate(Region::where('region','South')->first())->save();
+        BracketFactory::createBracket($req, new CreateMasterBracketStrategy($this->teamRepo));
+        return redirect('/admin/brackets');
+    }
+
     public function closeBracketSubmission(Request $request)
     {
         $tournament = Tournament::where('active',true)->first();
         $tournament->state_id = State::where('name','active')->first()->state_id;
         $tournament->save();
+        return redirect('/admin');
     }
 
     private function saveTeams($request)
     {
+        Log::info($request);
         $team_names = collect([]);
-        foreach ($request->team as $region => $teams) {
+        foreach ($request->get('team') as $region => $teams) {
             foreach ($teams as $rank => $team) {
                 if(!empty($team) && !$team_names->contains($team)) {
                     $team_actual = $this->teamRepo->byName($team);
@@ -211,26 +333,6 @@ class AdminController extends Controller
             'message' => 'Save Successful',
             'level' => 'success'
         ];
-    }
-
-    private function generateMatchups()
-    {
-        $first_teams = collect(range(1,8));
-        $ret = collect([]);
-        while (($c=$first_teams->count()) > 1) {
-            if (($c + 1) % 2) {
-                $hold = $first_teams->shift();
-                $ret->prepend($first_teams->shift());
-                $first_teams->prepend($hold);
-            } else {
-                $hold = $first_teams->pop();
-                $ret->prepend($first_teams->pop());
-                $first_teams->push($hold);
-            }
-        }
-        $r = $first_teams->pop();
-        $ret->prepend($r);
-        return $ret;
     }
 
 }

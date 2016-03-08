@@ -54,4 +54,25 @@ class BracketFactory
         return $strat->validate($req);
     }
 
+    public static function generateMatchups()
+    {
+        $first_teams = collect(range(1,8));
+        $ret = collect([]);
+        while (($c=$first_teams->count()) > 1) {
+            if (($c + 1) % 2) {
+                $hold = $first_teams->shift();
+                $ret->prepend($first_teams->shift());
+                $first_teams->prepend($hold);
+            } else {
+                $hold = $first_teams->pop();
+                $ret->prepend($first_teams->pop());
+                $first_teams->push($hold);
+            }
+        }
+        $r = $first_teams->pop();
+        $ret->prepend($r);
+        return $ret;
+    }
+
+
 }

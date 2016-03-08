@@ -41,6 +41,9 @@
 @if (Auth::user()->hasRole('admin'))
                     <li><a href="{{ url('/admin') }}">Admin</a></li>
 @endif {{-- is admin --}}
+@if (Auth::user()->hasRole('superuser'))
+                    <li><a href="{{ url('/super') }}">Super</a></li>
+@endif {{-- is superuser --}}
 @endif {{-- is user --}}
 @endif {{-- is auth --}}
                 </ul>

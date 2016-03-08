@@ -64,5 +64,11 @@ Route::group(['middleware' => ['web']], function () {
     Route::put('/admin/team/{team}', 'TeamController@updateTeam');
     Route::delete('/admin/team/{team}','TeamController@destroyTeam');
   });
+  Route::group(['middleware' => ['auth','verify','role:superuser']], function() {
+    Route::get('/super', 'AdminController@superIndex');
+    Route::get('/super/setup', 'AdminController@revertToSetup');
+    Route::get('/super/submit', 'AdminController@addDefaultRanks');
+    Route::get('/super/activate', 'AdminController@closeBracketSubmission');
+  });
 
 });

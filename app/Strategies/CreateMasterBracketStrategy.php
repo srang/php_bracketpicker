@@ -8,6 +8,7 @@ use App\State;
 use App\Team;
 use App\Region;
 use App\Strategies\AbstractCreateBracketStrategy;
+use App\Factories\BracketFactory;
 
 use DB;
 use Log;
@@ -49,11 +50,14 @@ class CreateMasterBracketStrategy extends AbstractCreateBracketStrategy
             // for master bracket creation only care about round 1
             // the rest is TBD
             if ($round == 1) {
+                $m = BracketFactory::generateMatchups();
                 foreach ($req->get('team') as $region => $teams) {
+                    $matchups = clone $m;
                     $region_size = sizeof($teams);
                     $region_actual = Region::where('region',$region)->first();
                     $tbd = Team::where('name','TBD')->where('region_id',$region_actual->region_id)->first();
-                    for ($team_rank = 1; $team_rank <= $region_size/2; $team_rank++) {
+                    while ($matchups->count() > 0) {
+                        $team_rank = $matchups->shift();
                         $teams_in_game = $this->getTeams($teams, $region, $team_rank, $region_size);
                         if (isset($teams)){
                             $games = $this->connectChildren($round, $games, $teams_in_game['favored'], $teams_in_game['underdog'], $tbd);
@@ -99,7 +103,8 @@ class CreateMasterBracketStrategy extends AbstractCreateBracketStrategy
     }
 
 
-    private function getTeams($teams, $region, $team_rank, $region_size) {
+    private function getTeams($teams, $region, $team_rank, $region_size)
+    {
         $teams_col = collect($teams);
         $favored = $this->teamRepo->byNameRegionRank($teams_col->get($team_rank),$region,$team_rank);
         $underdog = $this->teamRepo->byNameRegionRank($teams_col->get(($region_size+1-$team_rank)),$region,($region_size+1-$team_rank));
