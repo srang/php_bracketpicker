@@ -250,14 +250,11 @@ class BracketController extends Controller
 
     private function getBracketDependencies($bracket=NULL)
     {
-        Log::warning('Start '.microtime());
         if(isset($bracket)) {
             $games = BracketFactory::reverseBracket($bracket,new ReverseBaseBracketStrategy());
         }
-        Log::warning('Mid '.microtime());
         $regions = Region::where('region','<>','')->get();
         $rounds = count($games);
-        Log::warning('End '.microtime());
         return [
             'teamRepo' => $this->teamRepo,
             'bracket' => $bracket,

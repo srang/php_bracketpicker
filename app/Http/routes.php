@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return redirect('home');
-})->middleware(['guest']);
+Route::get('/', 'HomeController@root');
 
 /*
 |--------------------------------------------------------------------------

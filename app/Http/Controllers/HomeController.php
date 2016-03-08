@@ -40,6 +40,11 @@ class HomeController extends Controller
         ]);
     }
 
+    public function root()
+    {
+        return redirect('/home');
+    }
+
     public function reverify(Request $request)
     {
         $user = Auth::user();
