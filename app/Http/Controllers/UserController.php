@@ -28,4 +28,40 @@ class UserController extends Controller
             'users' => $users,
         ]);
     }
+
+    public function createUser(Request $request)
+    {
+        $users = User::all();
+        return view('admin.users',[
+            'users' => $users,
+        ]);
+    }
+
+
+    public function viewUser(Request $request, User $user)
+    {
+        $users = User::all();
+        return view('admin.users',[
+            'users' => $users,
+        ]);
+    }
+
+
+    public function updateUser(Request $request, User $user)
+    {
+        $users = User::all();
+        return view('admin.users',[
+            'users' => $users,
+        ]);
+    }
+
+
+    public function destroyUser(Request $request, User $user)
+    {
+        $users = User::all();
+        return view('admin.users',[
+            'users' => $users,
+        ]);
+    }
+
 }

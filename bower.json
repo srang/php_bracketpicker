@@ -3,9 +3,11 @@
   "dependencies": {
     "bootstrap": "~3.3.6",
     "summernote": "~0.6.4",
-    "pick-a-color": "^1.2.3"
+    "pick-a-color": "^1.2.3",
+    "typeahead.js": "^0.11.1",
+    "jquery": "^2.2.1"
   },
   "resolutions": {
-      "bootstrap": "~3.3.6"
+    "bootstrap": "~3.3.6"
   }
 }

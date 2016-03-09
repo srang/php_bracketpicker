@@ -21,7 +21,8 @@
     <link href="{{ elixir('css/typeahead-bootstrap.css') }}" rel="stylesheet">
 @endpush
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>--}}
+    <script src="{{ elixir('js/typeahead.js') }}"></script>
     <script src="{{ elixir('js/user_search.js') }}"></script>
 @endpush
 

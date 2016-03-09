@@ -8,7 +8,7 @@
     <title>{{ $tourney_name }}</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    {{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> --}}
 @stack('styles')
     <link href="{{ elixir('css/frontend.css') }}" rel="stylesheet">
 </head>
@@ -74,8 +74,10 @@
     <!-- Footer -->
 
     <!-- Javascript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="{{ elixir('js/jquery.js') }}"></script>
+    <script src="{{ elixir('js/bootstrap.js') }}"></script>
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>--}}
+    {{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>--}}
 @stack('scripts')
 </body>
 </html>

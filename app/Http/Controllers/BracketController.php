@@ -7,6 +7,7 @@ use App\Region;
 use App\Team;
 use App\User;
 use App\Task;
+use App\Tournament;
 use App\Repositories\TeamRepository;
 use App\Factories\BracketFactory;
 use App\Strategies\CreateBaseBracketStrategy;

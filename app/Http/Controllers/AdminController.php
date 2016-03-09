@@ -179,8 +179,8 @@ class AdminController extends Controller
     {
         $master = Bracket::where('master',1)->first();
         $brackets = Bracket::where('master',0)->get();
+        $tasks = Task::all();
         if (isset($master)) {
-            $tasks = Task::all();
             $game = $master->root;
             return view('admin.brackets_home',[
                 'gamer' => $game,
@@ -190,6 +190,7 @@ class AdminController extends Controller
             ]);
         }
         return view('admin.brackets_home',[
+            'tasks' => $tasks,
             'brackets' => $brackets
         ]);
     }
@@ -221,6 +222,10 @@ class AdminController extends Controller
 
     public function addDefaultRanks(Request $request)
     {
+        $tournament = Tournament::where('active',true)->first();
+        $tournament->state_id = State::where('name','setup')->first()->state_id;
+        $tournament->save();
+
         $null_region = Region::where('region','')->first()->region_id;
         DB::table('teams')->update([
             'region_id' => $null_region,
