@@ -12,7 +12,10 @@
                     <br>
                     <div class="list-group">
                         <div class="list-group-item">
-                            <a href={{ url('/super/setup') }}>Setup</a>: reset tournament
+                            <a href={{ url('/super/reset') }}>Reset</a>: reset tournament
+                        </div>
+                        <div class="list-group-item">
+                            <a href={{ url('/super/setup') }}>Setup</a>: set team ranks
                         </div>
                         <div class="list-group-item">
                             <a href={{ url('/super/submit') }}>Submit</a>: open bracket submission

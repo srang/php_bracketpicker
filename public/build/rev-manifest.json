@@ -1,5 +1,5 @@
 {
-  "css/frontend.css": "css/frontend-dafa8d94ab.css",
+  "css/frontend.css": "css/frontend-a9f7421e0f.css",
   "css/pick-a-color.css": "css/pick-a-color-42c906b849.css",
   "css/typeahead-bootstrap.css": "css/typeahead-bootstrap-0c1ae9e005.css",
   "js/bootstrap.js": "js/bootstrap-86acc28889.js",
@@ -10,6 +10,6 @@
   "js/summernote.js": "js/summernote-3b07836088.js",
   "js/team_create.js": "js/team_create-963109fdcf.js",
   "js/team_list.js": "js/team_list-282864b7cd.js",
-  "js/typeahead.js": "js/typeahead-4b525e49c6.js",
+  "js/typeahead.js": "js/typeahead-d5c6b7a5d0.js",
   "js/user_search.js": "js/user_search-6e5d1c8e34.js"
 }

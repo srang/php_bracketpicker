@@ -4,34 +4,85 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+use App\Tournament;
+use App\Bracket;
+use App\Role;
+use App\Status;
+
 class BracketCreateTest extends TestCase
 {
     use DatabaseTransactions;
+
+
+    protected $user;
+    protected $super;
+    protected $tourney;
+
     /**
-     * undocumented function
-     *
-     * @return void
+     * Sets up base user and admin for tests
      */
-    public function testExample()
+    public function setUp()
     {
-        $this->assertTrue(true);
+        parent::setUp();
+        $this->tourney = Tournament::where('active',1)->first();
+
+        $users = factory(App\User::class,2)->create();
+        $users->each(function($u)
+        {
+            $u->roles()->attach(Role::where('role','user')->first()->role_id);
+            $u->status_id = Status::where('status','active')->first()->status_id;
+            $u->save();
+        });
+        $this->user = $users->pop();
+        $this->super = $users->pop();
+        $this->super->roles()->attach(Role::where('role','admin')->first()->role_id);
+        $this->super->roles()->attach(Role::where('role','superuser')->first()->role_id);
     }
 
-    /**
+    /*
+     * Test that save works with only some fields filled
+     * Test that save with duplicates will only save one (should make consistent which one
+     * Test that save with bad team name will not work
+     * Test that save failure preserves entries and unsaved status + error
+     * Test that submit requires all fields to be filled with valid teams
+     * Test that submit requires all teams to be in ONE game
      * create a bracket as admin
      * make sure page loads and is different with and without master bracket
-     */
-
-    /**
      * create new bracket as user
      */
 
-    private function getTestBracket() {
+
+    public function testMasterCreate()
+    {
+        /* resets tournament to just prior to submission state */
+        $this->actingAs($this->super)
+            ->visit('/super/setup')
+            ->press('start-madness')
+            ->expectsJobs(App\Jobs\ValidateBracket::class);
+
+        $this->actingAs($this->super)
+            ->visit('/super/submit');
+        $this->assertEquals($this->tourney->state->name, 'submission');
+        $master = Bracket::where('master',1)->first();
+        $this->actingAs($this->super)
+            ->visit('/admin/brackets/master')
+            ->press('Save')
+            ->seePageIs('/admin/brackets')
+            ->see('Master Bracket Update Processing')
+            ->see('Pending Brackets')
+            ->seeInDatabase('tasks',[
+                'name'=>$master->name,
+                'bracket_id'=>$master->bracket_id
+            ]);
+    }
+
+    private function getTestBracket()
+    {
         $bracketRequest = array (
-            '_method' => 'PUT',
-            'name' => 'Sam Rang\'s Bracket',
-            'user_id' => '374',
-            'bracket_id' => '',
+//          '_method' => 'PUT',
+//          'name' => 'Sam Rang\'s Bracket',
+//          'user_id' => '374',
+//          'bracket_id' => '',
             'games' => array (
                 6 => 
                 array (

@@ -47,7 +47,8 @@ class ValidateBracket extends Job implements ShouldQueue
             if(!empty($req->bracket_id)) {
                 $t->bracket_id = $req->bracket_id;
             }
-            $this->task = $t->save();
+            $t->save();
+            $this->task = $t;
         }
     }
 
@@ -63,11 +64,11 @@ class ValidateBracket extends Job implements ShouldQueue
         if ($errors->count() > 0) {
             Log::info($errors);
         } else {
+            if (isset($this->task)) {
+                $this->task->delete();
+            }
             $alert = BracketFactory::createBracket($this->request, $this->createStrategy);
             Log::info($alert['message']);
-        }
-        if(isset($this->task)) {
-            $this->task->delete();
         }
     }
 
@@ -83,8 +84,11 @@ class ValidateBracket extends Job implements ShouldQueue
         $user = User::where('user_id',$user_id);
         if (!isset($user)) {
             //mail admin
+            Log::info('Task '.$this->task->task_id.' failed and no user set');
         } else {
+            Log::info('Task '.$this->task->task_id.' failed and user will be notified');
             //mail user and/or admin
         }
+        $this->task->delete();
     }
 }

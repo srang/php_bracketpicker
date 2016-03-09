@@ -16,9 +16,9 @@
                 <!-- Submit Button -->
                 <div class="row">
                     <div class="form-group btn-group pull-right">
-                        <p class="btn btn-danger" id="start-madness" data-toggle="tooltip" data-placement="bottom" title="Save and Open Submissions">
+                        <button class="btn btn-danger" id="start-madness" data-toggle="tooltip" data-placement="bottom" title="Save and Open Submissions">
                             <i class="fa fa-btn fa-warning"></i> Start
-                        </p>
+                        </button>
                         <input type="hidden" name="start_madness" value="false" id="madness-flag" >
                         <input type="hidden" name="name" value="Master Bracket" >
                         <button type="submit" class="btn btn-success" id="save-button" data-toggle="tooltip" data-placement="bottom" title="Save Master Bracket">

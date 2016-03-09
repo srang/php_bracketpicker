@@ -73,8 +73,9 @@ Route::group(['middleware' => ['web']], function () {
   });
   Route::group(['middleware' => ['auth','verify','role:superuser']], function() {
     Route::get('/super', 'AdminController@superIndex');
-    Route::get('/super/setup', 'AdminController@revertToSetup');
-    Route::get('/super/submit', 'AdminController@addDefaultRanks');
+    Route::get('/super/reset', 'AdminController@revertToSetup');
+    Route::get('/super/setup', 'AdminController@addDefaultRanks');
+    Route::get('/super/submit', 'AdminController@submitMasterBracket');
     Route::get('/super/activate', 'AdminController@closeBracketSubmission');
   });
 

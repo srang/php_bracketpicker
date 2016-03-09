@@ -195,43 +195,96 @@ class AdminController extends Controller
         ]);
     }
 
-    /**
-     * SUPER USER
-     */
+    /* SUPER USER */
 
     public function superIndex(Request $request)
     {
         return view('admin.super_index');
     }
 
+
     public function revertToSetup(Request $request)
     {
-        $tournament = Tournament::where('active',true)->first();
-        $null_region = Region::where('region','')->first()->region_id;
-        DB::table('teams')->update([
-            'region_id' => $null_region,
-            'rank' => NULL
-        ]);
-        DB::table('tasks')->delete();
-        DB::table('jobs')->delete();
-        DB::table('brackets')->delete();
-        $tournament->state_id = State::where('name','setup')->first()->state_id;
-        $tournament->save();
-        return redirect('/admin');
+        $this->resetSetup();
+        return redirect('/super');
     }
 
     public function addDefaultRanks(Request $request)
     {
-        $tournament = Tournament::where('active',true)->first();
-        $tournament->state_id = State::where('name','setup')->first()->state_id;
-        $tournament->save();
 
+        $this->resetSetup();
+        $this->setBaseRanks();
+
+        //BracketFactory::createBracket($req, new CreateMasterBracketStrategy($this->teamRepo));
+        return redirect('/admin/brackets/master');
+    }
+
+    public function submitMasterBracket()
+    {
+        $this->resetSetup();
+        $this->setBaseRanks(true);
+        return redirect('/admin');
+    }
+
+    public function closeBracketSubmission(Request $request)
+    {
+        $tournament = Tournament::where('active',true)->first();
+        if ($tournament->state == 'setup') {
+            $this->resetSetup();
+            $this->setBaseRanks();
+        }
+        $tournament->state_id = State::where('name','active')->first()->state_id;
+        $tournament->save();
+        return redirect('/admin');
+    }
+
+    /* HELPER FUNCTIONS */
+    private function saveTeams($request)
+    {
+        Log::info($request);
+        $team_names = collect([]);
+        foreach ($request->get('team') as $region => $teams) {
+            foreach ($teams as $rank => $team) {
+                if(!empty($team) && !$team_names->contains($team)) {
+                    $team_actual = $this->teamRepo->byName($team);
+                    if($team_actual->region->region != $region || $team_actual->rank != $rank) {
+                        Log::debug('Updating team: '.$team.' from rank: '.$team_actual->rank.
+                            ' to '.$rank.' and region: '.$team_actual->region->region.' to '.$region);
+                        $team_names->push($team);
+                        $team_actual->setRegionRank($region,$rank);
+                    }
+                }
+            }
+        }
+
+        return [
+            'message' => 'Save Successful',
+            'level' => 'success'
+        ];
+    }
+
+    private function resetSetup()
+    {
         $null_region = Region::where('region','')->first()->region_id;
         DB::table('teams')->update([
             'region_id' => $null_region,
             'rank' => NULL
         ]);
+        $tbds = Team::where('name','TBD')->get();
+        $regions = Region::where('region','<>','')->get();
+        foreach($tbds as $tbd) {
+            $tbd->region()->associate($regions->pop())->save();
+        }
+        DB::table('tasks')->delete();
+        DB::table('jobs')->delete();
+        DB::table('brackets')->delete();
+        $tournament = Tournament::where('active',true)->first();
+        $tournament->state_id = State::where('name','setup')->first()->state_id;
+        $tournament->save();
+    }
 
+    private function setBaseRanks($start=false)
+    {
         $req = collect(array(
             'start_madness' => 'true',
             'name' => 'Master Bracket',
@@ -310,50 +363,9 @@ class AdminController extends Controller
                 ),
             ),
         ));
-
         $this->saveTeams($req);
-        $tbd = Team::where('name','TBD')->where('region_id',$null_region)->first();
-        $tbd->region()->associate(Region::where('region','East')->first())->save();
-        $tbd = Team::where('name','TBD')->where('region_id',$null_region)->first();
-        $tbd->region()->associate(Region::where('region','West')->first())->save();
-        $tbd = Team::where('name','TBD')->where('region_id',$null_region)->first();
-        $tbd->region()->associate(Region::where('region','Midwest')->first())->save();
-        $tbd = Team::where('name','TBD')->where('region_id',$null_region)->first();
-        $tbd->region()->associate(Region::where('region','South')->first())->save();
-        //BracketFactory::createBracket($req, new CreateMasterBracketStrategy($this->teamRepo));
-        return redirect('/admin/brackets');
-    }
-
-    public function closeBracketSubmission(Request $request)
-    {
-        $tournament = Tournament::where('active',true)->first();
-        $tournament->state_id = State::where('name','active')->first()->state_id;
-        $tournament->save();
-        return redirect('/admin');
-    }
-
-    private function saveTeams($request)
-    {
-        Log::info($request);
-        $team_names = collect([]);
-        foreach ($request->get('team') as $region => $teams) {
-            foreach ($teams as $rank => $team) {
-                if(!empty($team) && !$team_names->contains($team)) {
-                    $team_actual = $this->teamRepo->byName($team);
-                    if($team_actual->region->region != $region || $team_actual->rank != $rank) {
-                        Log::debug('Updating team: '.$team.' from rank: '.$team_actual->rank.
-                            ' to '.$rank.' and region: '.$team_actual->region->region.' to '.$region);
-                        $team_names->push($team);
-                        $team_actual->setRegionRank($region,$rank);
-                    }
-                }
-            }
+        if ($start) {
+            BracketFactory::createBracket($req, new CreateMasterBracketStrategy($this->teamRepo));
         }
-
-        return [
-            'message' => 'Save Successful',
-            'level' => 'success'
-        ];
     }
-
 }
