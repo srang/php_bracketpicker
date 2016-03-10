@@ -2,7 +2,7 @@
                 <div class="row">
                 <!-- Bracket Name -->
                     <div class="col-sm-6">
-                        <div class="form-group @if ($errors->has('name')) has-error @endif">
+                        <div class="form-group">
                             <label for="bracket-name" class="col-sm-3 control-label">Bracket Name</label>
                             <input type="text" name="name" placeholder="Bracket Name" id="bracket-name" class="form-control"
                             value="{{ (!empty(old('name'))||!isset($bracket))?old('name'):(($master)?$bracket->name:(Auth::user()->name.'\'s Bracket')) }}">
@@ -21,8 +21,8 @@
     <link href="{{ elixir('css/typeahead-bootstrap.css') }}" rel="stylesheet">
 @endpush
 @push('scripts')
-    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>--}}
-    <script src="{{ elixir('js/typeahead.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
+    {{--<script src="{{ elixir('js/typeahead.js') }}"></script>--}}
     <script src="{{ elixir('js/user_search.js') }}"></script>
 @endpush
 
@@ -39,18 +39,21 @@
                 </div>
 
                 <!-- Hidden fields for each game -->
+                <div class=''>
 @foreach($games as $round=>$round_games)
 {{--*/ $game_num = 1 /*--}}
 @foreach($round_games as $game)
-                <input class="hide" type="hidden" id="{{ 'R'.$round.'G'.$game_num.'T1' }}"
-                        name="{{ 'games['.$round.']['.$game_num.'][T1]' }}" value="{{ $teamRepo->byTeamId($game->team_a)->name }}">
-                <input class="hide" type="hidden" id="{{ 'R'.$round.'G'.$game_num.'T2' }}"
-                        name="{{ 'games['.$round.']['.$game_num.'][T2]' }}" value="{{ $teamRepo->byTeamId($game->team_b)->name }}">
-                <input class="hide" type="hidden" id="{{ 'R'.$round.'G'.$game_num.'W'  }}"
-                        name="{{ 'games['.$round.']['.$game_num.'][W]'  }}" value="{{ $teamRepo->byTeamId($game->winner)->name }}">
+    {{--*/ $gn = 'games['.$round.']['.$game_num.']' /*--}}
+    {{--*/ $gi = 'R'.$round.'G'.$game_num /*--}}
+    {{--*/ $gv = 'games.'.$round.'.'.$game_num.'.' /*--}}
+
+                <input type="text" id="{{ $gi.'T1' }}" name="{{ $gn.'[T1]' }}" value="{{ !empty(old($gv.'T1'))?old($gv.'T1'):$teamRepo->byTeamId($game->team_a)->name }}">
+                <input type="text" id="{{ $gi.'T2' }}" name="{{ $gn.'[T2]' }}" value="{{ !empty(old($gv.'T2'))?old($gv.'T2'):$teamRepo->byTeamId($game->team_b)->name }}">
+                <input type="text" id="{{ $gi.'W' }}" name="{{ $gn.'[W]' }}" value="{{ !empty(old($gv.'W'))?old($gv.'W'):$teamRepo->byTeamId($game->winner)->name }}">
     {{--*/ $game_num++ /*--}}
 @endforeach
 @endforeach
+</div>
 
 @push('scripts')
     <script src="{{ elixir('js/bracket_select.js') }}"></script>

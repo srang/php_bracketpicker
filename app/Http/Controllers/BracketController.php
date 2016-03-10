@@ -25,6 +25,7 @@ use JavaScript;
 use Log;
 use Auth;
 use DB;
+use Session;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -75,6 +76,7 @@ class BracketController extends Controller
 
     public function showCreateBracket(Request $request)
     {
+        $this->checkErrors($request);
         $bracket = Bracket::where('master',true)->first();
         $deps = $this->getBracketDependencies($bracket);
         $deps['master'] = false;
@@ -104,7 +106,7 @@ class BracketController extends Controller
 
         $errors = BracketFactory::validateBracket($request, new ValidateQuickBracketStrategy());
         if($errors->count() > 0) {
-            return redirect('/brackets/new')->withErrors($errors);
+            return redirect('/brackets/new')->withInput()->withErrors($errors);
         }
 
         $this->dispatch(new ValidateBracket($request,
@@ -171,6 +173,7 @@ class BracketController extends Controller
         JavaScript::put([
             'users' => $users,
         ]);
+        $this->checkErrors($request);
         $bracket = Bracket::where('master',true)->first();
         $deps = $this->getBracketDependencies($bracket);
         $deps['users'] = $users;
@@ -203,7 +206,7 @@ class BracketController extends Controller
     {
         $errors = BracketFactory::validateBracket($request, new ValidateQuickBracketStrategy());
         if($errors->count() > 0) {
-            return redirect('/admin/brackets/new')->withErrors($errors);
+            return redirect('/admin/brackets/new')->withInput()->withErrors($errors);
         }
 
         $this->dispatch(new ValidateBracket($request,
@@ -267,6 +270,20 @@ class BracketController extends Controller
         ];
     }
 
+    private function checkErrors(Request $request)
+    {
+        if ($request->session()->has('errors')) {
+            $errors = collect($request->session()->pull('errors')->toArray())->first();
+            JavaScript::put([
+                'errors' => $errors,
+            ]);
+            $alert = [
+                'message' => 'There was a problem with your bracket',
+                'level' => 'danger'
+            ];
+            $request->session()->put('alert', $alert);
+        }
+    }
 
     private function commitDeleteBracket(Bracket $bracket)
     {

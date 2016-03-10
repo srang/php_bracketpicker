@@ -25,13 +25,13 @@ class ValidateQuickBracketStrategy implements IValidateBracketStrategy
         foreach($req->games as $round=>$round_games) {
             foreach($round_games as $game_id=>$game) {
                 if(empty($game['T1']) || $game['T1'] == 'TBD') {
-                    $errors->push('Round '.$round.' Game '.$game_id.' Team 1 is invalid, cannot be TBD or empty');
+                    $errors->push('R'.$round.'G'.$game_id.'T1');
                 }
                 if(empty($game['T2']) || $game['T2'] == 'TBD') {
-                    $errors->push('Round '.$round.' Game '.$game_id.' Team 2 is invalid, cannot be TBD or empty');
+                    $errors->push('R'.$round.'G'.$game_id.'T2');
                 }
                 if(empty($game['W']) || $game['W'] == 'TBD') {
-                    $errors->push('Round '.$round.' Game '.$game_id.' Winner is invalid, cannot be TBD or empty');
+                    $errors->push('R'.$round.'G'.$game_id.'W');
                 }
             }
         }

@@ -1,4 +1,5 @@
 $(function() {
+
     function __getParentId(childId) {
 
         // id = R<round>G<game>T<team>
@@ -9,7 +10,6 @@ $(function() {
         team = (game-1)%2+1;
         game = Math.ceil(game/2);
         var parentId = 'R'+round.toString()+'G'+game.toString()+'T'+team.toString();
-        console.log('Parent: '+parentId);
         return parentId;
 
     }
@@ -36,24 +36,24 @@ $(function() {
         return info;
 
     }
-    function _setWinner(game, winner) {
 
-        // find input associated with this game, update winner
-        var info = __parseGameId(game.attr('id'));
-        $('#R'+info.round+'G'+info.game+'W').val(winner);
+    function _setWinner(info) {
+
+        $('#R'+info.round+'G'+info.game+'W').val(info.name);
+
 
     }
 
-    function _getWinner(game) {
+    function _getTeamInfo(team) {
 
         // find input for game, return winner.val
-        var info = __parseGameId(game.attr('id'));
+        var info = __parseGameId(team.attr('id'));
         var name = $('#R'+info.round+'G'+info.game+'W').val();
         // also want to pass team colors and rank
         var teamButton;
         if(name === $('#R'+info.round+'G'+info.game+'T1').val()) {
             teamButton = $('#R'+info.round+'G'+info.game+'T1B');
-        } else if (name === $('#R'+info.round+'G'+info.game+'T1').val()) {
+        } else if (name === $('#R'+info.round+'G'+info.game+'T2').val()) {
             teamButton = $('#R'+info.round+'G'+info.game+'T2B');
         } else {
             teamButton = $('#R'+info.round+'G'+info.game+'T2B');
@@ -71,23 +71,26 @@ $(function() {
         };
     }
 
-    function _updateGames(childGame, parentGame) {
+    function _updateGames(parentGame, winner, loser) {
 
         // save old value in case gets unset
         var old = parentGame.find('.team-name').text();
         parentGame.data('name', old);
 
         // set button text
-        var winner = _getWinner(childGame);
-        parentGame.find('.team-name').text(winner.name);
-        parentGame.find('.team-rank').text(winner.rank);
-        parentGame.css('background-color',winner.primary);
-        parentGame.css('color',winner.accent);
-
-        // --set losing teams colors to grey or something
+        winner.css('background-color','#'+winner.data('bg'));
+        winner.css('color', '#'+winner.data('fg'));
+        var winnerInfo = _getWinnerInfo(winner);
+        parentGame.find('.team-name').text(winnerInfo.name);
+        parentGame.find('.team-rank').text(winnerInfo.rank);
+        parentGame.css('background-color',winnerInfo.primary);
+        parentGame.css('color',winnerInfo.accent);
+        parentGame.data('bg',winnerInfo.primary);
+        parentGame.data('fg',winnerInfo.accent);
+        loser.css('background-color', _changeColorIntensity(loser.data('bg'), -0.7));
+        loser.css('color', _changeColorIntensity(loser.data('fg'), -0.7));
 
         // update parent team(1|2) with winner
-        console.log("parent team: "+ parentGame.attr('id').slice(0,-1));
         $('#'+parentGame.attr('id').slice(0,-1)).val(winner.name);
 
 
@@ -110,36 +113,24 @@ $(function() {
 
     }
 
+    function _changeColorIntensity(hex, lum) {
 
-    function _changeColorIntensity(col, amt) {
-
-        var usePound = false;
-
-        if (col[0] == "#") {
-            col = col.slice(1);
-            usePound = true;
+        // validate hex string
+        hex = String(hex).replace(/[^0-9a-f]/gi, '');
+        if (hex.length < 6) {
+            hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
         }
-        var color = {
-            "r": { "val": 0, "mask":0xFF0000, "offset": 16},
-            "g": { "val": 0, "mask":0x00FF00, "offset": 8},
-            "b": { "val": 0, "mask":0x0000FF, "offset": 0}
-        };
-        var num = parseInt(col,16);
+        lum = lum || 0;
 
-        for(var channel in color) {
-            var val = (num >> color[channel].offset & color[channel].mask ) + amt;
-            if (val > 255) val = 255;
-            else if  (val < 0) val = 0;
-            color[channel].val = val;
+        // convert to decimal and change luminosity
+        var rgb = "#", c, i;
+        for (i = 0; i < 3; i++) {
+            c = parseInt(hex.substr(i*2,2), 16);
+            c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+            rgb += ("00"+c).substr(c.length);
         }
-        var ret=0x000000;
-        for(var channel in color) {
-            ret = ret | (color[channel].val << color[channel].offset);
-        }
-        var ret_string = (usePound?"#":"")+ret.toString(16);
 
-
-        return ret_string;
+        return rgb;
 
     }
 
@@ -147,12 +138,13 @@ $(function() {
     $('.btn-team').on('click', function() {
         // read game info for button clicked
         var gameInfo = _getGameInfo($(this));
+        var loser = $(this).parent().find('.btn-team').not('#'+$(this).attr('id'));
         // update this game's winner
-        _setWinner($(this), gameInfo.name);
+        _setWinner(gameInfo);
         // get parent game button
         var parentGame = _getParentGame($(this));
         // update parent->team(1|2)
         // Needs to handle sub child changes (eg leaf game changed shouldn't break higher ups
-        _updateGames($(this), parentGame);
+        _updateGames(parentGame, $(this), loser);
     });
 });

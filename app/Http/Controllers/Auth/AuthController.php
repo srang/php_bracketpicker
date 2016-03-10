@@ -72,7 +72,7 @@ class AuthController extends Controller
     {
         if ($data['t']!='') {
             // robot submitted form
-            Log::info("robot submitted form");
+            Log::warning("Robot tried submitting form with email".$data['email'].". Denying entry");
             return User::roboto();
         }
         DB::beginTransaction();
