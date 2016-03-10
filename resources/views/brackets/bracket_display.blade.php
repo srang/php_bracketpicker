@@ -5,7 +5,7 @@
 @include('common.alerts')
             <!-- Bracket Form -->
             <div class="row">
-@include('brackets.teaminfo')
+@include('brackets.team_info')
                 <form action="{{ $bracket_link }}" method="POST">
                     {!! method_field('PUT') !!}
 @include('brackets.bracket_form')

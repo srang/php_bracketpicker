@@ -1,4 +1,11 @@
 $(function() {
+    $('.btn-team').each(function () {
+        var team = _getTeamInfo($(this));
+        $(this).css('background-color',team.primaryColor);
+        $(this).css('color',team.accentColor);
+        $(this).find('.team-rank').text(team.rank);
+        $(this).text(team.name);
+    });
 
     function __getParentId(childId) {
 
@@ -41,30 +48,22 @@ $(function() {
 
         $('#R'+info.round+'G'+info.game+'W').val(info.name);
 
-
     }
 
     function _getTeamInfo(team) {
 
+        var t = $('#'+$('#'+$(this).attr('id').slice(0,-1)).val());
         // find input for game, return winner.val
         var info = __parseGameId(team.attr('id'));
-        var name = $('#R'+info.round+'G'+info.game+'W').val();
+        var name = t.attr('id');
         // also want to pass team colors and rank
-        var teamButton;
-        if(name === $('#R'+info.round+'G'+info.game+'T1').val()) {
-            teamButton = $('#R'+info.round+'G'+info.game+'T1B');
-        } else if (name === $('#R'+info.round+'G'+info.game+'T2').val()) {
-            teamButton = $('#R'+info.round+'G'+info.game+'T2B');
-        } else {
-            teamButton = $('#R'+info.round+'G'+info.game+'T2B');
-            console.log("ERROR");
-        }
 
-        var primaryColor = teamButton.css('background-color');
-        var accentColor = teamButton.css('color');
-        var rank = teamButton.find('.team-rank').text();
+        var primaryColor = t.data('bg');
+        var accentColor = t.data('fg');
+        var rank = team.find('.team-rank').text();
         return {
             "name" : name,
+            "jq" : t,
             "rank" : rank,
             "primary" : primaryColor,
             "accent" : accentColor
