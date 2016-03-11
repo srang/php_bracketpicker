@@ -278,7 +278,7 @@ class BracketController extends Controller
                 'errors' => $errors,
             ]);
             $alert = [
-                'message' => 'There was a problem with your bracket',
+                'message' => 'Please select a winner for all of the games',
                 'level' => 'danger'
             ];
             $request->session()->put('alert', $alert);

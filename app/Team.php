@@ -52,4 +52,9 @@ class Team extends Model
         $this->save();
         return $this;
     }
+
+    public function encodeName()
+    {
+        return strtolower(preg_replace("/[^A-Za-z]/", '', $this->name));
+    }
 }

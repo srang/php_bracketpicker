@@ -1,11 +1,4 @@
 $(function() {
-    $('.btn-team').each(function () {
-        var team = _getTeamInfo($(this));
-        $(this).css('background-color',team.primaryColor);
-        $(this).css('color',team.accentColor);
-        $(this).find('.team-rank').text(team.rank);
-        $(this).text(team.name);
-    });
 
     function __getParentId(childId) {
 
@@ -50,17 +43,23 @@ $(function() {
 
     }
 
+    function _teamEncode(teamName) {
+
+        return teamName.replace(/\W/g, '').toLowerCase();
+
+    }
+
     function _getTeamInfo(team) {
 
-        var t = $('#'+$('#'+$(this).attr('id').slice(0,-1)).val());
+        var t = $('#'+_teamEncode($('#'+team.attr('id').slice(0,-1)).val()));
         // find input for game, return winner.val
         var info = __parseGameId(team.attr('id'));
-        var name = t.attr('id');
+        var name = t.data('name');
         // also want to pass team colors and rank
 
         var primaryColor = t.data('bg');
         var accentColor = t.data('fg');
-        var rank = team.find('.team-rank').text();
+        var rank = '#'+t.data('rank');
         return {
             "name" : name,
             "jq" : t,
@@ -77,21 +76,26 @@ $(function() {
         parentGame.data('name', old);
 
         // set button text
-        winner.css('background-color','#'+winner.data('bg'));
-        winner.css('color', '#'+winner.data('fg'));
-        var winnerInfo = _getWinnerInfo(winner);
+        var winnerInfo = _getTeamInfo(winner);
+        var loserInfo = _getTeamInfo(loser);
+        winner.css('background-color',winnerInfo.primary);
+        winner.css('color', winnerInfo.accent);
         parentGame.find('.team-name').text(winnerInfo.name);
         parentGame.find('.team-rank').text(winnerInfo.rank);
         parentGame.css('background-color',winnerInfo.primary);
         parentGame.css('color',winnerInfo.accent);
-        parentGame.data('bg',winnerInfo.primary);
-        parentGame.data('fg',winnerInfo.accent);
-        loser.css('background-color', _changeColorIntensity(loser.data('bg'), -0.7));
-        loser.css('color', _changeColorIntensity(loser.data('fg'), -0.7));
+        loser.css('background-color', _changeColorIntensity(loserInfo.primary, -0.6));
+        loser.css('color', _changeColorIntensity(loserInfo.accent, -0.6));
 
-        // update parent team(1|2) with winner
-        $('#'+parentGame.attr('id').slice(0,-1)).val(winner.name);
+        // update hidden input with winner
+        $('#'+parentGame.attr('id').slice(0,-1)).val(winnerInfo.name);
 
+
+    }
+
+    function _unsetWinner(game) {
+
+        $('#'+parentGame.attr('id').slice(0,-1)).val('TBD');
 
     }
 
@@ -103,15 +107,11 @@ $(function() {
 
     }
 
-    function _unsetGame(game) {
-
-        var old = game.data('name');
-        game.val(old);
-        // store previous value in data-[] tags
-        // when child games change and game needs to be reset
-
-    }
-
+    /**
+     * credit to Craig Buckler
+     * http://www.sitepoint.com/javascript-generate-lighter-darker-color/
+     * changes hex color luminosity
+     */
     function _changeColorIntensity(hex, lum) {
 
         // validate hex string
@@ -133,6 +133,14 @@ $(function() {
 
     }
 
+    $('.btn-team').each(function () {
+
+        var team = _getTeamInfo($(this));
+        $(this).css('background-color',team.primary);
+        $(this).css('color',team.accent);
+        $(this).find('.team-rank').text(team.rank);
+        $(this).find('.team-name').text(team.name);
+    });
 
     $('.btn-team').on('click', function() {
         // read game info for button clicked

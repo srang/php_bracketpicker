@@ -39,7 +39,7 @@
                 </div>
 
                 <!-- Hidden fields for each game -->
-                <div class=''>
+                <div class='hide'>
 @foreach($games as $round=>$round_games)
 {{--*/ $game_num = 1 /*--}}
 @foreach($round_games as $game)
