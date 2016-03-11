@@ -7,83 +7,83 @@
 @include('common.errors')
 @include('common.alerts')
         </div>
-        <!-- Master Bracket -->
-        <div class="row">
-            <div class="panel panel-default">
-@if ($tourney_state->name === 'submission')
-                <div class="panel-heading">
-                    <h4>{{ $master->name }}</h4>
-                </div>
-                <div class="panel-body">
-                    <div class="col-md-4">
-                        <p>Bracket Submission Open</p>
-                    </div>
-                    <div class="col-md-4">
-                        <p>Created At: {{ date('F d   g:i', strtotime($master->created_at)) }}</p>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="btn-group pull-right">
-                            <a class="btn btn-info" href="{{ url('admin/brackets/master') }}">
-                                <i class="fa fa-btn fa-arrow-right"></i> Edit
-                            </a>
-                            <a class="btn btn-warning" href="#">
-                                <i class="fa fa-btn fa-warning"></i> Start Tournament
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-@elseif ($tourney_state->name === 'active')
-                <div class="panel-heading">
-                    Master Bracket
-                </div>
-                <div class="panel-body">
-                    <div class="col-md-4">
-                        <h4>Tournament Has Begun</h4>
-                    </div>
-                    <div class="col-md-4">
-                        <p>Started At: {{ date('F d   g:i', strtotime($tourney->updated_at)) }}</p>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="btn-group pull-right">
-                            <a class="btn btn-info" href="{{ url('admin/brackets/master') }}">
-                                <i class="fa fa-btn fa-arrow-right"></i> Edit
-                            </a>
-                            <a class="btn btn-warning" href="#">
-                                <i class="fa fa-btn fa-warning"></i> Start Tournament
-                            </a>
-                        </div>
-                    </div>
-                </div>
-@elseif ($tourney_state->name === 'setup')
-                <div class="panel-heading">
-                    Master Bracket
-                </div>
-                <div class="panel-body">
-                    <div class="col-md-4">
-                        <h4>Master Bracket Setup Required</h4>
-                    </div>
-                    <div class="col-md-4">
-                        <h4>Not Created Yet</h4>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="btn-group pull-right">
-                            <a class="btn btn-success" href="{{ url('admin/brackets/master') }}">
-                                <i class="fa fa-btn fa-arrow-magic"></i> Create
-                            </a>
-                        </div>
-                    </div>
-                </div>
-@endif
-            </div>
-        </div>
-        <div class="row">
+        <div>
 @include('common.back_button',[ 'back_link'=>url('admin')])
 @if($tourney_state->name === 'submission')
             <div class="pull-right">
                 <a class="btn btn-success" href="{{ url('admin/brackets/new') }}">
                     <i class="fa fa-btn fa-plus"></i> Create Bracket
                 </a>
+            </div>
+@endif
+        </div>
+        <br>
+        <br>
+        <!-- Master Bracket -->
+        <div class="panel panel-default">
+@if ($tourney_state->name === 'submission')
+            <div class="panel-heading">
+                <h4>{{ $master->name }}</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-4">
+                    <p>Bracket Submission Open</p>
+                </div>
+                <div class="col-md-4">
+                    <p>Created At: {{ date('F d   g:i', strtotime($master->created_at)) }}</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-info" href="{{ url('admin/brackets/master') }}">
+                            <i class="fa fa-btn fa-arrow-right"></i> Edit
+                        </a>
+                        <a class="btn btn-warning" href="#">
+                            <i class="fa fa-btn fa-warning"></i> Start Tournament
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+@elseif ($tourney_state->name === 'active')
+            <div class="panel-heading">
+                Master Bracket
+            </div>
+            <div class="panel-body">
+                <div class="col-md-4">
+                    <h4>Tournament Has Begun</h4>
+                </div>
+                <div class="col-md-4">
+                    <p>Started At: {{ date('F d   g:i', strtotime($tourney->updated_at)) }}</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-info" href="{{ url('admin/brackets/master') }}">
+                            <i class="fa fa-btn fa-arrow-right"></i> Edit
+                        </a>
+                        <a class="btn btn-warning" href="#">
+                            <i class="fa fa-btn fa-warning"></i> Start Tournament
+                        </a>
+                    </div>
+                </div>
+            </div>
+@elseif ($tourney_state->name === 'setup')
+            <div class="panel-heading">
+                Master Bracket
+            </div>
+            <div class="panel-body">
+                <div class="col-md-4">
+                    <h4>Master Bracket Setup Required</h4>
+                </div>
+                <div class="col-md-4">
+                    <h4>Not Created Yet</h4>
+                </div>
+                <div class="col-md-4">
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-success" href="{{ url('admin/brackets/master') }}">
+                            <i class="fa fa-btn fa-arrow-magic"></i> Create
+                        </a>
+                    </div>
+                </div>
             </div>
 @endif
         </div>
@@ -146,8 +146,9 @@
 @if ($tasks->count() > 0)
         <div class="panel panel-default">
             <div class="panel-heading">
-                Brackets
+                Pending Brackets
             </div>
+            <div class="panel-body">
                 <table class="table table-striped">
 
                     <!-- Table Headings -->
@@ -155,7 +156,7 @@
                         <th>Pending Brackets</th>
                         <th>User</th>
                         <th>Creation Date</th>
-                        <th>&nbsp;</th>
+                        <th>Status</th>
                     </thead>
 
                     <!-- Table Body -->
@@ -174,12 +175,8 @@
                                     {{ $task->start }}
                                 </span>
                             </td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <button class="btn btn-danger">
-                                        <i class="fa fa-btn fa-trash"></i> Does NOTHING
-                                    </button>
-                                </div>
+                            <td class="table-text">
+                                <div>Processing</div>
                             </td>
                         </tr>
 @endforeach
