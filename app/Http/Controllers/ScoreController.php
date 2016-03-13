@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Log;
+use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -18,7 +20,7 @@ class ScoreController extends Controller
      */
     public function index(Request $request)
     {
-        return view('scores.index');
+        return view('scores.index',[ 'user' => Auth::user() ]);
     }
 
 }

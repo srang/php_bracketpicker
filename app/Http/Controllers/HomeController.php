@@ -8,6 +8,7 @@ use App\Bracket;
 use DB;
 use Log;
 use Auth;
+use Mail;
 use Carbon\Carbon;
 use App\VerificationToken;
 use App\Http\Middleware\VerifyMiddleware;
@@ -103,4 +104,10 @@ class HomeController extends Controller
     {
         return view('feedback');
     }
+
+    public function sendFeedback(Request $request)
+    {
+
+    }
+
 }
