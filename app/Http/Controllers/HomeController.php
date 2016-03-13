@@ -107,7 +107,14 @@ class HomeController extends Controller
 
     public function sendFeedback(Request $request)
     {
-
+        $user = Auth::user();
+        if (!$user->status->status != 'disabled') {
+            Mail::send('mail.feedback', ['sender'=>$request->sender, 'content'=>$request->content], function($message) use ($request){
+                $message->to('tourney.friedman@gmail.com', 'Feedback')
+                    ->subject($request->subject.' from '.$request->sender);
+            });
+        }
+        return redirect('/home');
     }
 
 }
