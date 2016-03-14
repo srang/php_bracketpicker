@@ -29,4 +29,14 @@ class Region extends Model
     }
 
 
+    public static function orderedRegions()
+    {
+        $ret = collect([]);
+        $regions = Region::where('region','<>','')->get();
+        $ret->push($regions->where('region','West')->first());
+        $ret->push($regions->where('region','South')->first());
+        $ret->push($regions->where('region','East')->first());
+        $ret->push($regions->where('region','Midwest')->first());
+        return $ret;
+    }
 }

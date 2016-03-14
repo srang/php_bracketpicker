@@ -1,16 +1,16 @@
 <div class="bracket-body container-fluid">
     <!-- Top Half -->
     <div class="bracket-row">
-@include('brackets.first_rounds',[ 'regionl' => 'Midwest','regionr' => 'South', 'r1c' => 1, 'r2c' => 1, 'r3c' => 1 ])
+@include('brackets.first_rounds',[ 'regionl' => $regions->get(0)->region,'regionr' => $regions->get(1)->region, 'r1c' => 1, 'r2c' => 1, 'r3c' => 1 ])
     </div>
 
     <!-- Middle -->
     <div class="bracket-row">
         <div class="col-md-2 bracket-round">
-            <h4 class="bracket-round-title">Midwestern Finals</h4>
+            <h4 class="bracket-round-title">{{ $regions->get(0)->region }} Finals</h4>
 @include($game_container,[ 'game' => $games->get('4')->shift(), 'game_num' => 1 ])
             <br>
-            <h4 class="bracket-round-title">Southern Finals</h4>
+            <h4 class="bracket-round-title">{{ $regions->get(1)->region }} Finals</h4>
 @include($game_container,[ 'game' => $games->get('4')->shift(), 'game_num' => 2 ])
         </div><!--
      --><div class="col-md-2 bracket-round">
@@ -28,16 +28,16 @@
 @include($game_container,[ 'game' => $games->get('5')->shift(), 'game_num' => 2 ])
         </div><!--
      --><div class="col-md-2 bracket-round">
-            <h4 class="bracket-round-title">Western Finals</h4>
+            <h4 class="bracket-round-title">{{ $regions->get(2)->region }} Finals</h4>
 @include($game_container,[ 'game' => $games->get('4')->shift(), 'game_num' => 3 ])
             <br>
-            <h4 class="bracket-round-title">Eastern Finals</h4>
+            <h4 class="bracket-round-title">{{ $regions->get(3)->region }} Finals</h4>
 @include($game_container,[ 'game' => $games->get('4')->shift(), 'game_num' => 4 ])
         </div>
     </div>
 
     <!-- Bottom Half -->
     <div class="bracket-row">
-@include('brackets.first_rounds',[ 'regionl' => 'West','regionr' => 'East', 'r1c' => 17, 'r2c' => 9, 'r3c' => 5 ])
+@include('brackets.first_rounds',[ 'regionl' => $regions->get(2)->region,'regionr' => $regions->get(3)->region, 'r1c' => 17, 'r2c' => 9, 'r3c' => 5 ])
     </div>
 </div>

@@ -70,7 +70,7 @@ class AdminController extends Controller
         if(empty($bracket)) {
             //need to set up master bracket
             $teams = Team::where('name','<>','TBD')->select('name','team_id')->get();
-            $regions = Region::where('region','<>','')->get();
+            $regions = Region::orderedRegions();
             $game_nums = BracketFactory::generateMatchups();
             JavaScript::put([
                 'teams' => $teams,
@@ -84,7 +84,7 @@ class AdminController extends Controller
             ]);
         }
         $games = BracketFactory::reverseBracket($bracket,new ReverseBaseBracketStrategy());
-        $regions = Region::where('region','<>','')->get();
+        $regions = Region::orderedRegions();
         $rounds = count($games);
         return view('brackets.bracket_display',[
             'teamRepo' => $this->teamRepo,
@@ -271,7 +271,7 @@ class AdminController extends Controller
             'rank' => NULL
         ]);
         $tbds = Team::where('name','TBD')->get();
-        $regions = Region::where('region','<>','')->get();
+        $regions = Region::orderedRegions();
         foreach($tbds as $tbd) {
             $tbd->region()->associate($regions->pop())->save();
         }

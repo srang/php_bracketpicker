@@ -260,7 +260,7 @@ class BracketController extends Controller
         if(isset($bracket)) {
             $games = BracketFactory::reverseBracket($bracket,new ReverseBaseBracketStrategy());
         }
-        $regions = Region::where('region','<>','')->get();
+        $regions = Region::orderedRegions();
         $rounds = count($games);
         return [
             'teamRepo' => $this->teamRepo,
