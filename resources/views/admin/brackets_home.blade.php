@@ -133,6 +133,9 @@
                                         <a class="btn btn-info" href="{{ url('admin/brackets/'.$bracket->bracket_id) }}">
                                             <i class="fa fa-btn fa-pencil"></i> Edit
                                         </a>
+                                        <a class="btn btn-primary" href="{{ url('admin/brackets/'.$bracket->bracket_id.'/print') }}" target="_blank">
+                                            <i class="fa fa-btn fa-print"></i> Print
+                                        </a>
                                     </form>
                                 </div>
                             </td>

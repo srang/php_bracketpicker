@@ -35,6 +35,7 @@ elixir(function(mix) {
     mix.less('frontend.less');
     mix.styles('summernote.css');
     mix.styles('typeahead-bootstrap.css');
+    mix.styles('printbracket.css');
     mix.styles('pick-a-color.css');
     mix.scripts(['pick-a-color.js','tinycolor-min.js'],'public/js/color.js');
     mix.browserify('summernote.js');
@@ -59,6 +60,7 @@ elixir(function(mix) {
             'js/typeahead.js',
             'css/frontend.css',
             'css/pick-a-color.css',
+            'css/printbracket.css',
             'css/typeahead-bootstrap.css'
     ]);
 });

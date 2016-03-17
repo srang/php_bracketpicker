@@ -159,6 +159,12 @@ class BracketController extends Controller
         return redirect('/brackets');
     }
 
+    public function showPrintBracket(Request $request, Bracket $bracket)
+    {
+        $deps = $this->getBracketDependencies($bracket);
+        return view('brackets.print', $deps);
+    }
+
     /**
      * ADMIN BRACKET SECTION
      */
@@ -250,6 +256,7 @@ class BracketController extends Controller
 
         return redirect()->action('AdminController@bracketsIndex');
     }
+
 
     /**
      * BRACKET HELPER FUNCTIONS

@@ -37,9 +37,10 @@ Route::group(['middleware' => ['web']], function () {
   Route::group(['middleware' => ['auth','verify','role:user']], function() {
     Route::get('/brackets', 'BracketController@index');
     Route::get('/brackets/new', 'BracketController@showCreateBracket');
-    Route::get('/brackets/{bracket}', 'BracketController@viewBracket');
     Route::put('/brackets/new','BracketController@createBracket');
+    Route::get('/brackets/{bracket}', 'BracketController@viewBracket');
     Route::put('/brackets/{bracket}', 'BracketController@updateBracket');
+    Route::get('/brackets/{bracket}/print', 'BracketController@showPrintBracket');
     Route::delete('/brackets/{bracket}','BracketController@destroyBracket');
 
     Route::get('/home', 'HomeController@index');
@@ -55,8 +56,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::put('/admin/brackets/master', 'AdminController@setMaster');
     /* Bracket Routes */
     Route::get('/admin/brackets/new', 'BracketController@showCreateBracketAdmin');
-    Route::get('/admin/brackets/{bracket}', 'BracketController@viewBracketAdmin');
     Route::put('/admin/brackets/new','BracketController@createBracketAdmin');
+    Route::get('/admin/brackets/{bracket}', 'BracketController@viewBracketAdmin');
+    Route::get('/admin/brackets/{bracket}/print', 'BracketController@showPrintBracket');
     Route::put('/admin/brackets/{bracket}', 'BracketController@updateBracketAdmin');
     Route::delete('/admin/brackets/{bracket}','BracketController@destroyBracketAdmin');
     /* User Routes */

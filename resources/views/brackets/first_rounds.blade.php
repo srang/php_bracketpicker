@@ -4,6 +4,7 @@
 @include($game_container,[ 'game' => $games->get('1')->shift(), 'game_num' => $i ])
 @endfor
         </div><!--
+        {{-- bootstrap bug requires no whitespace here --}}
      --><div class="col-md-2 bracket-round round-two">
             <h4 class="bracket-round-title">Round 2 {{ $regionl }}</h4>
 @for($i=$r2c; $i < $r2c+4; $i++)
