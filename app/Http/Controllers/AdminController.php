@@ -98,6 +98,21 @@ class AdminController extends Controller
         ]);
     }
 
+    public function printMaster(Request $request)
+    {
+        $master = Bracket::where('master',true)->first();
+        if(empty($master)) {
+            $alert = [
+                'message' => 'Master Bracket Not Created',
+                'level' => 'danger'
+            ];
+            $request->session()->put('alert', $alert);
+            return redirect('/admin/brackets/master');
+        }
+        return redirect('/admin/brackets/'.$master->bracket_id.'/print');
+
+    }
+
     /**
      * Validate all constraints are met and then save
      * master bracket. Check for start tournament flag
@@ -202,7 +217,6 @@ class AdminController extends Controller
         return view('admin.super_index');
     }
 
-
     public function revertToSetup(Request $request)
     {
         $this->resetSetup();
@@ -218,6 +232,7 @@ class AdminController extends Controller
         //BracketFactory::createBracket($req, new CreateMasterBracketStrategy($this->teamRepo));
         return redirect('/admin/brackets/master');
     }
+
 
     public function submitMasterBracket()
     {
@@ -235,8 +250,9 @@ class AdminController extends Controller
         }
         $tournament->state_id = State::where('name','active')->first()->state_id;
         $tournament->save();
-        return redirect('/admin');
+        return redirect('/admin/brackets');
     }
+
 
     /* HELPER FUNCTIONS */
     private function saveTeams($request)

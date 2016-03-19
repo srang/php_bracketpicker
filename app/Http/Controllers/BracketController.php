@@ -76,14 +76,18 @@ class BracketController extends Controller
 
     public function showCreateBracket(Request $request)
     {
-        $this->checkErrors($request);
-        $bracket = Bracket::where('master',true)->first();
-        $deps = $this->getBracketDependencies($bracket);
-        $deps['master'] = false;
-        $deps['game_container'] = 'brackets.game_buttons';
-        $deps['bracket_link'] = url('/brackets/new');
-        $deps['back_link'] = url('/brackets');
-        return view('brackets.bracket_display',$deps);
+        if (Tournament::where('active',1)->first()->state == 'submission') {
+            $this->checkErrors($request);
+            $bracket = Bracket::where('master',true)->first();
+            $deps = $this->getBracketDependencies($bracket);
+            $deps['master'] = false;
+            $deps['game_container'] = 'brackets.game_buttons';
+            $deps['bracket_link'] = url('/brackets/new');
+            $deps['back_link'] = url('/brackets');
+            return view('brackets.bracket_display',$deps);
+        } else {
+            return redirect('/brackets');
+        }
     }
 
     public function viewBracket(Request $request, Bracket $bracket)
@@ -91,32 +95,39 @@ class BracketController extends Controller
         $deps = $this->getBracketDependencies($bracket);
         $deps['master'] = false;
         $deps['user'] = $bracket->user;
-        if (Tournament::where('active',1)->first()->state == 'submission') {
-            $deps['game_container'] = 'brackets.game_buttons';
-        } else {
-            $deps['game_container'] = 'brackets.game_labels';
-        }
         $deps['bracket_link'] = url('/brackets/'.$bracket->bracket_id);
         $deps['back_link'] = url('/brackets');
-        return view('brackets.bracket_display',$deps);
+        if (Tournament::where('active',1)->first()->state == 'submission') {
+            $deps['game_container'] = 'brackets.game_buttons';
+            return view('brackets.bracket_display',$deps);
+        } else {
+            $deps['game_container'] = 'brackets.game_labels';
+            return view('brackets.bracket_read_only',$deps);
+        }
     }
 
     public function createBracket(Request $request)
     {
+        if (Tournament::where('active',1)->first()->state == 'submission') {
+            $errors = BracketFactory::validateBracket($request, new ValidateQuickBracketStrategy());
+            if($errors->count() > 0) {
+                return redirect('/brackets/new')->withInput()->withErrors($errors);
+            }
 
-        $errors = BracketFactory::validateBracket($request, new ValidateQuickBracketStrategy());
-        if($errors->count() > 0) {
-            return redirect('/brackets/new')->withInput()->withErrors($errors);
+            $this->dispatch(new ValidateBracket($request,
+                new ValidateUserCreateBracketStrategy($this->teamRepo),
+                new CreateBaseBracketStrategy($this->teamRepo)));
+
+            $alert = [
+                'message' => 'Bracket Processing',
+                'level' => 'warning'
+            ];
+        } else {
+            $alert = [
+                'message' => 'Bracket Submission Disabled',
+                'level' => 'danger'
+            ];
         }
-
-        $this->dispatch(new ValidateBracket($request,
-            new ValidateUserCreateBracketStrategy($this->teamRepo),
-            new CreateBaseBracketStrategy($this->teamRepo)));
-
-        $alert = [
-            'message' => 'Bracket Processing',
-            'level' => 'warning'
-        ];
 
         $request->session()->put('alert', $alert);
         return redirect('/brackets');
@@ -125,19 +136,26 @@ class BracketController extends Controller
     public function updateBracket(Request $request, Bracket $bracket)
     {
 
-        $errors = BracketFactory::validateBracket($request, new ValidateQuickBracketStrategy());
-        if($errors->count() > 0) {
-            return redirect('/brackets/'.$bracket->bracket_id)->withErrors($errors);
+        if (Tournament::where('active',1)->first()->state == 'submission') {
+            $errors = BracketFactory::validateBracket($request, new ValidateQuickBracketStrategy());
+            if($errors->count() > 0) {
+                return redirect('/brackets/'.$bracket->bracket_id)->withErrors($errors);
+            }
+
+            $this->dispatch(new ValidateBracket($request,
+                new ValidateUserUpdateBracketStrategy($this->teamRepo),
+                new UpdateBaseBracketStrategy($this->teamRepo, $bracket)));
+
+            $alert = [
+                'message' => 'Bracket Update Processing',
+                'level' => 'warning'
+            ];
+        } else {
+            $alert = [
+                'message' => 'Bracket Submission Disabled',
+                'level' => 'danger'
+            ];
         }
-
-        $this->dispatch(new ValidateBracket($request,
-            new ValidateUserUpdateBracketStrategy($this->teamRepo),
-            new UpdateBaseBracketStrategy($this->teamRepo, $bracket)));
-
-        $alert = [
-            'message' => 'Bracket Update Processing',
-            'level' => 'warning'
-        ];
 
         $request->session()->put('alert', $alert);
         return redirect('/brackets');
@@ -146,7 +164,12 @@ class BracketController extends Controller
 
     public function destroyBracket(Request $request, Bracket $bracket)
     {
-        if($bracket->user_id != Auth::user()->user_id) {
+        if (!Tournament::where('active',1)->first()->state == 'submission') {
+            $alert = [
+                'message' => 'Bracket Submission Disabled',
+                'level' => 'danger'
+            ];
+        } else if($bracket->user_id != Auth::user()->user_id) {
             $alert = [
                 'message' => 'Can\'t delete someone elses bracket',
                 'level' => 'danger'
@@ -196,6 +219,8 @@ class BracketController extends Controller
         $deps['master'] = false;
         $deps['user'] = $bracket->user;
         $deps['game_container'] = 'brackets.game_buttons';
+        /* could change to admin_buttons if we want to give admin more power */
+        $deps['action_buttons'] = 'brackets.submit_buttons';
         $deps['bracket_link'] = url('/admin/brackets/'.$bracket->bracket_id);
         $deps['back_link'] = url('/admin/brackets');
         return view('brackets.bracket_display',$deps);

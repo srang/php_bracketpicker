@@ -31,7 +31,7 @@ class UpdateMasterBracketStrategy extends AbstractUpdateBracketStrategy
         DB::beginTransaction();
         Log::info('Updating master bracket using UpdateMasterBracketStrategy');
         $bracket = $this->readHelper($req);
-        if ($this->save($bracket,$req->get('name'),$req->get('user_id'))) {
+        if ($this->save($bracket,$req->get('name'),null)) {
             // score brackets
             $alert = [
                 'message' => 'Master Bracket Updated.',

@@ -52,11 +52,13 @@ Route::group(['middleware' => ['web']], function () {
     /* Master Bracket Routes */
     Route::get('/admin/brackets', 'AdminController@bracketsIndex');
     Route::get('/admin/brackets/master', 'AdminController@showMaster');
+    Route::get('/admin/brackets/master/print', 'AdminController@printMaster');
     Route::post('/admin/brackets/master', 'AdminController@createMaster');
     Route::put('/admin/brackets/master', 'AdminController@setMaster');
     /* Bracket Routes */
     Route::get('/admin/brackets/new', 'BracketController@showCreateBracketAdmin');
     Route::put('/admin/brackets/new','BracketController@createBracketAdmin');
+    Route::get('/admin/brackets/start','AdminController@closeBracketSubmission');
     Route::get('/admin/brackets/{bracket}', 'BracketController@viewBracketAdmin');
     Route::get('/admin/brackets/{bracket}/print', 'BracketController@showPrintBracket');
     Route::put('/admin/brackets/{bracket}', 'BracketController@updateBracketAdmin');

@@ -37,7 +37,7 @@
                         <a class="btn btn-info" href="{{ url('admin/brackets/master') }}">
                             <i class="fa fa-btn fa-arrow-right"></i> Edit
                         </a>
-                        <a class="btn btn-warning" href="#">
+                        <a class="btn btn-warning" href="{{ url('admin/brackets/start') }}">
                             <i class="fa fa-btn fa-warning"></i> Start Tournament
                         </a>
                     </div>

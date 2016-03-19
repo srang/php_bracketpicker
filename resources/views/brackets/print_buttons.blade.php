@@ -20,11 +20,13 @@
                                 <a class="btn btn-info" href="{{ Request::url() }}">
                                     <i class="fa fa-btn fa-refresh"></i> Reset
                                 </a>
+                                {{--
 @if(strpos($bracket_link,'new') === false)
                                 <a class="btn btn-primary" href="{{ $bracket_link.'/print' }}" target="_blank">
                                     <i class="fa fa-btn fa-print"></i> Print
                                 </a>
 @endif
+                                --}}
                             </div>
                         </div>
                     </div>
