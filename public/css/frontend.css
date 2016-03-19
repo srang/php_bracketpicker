@@ -6955,5 +6955,9 @@ body {
 .bracket-round-title {
   text-align: center;
 }
+.game-label {
+  padding: 4px 9px;
+  margin-bottom: 2px;
+}
 
 /*# sourceMappingURL=frontend.css.map */

@@ -11,6 +11,9 @@
         <link href="{{ elixir('css/printbracket.css') }}" rel="stylesheet">
     </head>
     <body id="app-layout">
+        <div>
+            <p>{{ $bracket->name }}</p>
+        </div>
         <table>
             <thead>
                 <th>{{ $regions->get(0)->region }}</th>
