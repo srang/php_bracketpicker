@@ -42,6 +42,11 @@ class Math
         $this->variables[$name] = $value;
     }
 
+    public function clearVariables()
+    {
+        $this->variables = array();
+    }
+
     public function run(Stack $stack)
     {
         while (($operator = $stack->pop()) && $operator->isOperator()) {

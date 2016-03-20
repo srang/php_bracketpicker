@@ -22,32 +22,32 @@ class AddRulesets extends Migration
         DB::table('rules')->insert([
             'round_id' => 1,
             'ruleset_id' => $ruleset_id,
-            'rule' => 'RANK'
+            'rule' => '$RANK'
         ]);
         DB::table('rules')->insert([
             'round_id' => 2,
             'ruleset_id' => $ruleset_id,
-            'rule' => 'RANK * ROUND'
+            'rule' => '$RANK * $ROUND'
         ]);
         DB::table('rules')->insert([
             'round_id' => 3,
             'ruleset_id' => $ruleset_id,
-            'rule' => 'RANK * ROUND + 10'
+            'rule' => '$RANK * $ROUND + 10'
         ]);
         DB::table('rules')->insert([
             'round_id' => 4,
             'ruleset_id' => $ruleset_id,
-            'rule' => 'RANK * ROUND + 25'
+            'rule' => '$RANK * $ROUND + 25'
         ]);
         DB::table('rules')->insert([
             'round_id' => 5,
             'ruleset_id' => $ruleset_id,
-            'rule' => 'RANK * ROUND + 40'
+            'rule' => '$RANK * $ROUND + 40'
         ]);
         DB::table('rules')->insert([
             'round_id' => 6,
             'ruleset_id' => $ruleset_id,
-            'rule' => 'RANK * ROUND + 65'
+            'rule' => '$RANK * $ROUND + 65'
         ]);
 
     }
