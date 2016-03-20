@@ -136,6 +136,9 @@
                                         <a class="btn btn-primary" href="{{ url('admin/brackets/'.$bracket->bracket_id.'/print') }}" target="_blank">
                                             <i class="fa fa-btn fa-print"></i> Print
                                         </a>
+                                        <a class="btn btn-success" href="{{ url('admin/brackets/'.$bracket->bracket_id.'/score') }}">
+                                            <i class="fa fa-btn fa-calulator"></i> Score
+                                        </a>
                                     </form>
                                 </div>
                             </td>

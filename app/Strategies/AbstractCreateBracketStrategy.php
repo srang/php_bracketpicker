@@ -6,7 +6,6 @@ use App\Game;
 use App\Team;
 use App\Bracket;
 use App\Strategies\ICreateBracketStrategy;
-use App\Strategies\ReverseBaseBracketStrategy;
 use App\Factories\BracketFactory;
 use App\Repositories\TeamRepository;
 

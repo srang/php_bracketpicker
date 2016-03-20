@@ -11,6 +11,9 @@ use App\Strategies\IReverseBracketStrategy;
 
 /**
  * Concrete implementation of IReverseBracketStrategy
+ * FIXME there is currently a bug with games not being deleted
+ * so there isn't much of an advantage of using this class over the 
+ * base class. Which is why its not currently in use
  *
  */
 class ReverseMasterBracketStrategy implements IReverseBracketStrategy

@@ -7,12 +7,14 @@ use App\Region;
 use App\Team;
 use App\User;
 use App\Task;
+use App\Ruleset;
 use App\Tournament;
 use App\Repositories\TeamRepository;
 use App\Factories\BracketFactory;
 use App\Strategies\CreateBaseBracketStrategy;
 use App\Strategies\UpdateBaseBracketStrategy;
 use App\Strategies\ReverseBaseBracketStrategy;
+use App\Strategies\ScoreBaseRulesetStrategy;
 use App\Strategies\ValidateQuickBracketStrategy;
 use App\Strategies\ValidateBaseBracketStrategy;
 use App\Strategies\ValidateUserUpdateBracketStrategy;
@@ -282,6 +284,18 @@ class BracketController extends Controller
         return redirect()->action('AdminController@bracketsIndex');
     }
 
+    public function scoreBracket(Request $request, Bracket $bracket)
+    {
+        $ruleset = Ruleset::where('name','Bull Moose')->first();
+        $score = BracketFactory::scoreBrackets(collect([$bracket]), new ScoreBaseRulesetStrategy($this->teamRepo, $ruleset));
+        $alert = [
+            'message' => 'Bracket Score: '.$score->shift(),
+            'level' => 'success'
+        ];
+
+        $request->session()->put('alert', $alert);
+        return redirect('/admin/brackets');
+    }
 
     /**
      * BRACKET HELPER FUNCTIONS

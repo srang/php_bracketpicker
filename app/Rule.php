@@ -13,4 +13,14 @@ class Rule extends Model
      */
     protected $primaryKey = 'rule_id';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'ruleset_id','round_id','rule',
+    ];
+
+
 }

@@ -61,6 +61,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admin/brackets/start','AdminController@closeBracketSubmission');
     Route::get('/admin/brackets/{bracket}', 'BracketController@viewBracketAdmin');
     Route::get('/admin/brackets/{bracket}/print', 'BracketController@showPrintBracket');
+    Route::get('/admin/brackets/{bracket}/score', 'BracketController@scoreBracket');
     Route::put('/admin/brackets/{bracket}', 'BracketController@updateBracketAdmin');
     Route::delete('/admin/brackets/{bracket}','BracketController@destroyBracketAdmin');
     /* User Routes */

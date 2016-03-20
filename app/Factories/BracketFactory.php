@@ -8,6 +8,7 @@ use App\Bracket;
 use App\Strategies\ICreateBracketStrategy;
 use App\Strategies\IReverseBracketStrategy;
 use App\Strategies\IValidateBracketStrategy;
+use App\Strategies\IScoreRulesetStrategy;
 use Illuminate\Http\Request;
 
 
@@ -54,6 +55,28 @@ class BracketFactory
         return $strat->validate($req);
     }
 
+    /**
+     * Scores a set of brackets based on specified ruleset.
+     * TODO should this belong here or should this (and
+     * potentially other things) be split off into some
+     * sort of bracket utility?
+     *
+     * @param $brackets  collection of Bracket
+     * @param IScoreRulesetStrategy  $strat
+     * @return score collection
+     */
+    public static function scoreBrackets($brackets, IScoreRulesetStrategy $strat)
+    {
+        return $strat->process($brackets);
+    }
+
+    /**
+     * Helper function that figures out which
+     * team should play which based on rank
+     * FIXME this will need to be changed if
+     * the system needs to support different
+     * tournament sizes
+     */
     public static function generateMatchups()
     {
         $first_teams = collect(range(1,8));
