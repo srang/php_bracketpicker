@@ -3,6 +3,7 @@
 namespace App\Strategies;
 
 use App\Ruleset;
+use App\Score;
 use App\Strategies\AbstractScoreRulesetStrategy;
 use App\Strategies\ReverseBaseBracketStrategy;
 use App\Factories\BracketFactory;
@@ -64,7 +65,16 @@ class ScoreBaseRulesetStrategy extends AbstractScoreRulesetStrategy
                 }
             }
             // bonus rules
-            // $score->save();
+            $s = Score::where('ruleset_id',$this->ruleset->ruleset_id)->where('bracket_id',$bracket->bracket_id)->first();
+            if (!isset($s)) {
+                $s = new Score([
+                    'ruleset_id' => $this->ruleset->ruleset_id,
+                    'bracket_id' => $bracket->bracket_id,
+                    'score' => 0
+                ]);
+            }
+            $s->score = $score;
+            $s->save();
             $scores->put($bracket->bracket_id, $score);
         }
         return $scores;

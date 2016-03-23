@@ -8,13 +8,14 @@ use App\Rule;
 use App\Game;
 use App\Repositories\TeamRepository;
 
-//use App\Math;
+use App\Math\Math;
 
 class ScoreBaseRuleStrategy
 {
 
     protected $rule;
     protected $teamRepo;
+    protected $math;
 
     /**
      * Create a new strategy
@@ -25,11 +26,14 @@ class ScoreBaseRuleStrategy
     public function __construct(Rule $rule, TeamRepository $teams)
     {
         $this->rule = $rule;
-        $this->teamRep = $teams;
+        $this->math = new Math();
     }
 
     public function score(Game $game) {
-        /* TODO use Math to parse the rule->rule */
-        return $game->victor->rank;
+        $this->math->clearVariables();
+        $this->math->registerVariable('ROUND',$game->round_id);
+        $this->math->registerVariable('RANK',$game->victor->rank);
+        $ret = $this->math->evaluate($this->rule->rule);
+        return $ret;
     }
 }

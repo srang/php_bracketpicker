@@ -13,4 +13,13 @@ class Score extends Model
      */
     protected $primaryKey = 'score_id';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'ruleset_id', 'bracket_id', 'score',
+    ];
+
 }
