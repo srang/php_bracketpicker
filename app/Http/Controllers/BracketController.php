@@ -14,7 +14,6 @@ use App\Factories\BracketFactory;
 use App\Strategies\CreateBaseBracketStrategy;
 use App\Strategies\UpdateBaseBracketStrategy;
 use App\Strategies\ReverseBaseBracketStrategy;
-use App\Strategies\ScoreBaseRulesetStrategy;
 use App\Strategies\ValidateQuickBracketStrategy;
 use App\Strategies\ValidateBaseBracketStrategy;
 use App\Strategies\ValidateUserUpdateBracketStrategy;
@@ -68,17 +67,21 @@ class BracketController extends Controller
     {
         $user = Auth::user();
         $brackets = Bracket::where('user_id',$user->user_id)->get();
+        $ruleset_id = Ruleset::where('name','Bull Moose')->first()->ruleset_id;
         $tasks = Task::where('user_id',$user->user_id)->get();
         return view('brackets.index',[
             'brackets' => $brackets,
             'user' => $user,
             'tasks' => $tasks,
+            'ruleset_id' => $ruleset_id
         ]);
     }
 
     public function showCreateBracket(Request $request)
     {
-        if (Tournament::where('active',1)->first()->state == 'submission') {
+        Log::debug('show create bracket');
+        if (Tournament::where('active',1)->first()->state->name == 'submission') {
+            Log::debug('Tournament State is submission');
             $this->checkErrors($request);
             $bracket = Bracket::where('master',true)->first();
             $deps = $this->getBracketDependencies($bracket);
@@ -88,6 +91,7 @@ class BracketController extends Controller
             $deps['back_link'] = url('/brackets');
             return view('brackets.bracket_display',$deps);
         } else {
+            Log::debug('Tournament state is '.Tournament::where('active',1)->first()->state->name);
             return redirect('/brackets');
         }
     }
@@ -99,7 +103,7 @@ class BracketController extends Controller
         $deps['user'] = $bracket->user;
         $deps['bracket_link'] = url('/brackets/'.$bracket->bracket_id);
         $deps['back_link'] = url('/brackets');
-        if (Tournament::where('active',1)->first()->state == 'submission') {
+        if (Tournament::where('active',1)->first()->state->name == 'submission') {
             $deps['game_container'] = 'brackets.game_buttons';
             return view('brackets.bracket_display',$deps);
         } else {
@@ -110,7 +114,7 @@ class BracketController extends Controller
 
     public function createBracket(Request $request)
     {
-        if (Tournament::where('active',1)->first()->state == 'submission') {
+        if (Tournament::where('active',1)->first()->state->name == 'submission') {
             $errors = BracketFactory::validateBracket($request, new ValidateQuickBracketStrategy());
             if($errors->count() > 0) {
                 return redirect('/brackets/new')->withInput()->withErrors($errors);
@@ -138,7 +142,7 @@ class BracketController extends Controller
     public function updateBracket(Request $request, Bracket $bracket)
     {
 
-        if (Tournament::where('active',1)->first()->state == 'submission') {
+        if (Tournament::where('active',1)->first()->state->name == 'submission') {
             $errors = BracketFactory::validateBracket($request, new ValidateQuickBracketStrategy());
             if($errors->count() > 0) {
                 return redirect('/brackets/'.$bracket->bracket_id)->withErrors($errors);
@@ -166,7 +170,7 @@ class BracketController extends Controller
 
     public function destroyBracket(Request $request, Bracket $bracket)
     {
-        if (!Tournament::where('active',1)->first()->state == 'submission') {
+        if (!Tournament::where('active',1)->first()->state->name == 'submission') {
             $alert = [
                 'message' => 'Bracket Submission Disabled',
                 'level' => 'danger'
@@ -282,19 +286,6 @@ class BracketController extends Controller
         $request->session()->put('alert', $alert);
 
         return redirect()->action('AdminController@bracketsIndex');
-    }
-
-    public function scoreBracket(Request $request, Bracket $bracket)
-    {
-        $ruleset = Ruleset::where('name','Bull Moose')->first();
-        $score = BracketFactory::scoreBrackets(collect([$bracket]), new ScoreBaseRulesetStrategy($this->teamRepo, $ruleset));
-        $alert = [
-            'message' => 'Bracket Score: '.$score->shift(),
-            'level' => 'success'
-        ];
-
-        $request->session()->put('alert', $alert);
-        return redirect('/admin/brackets');
     }
 
     /**

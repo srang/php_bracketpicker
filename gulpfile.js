@@ -23,12 +23,14 @@ elixir(function(mix) {
     mix.copy('bower_components/summernote/dist/summernote.js','resources/assets/js/');
     mix.copy('bower_components/tinycolor/dist/tinycolor-min.js','resources/assets/js/');
     mix.copy('bower_components/pick-a-color/build/1.2.3/js/pick-a-color-1.2.3.min.js','resources/assets/js/pick-a-color.js');
+    //mix.copy('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js','resources/assets/js/datatables.js');
 
     mix.copy('bower_components/bootstrap/less/*.less','resources/assets/less/bootstrap/');
     mix.copy('bower_components/bootstrap/less/mixins/*.less','resources/assets/less/bootstrap/mixins/');
     mix.copy('bower_components/font-awesome/less/*.less','resources/assets/less/fontawesome/');
     mix.copy('bower_components/summernote/dist/summernote.css','resources/assets/css/');
     mix.copy('bower_components/pick-a-color/build/1.2.3/css/pick-a-color-1.2.3.min.css','resources/assets/css/pick-a-color.css');
+    //mix.copy('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css','resources/assets/css/datatables.css');
 
     //mix.copy('bower_compenents/font-awesome/fonts/*', 'public/assets/fonts');
 
@@ -37,10 +39,12 @@ elixir(function(mix) {
     mix.styles('typeahead-bootstrap.css');
     mix.styles('printbracket.css');
     mix.styles('pick-a-color.css');
+    //mix.styles('datatables.css');
     mix.scripts(['pick-a-color.js','tinycolor-min.js'],'public/js/color.js');
     mix.browserify('summernote.js');
     mix.browserify('jquery.js');
     mix.browserify('bootstrap.js');
+    //mix.browserify('datatables.js');
     mix.browserify('typeahead.js');
     mix.browserify('master_bracket.js');
     mix.browserify('bracket_select.js');

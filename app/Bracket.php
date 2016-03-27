@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Ruleset;
+use App\Score;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,4 +36,13 @@ class Bracket extends Model
         return $this->belongsTo('App\Game','root_game','game_id');
     }
 
+    public function score($ruleset_id)
+    {
+        $s = Score::where('ruleset_id',$ruleset_id)->where('bracket_id',$this->bracket_id)->first();
+        if (isset($s)) {
+            return $s->score;
+        } else {
+            return '-';
+        }
+    }
 }

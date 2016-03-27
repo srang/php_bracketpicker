@@ -6,6 +6,7 @@ use App\Team;
 use App\User;
 use App\Bracket;
 use App\Game;
+use App\Ruleset;
 use App\Region;
 use App\Tournament;
 use App\State;
@@ -193,6 +194,7 @@ class AdminController extends Controller
     public function bracketsIndex(Request $request)
     {
         $master = Bracket::where('master',1)->first();
+        $ruleset_id = Ruleset::where('name','Bull Moose')->first()->ruleset_id;
         $brackets = Bracket::where('master',0)->get();
         $tasks = Task::all();
         if (isset($master)) {
@@ -201,12 +203,13 @@ class AdminController extends Controller
                 'gamer' => $game,
                 'master' => $master,
                 'tasks' => $tasks,
-                'brackets' => $brackets
+                'brackets' => $brackets,
+                'ruleset_id' => $ruleset_id
             ]);
         }
         return view('admin.brackets_home',[
             'tasks' => $tasks,
-            'brackets' => $brackets
+            'brackets' => $brackets,
         ]);
     }
 
@@ -293,6 +296,7 @@ class AdminController extends Controller
         }
         DB::table('tasks')->delete();
         DB::table('jobs')->delete();
+        DB::table('scores')->delete();
         DB::table('brackets')->delete();
         $tournament = Tournament::where('active',true)->first();
         $tournament->state_id = State::where('name','setup')->first()->state_id;
@@ -384,4 +388,5 @@ class AdminController extends Controller
             BracketFactory::createBracket($req, new CreateMasterBracketStrategy($this->teamRepo));
         }
     }
+
 }

@@ -60,8 +60,8 @@
                         <a class="btn btn-info" href="{{ url('admin/brackets/master') }}">
                             <i class="fa fa-btn fa-arrow-right"></i> Edit
                         </a>
-                        <a class="btn btn-warning" href="#">
-                            <i class="fa fa-btn fa-warning"></i> Start Tournament
+                        <a class="btn btn-warning" href="/admin/brackets/score/all">
+                            <i class="fa fa-btn fa-warning"></i> Score All
                         </a>
                     </div>
                 </div>
@@ -103,6 +103,7 @@
                         <th>User</th>
                         <th>Bracket Name</th>
                         <th>Winner</th>
+                        <th>Score</th>
                         <th>&nbsp;</th>
                     </thead>
 
@@ -121,6 +122,9 @@
                                 <span class="text-center team-name" style="background-color: #{{ $bracket->root->victor->primary_color }}; color: #{{ $bracket->root->victor->accent_color }};">
                                     {{ $bracket->root->victor->name }}
                                 </span>
+                            </td>
+                            <td class="table-text">
+                                <div>{{ $bracket->score($ruleset_id) }}</div>
                             </td>
                             <td>
                                 <div class="btn-group" role="group">
@@ -152,14 +156,14 @@
 @if ($tasks->count() > 0)
         <div class="panel panel-default">
             <div class="panel-heading">
-                Pending Brackets
+                Pending Jobs
             </div>
             <div class="panel-body">
                 <table class="table table-striped">
 
                     <!-- Table Headings -->
                     <thead>
-                        <th>Pending Brackets</th>
+                        <th>Job Name</th>
                         <th>User</th>
                         <th>Creation Date</th>
                         <th>Status</th>

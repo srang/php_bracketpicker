@@ -49,6 +49,7 @@
                         <thead>
                             <th>Bracket Name</th>
                             <th>Winner</th>
+                            <th>Score</th>
                             <th>&nbsp;</th>
                         </thead>
 
@@ -57,19 +58,7 @@
 @foreach ($brackets as $bracket)
                             <tr>
                                 <!-- Bracket Info -->
-                                <td class="table-text">
-                                    <div>{{ $bracket->name }}</div>
-                                </td>
-                                <td class="table-text" >
-                                    <span class="text-center team-name" style="background-color: #{{ $bracket->root->victor->primary_color }}; color: #{{ $bracket->root->victor->accent_color }};">
-                                        {{ $bracket->root->victor->name }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group">
 @include('brackets.list_item')
-                                    </div>
-                                </td>
                             </tr>
 @endforeach
                         </tbody>

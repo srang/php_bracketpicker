@@ -43,9 +43,9 @@ abstract class AbstractScoreRulesetStrategy implements IScoreRulesetStrategy
     /**
      * Create a new bracket from request
      *
-     * @param $brackets
-     * @return scores
+     * @param  Bracket
+     * @return Score
      */
-    abstract public function process($brackets);
+    abstract public function process(Bracket $bracket);
 
 }

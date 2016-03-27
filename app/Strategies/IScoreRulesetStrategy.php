@@ -16,8 +16,8 @@ interface IScoreRulesetStrategy
     /**
      * Create Scores for each bracket processed
      *
-     * @param $brackets
+     * @param  Bracket
      * @return Score
      */
-    public function process($brackets);
+    public function process(Bracket $bracket);
 }

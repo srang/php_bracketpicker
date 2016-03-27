@@ -65,9 +65,9 @@ class BracketFactory
      * @param IScoreRulesetStrategy  $strat
      * @return score collection
      */
-    public static function scoreBrackets($brackets, IScoreRulesetStrategy $strat)
+    public static function scoreBracket(Bracket $bracket, IScoreRulesetStrategy $strat)
     {
-        return $strat->process($brackets);
+        return $strat->process($bracket);
     }
 
     /**

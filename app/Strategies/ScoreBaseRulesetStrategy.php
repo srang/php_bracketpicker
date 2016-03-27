@@ -4,6 +4,7 @@ namespace App\Strategies;
 
 use App\Ruleset;
 use App\Score;
+use App\Bracket;
 use App\Strategies\AbstractScoreRulesetStrategy;
 use App\Strategies\ReverseBaseBracketStrategy;
 use App\Factories\BracketFactory;
@@ -23,8 +24,7 @@ class ScoreBaseRulesetStrategy extends AbstractScoreRulesetStrategy
     /* Master Bracket */
     protected $master;
     protected $teamRepo;
-    /* collection of brackets to score */
-    protected $brackets;
+    protected $bracket;
     protected $ruleset;
     protected $rules;
     protected $bonusRules;
@@ -42,42 +42,42 @@ class ScoreBaseRulesetStrategy extends AbstractScoreRulesetStrategy
         //$this->bonusRules = $ruleset->bonusRules;
     }
 
-    public function process($brackets)
+    /**
+     * Process and score a bracket based on the ruleset provided in constructor
+     *
+     * @param Bracket
+     * @return Score
+     */
+    public function process(Bracket $bracket)
     {
-        $scores = collect([]);
-
-        /* go through each bracket and score it */
-        foreach($brackets as $bracket) {
-            $score = 0;// new Score();
-            $games = BracketFactory::reverseBracket($bracket, new ReverseBaseBracketStrategy());
-            Log::info('Scoring bracket '.$bracket->bracket_id);
-            foreach ($this->masterGames as $round=>$master_games) {
-                $round_games = $games[$round];
-                Log::info('Scoring round '.$round);
-                $rule = new ScoreBaseRuleStrategy($this->rules->where('round_id',$round)->first(),$this->teamRepo);
-                foreach($round_games as $game) {
-                    $master_game = $master_games->shift();
-                    if($game->victor->team_id == $master_game->winner) {
-                        $add = $rule->score($game);
-                        Log::info("Score! Adding ".$add.' to '.$score);
-                        $score += $add;
-                    }
+        $score = 0;
+        $games = BracketFactory::reverseBracket($bracket, new ReverseBaseBracketStrategy());
+        Log::info('Scoring bracket '.$bracket->bracket_id);
+        foreach ($this->masterGames as $round=>$master_games) {
+            $round_games = $games[$round];
+            Log::info('Scoring round '.$round);
+            $rule = new ScoreBaseRuleStrategy($this->rules->where('round_id',$round)->first(),$this->teamRepo);
+            foreach($round_games as $game) {
+                $master_game = $master_games->shift();
+                if($game->victor->team_id == $master_game->winner) {
+                    $add = $rule->score($game);
+                    Log::info("Score! Adding ".$add.' to '.$score);
+                    $score += $add;
                 }
             }
-            // bonus rules
-            $s = Score::where('ruleset_id',$this->ruleset->ruleset_id)->where('bracket_id',$bracket->bracket_id)->first();
-            if (!isset($s)) {
-                $s = new Score([
-                    'ruleset_id' => $this->ruleset->ruleset_id,
-                    'bracket_id' => $bracket->bracket_id,
-                    'score' => 0
-                ]);
-            }
-            $s->score = $score;
-            $s->save();
-            $scores->put($bracket->bracket_id, $score);
         }
-        return $scores;
+        // bonus rules
+        $s = Score::where('ruleset_id',$this->ruleset->ruleset_id)->where('bracket_id',$bracket->bracket_id)->first();
+        if (!isset($s)) {
+            $s = new Score([
+                'ruleset_id' => $this->ruleset->ruleset_id,
+                'bracket_id' => $bracket->bracket_id,
+                'score' => 0
+            ]);
+        }
+        $s->score = $score;
+        $s->save();
+        return $s;
 
     }
 }

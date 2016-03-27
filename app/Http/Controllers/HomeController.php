@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Status;
 use App\Bracket;
+use App\Ruleset;
 
 use DB;
 use Log;
@@ -35,9 +36,11 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $brackets = Bracket::where('user_id',$user->user_id)->get();
+        $ruleset_id = Ruleset::where('name','Bull Moose')->first()->ruleset_id;
         return view('home',[
             'brackets' => $brackets,
             'user' => $user,
+            'ruleset_id' => $ruleset_id
         ]);
     }
 
