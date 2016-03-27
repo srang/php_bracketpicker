@@ -5,8 +5,6 @@ namespace App\Strategies;
 use App\Ruleset;
 use App\Score;
 use App\Bracket;
-use App\Strategies\AbstractScoreRulesetStrategy;
-use App\Strategies\ReverseBaseBracketStrategy;
 use App\Factories\BracketFactory;
 use App\Repositories\TeamRepository;
 
@@ -39,7 +37,7 @@ class ScoreBaseRulesetStrategy extends AbstractScoreRulesetStrategy
     {
         parent::__construct($teams, $ruleset);
         $this->rules = $ruleset->baseRules;
-        //$this->bonusRules = $ruleset->bonusRules;
+        $this->bonusRules = $ruleset->bonusRules;
     }
 
     /**
@@ -52,8 +50,9 @@ class ScoreBaseRulesetStrategy extends AbstractScoreRulesetStrategy
     {
         $score = 0;
         $games = BracketFactory::reverseBracket($bracket, new ReverseBaseBracketStrategy());
+        $masterGames = BracketFactory::reverseBracket($this->master, new ReverseBaseBracketStrategy());
         Log::info('Scoring bracket '.$bracket->bracket_id);
-        foreach ($this->masterGames as $round=>$master_games) {
+        foreach ($masterGames as $round=>$master_games) {
             $round_games = $games[$round];
             Log::info('Scoring round '.$round);
             $rule = new ScoreBaseRuleStrategy($this->rules->where('round_id',$round)->first(),$this->teamRepo);
@@ -66,7 +65,11 @@ class ScoreBaseRulesetStrategy extends AbstractScoreRulesetStrategy
                 }
             }
         }
-        // bonus rules
+        foreach ($this->bonusRules as $bonusRule) {
+            $bonus = $bonusRule->instantiateRule($this->master, $bracket);
+            $score += $bonus->score();
+        }
+
         $s = Score::where('ruleset_id',$this->ruleset->ruleset_id)->where('bracket_id',$bracket->bracket_id)->first();
         if (!isset($s)) {
             $s = new Score([

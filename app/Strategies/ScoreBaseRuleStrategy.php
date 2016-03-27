@@ -29,7 +29,8 @@ class ScoreBaseRuleStrategy
         $this->math = new Math();
     }
 
-    public function score(Game $game) {
+    public function score(Game $game)
+    {
         $this->math->clearVariables();
         $this->math->registerVariable('ROUND',$game->round_id);
         $this->math->registerVariable('RANK',$game->victor->rank);

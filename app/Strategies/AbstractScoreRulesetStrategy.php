@@ -21,7 +21,7 @@ abstract class AbstractScoreRulesetStrategy implements IScoreRulesetStrategy
 {
 
     /* Master Bracket */
-    protected $masterGames;
+    protected $master;
     protected $teamRepo;
     /* collection of brackets to score */
     protected $ruleset;
@@ -36,8 +36,7 @@ abstract class AbstractScoreRulesetStrategy implements IScoreRulesetStrategy
     {
         $this->teamRepo = $teams;
         $this->ruleset = $ruleset;
-        $master = Bracket::where('master',1)->first();
-        $this->masterGames = BracketFactory::reverseBracket($master, new ReverseBaseBracketStrategy());
+        $this->master = Bracket::where('master',1)->first();
     }
 
     /**
