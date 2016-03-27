@@ -39,7 +39,7 @@ class BonusRule extends Model
     {
         $className = 'App\\Strategies\\'.$this->rule;
         if (is_subclass_of($className,'App\\Strategies\\AbstractScoreBonusRuleStrategy')) {
-            Log::debug('Instantiating bonus rule '.$classname);
+            Log::debug('Instantiating bonus rule '.$className);
             $strat = new $className($master, $bracket);
             return $strat;
         } else {

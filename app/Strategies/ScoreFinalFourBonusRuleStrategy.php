@@ -4,9 +4,7 @@ namespace App\Strategies;
 
 use Log;
 
-use App\Rule;
-use App\Game;
-use App\Repositories\TeamRepository;
+use App\Bracket;
 use App\Factories\BracketFactory;
 
 class ScoreFinalFourBonusRuleStrategy extends AbstractScoreBonusRuleStrategy
